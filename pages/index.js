@@ -1,7 +1,5 @@
-import '../index.scss';
+import AuthHome from "../modules/auth/containers/AuthHome";
 
 export default () => (
-  <h1>
-    Welcome to home page of TripMark!!!
-  </h1>
+  <AuthHome />
 );
