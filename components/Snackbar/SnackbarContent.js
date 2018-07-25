@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 // @material-ui/icons
 import Close from "@material-ui/icons/Close";
 
-import snackbarContentStyle from "../../material-kit-react/components/snackbarContentStyle.jsx";
+import snackbarContentStyle from "./snackbarContentStyle";
 
 class SnackbarContent extends React.Component {
   constructor(props) {

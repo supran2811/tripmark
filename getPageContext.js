@@ -35,9 +35,7 @@ function createPageContext() {
 export default function getPageContext() {
   // Make sure to create a new context for every server-side request so that data
   // isn't shared between connections (which would be bad).
-  console.log("Inside getPageContext() 1");
   if (!process.browser) {
-    console.log("Inside getPageContext() 2");
     return createPageContext();
   }
 

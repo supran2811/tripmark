@@ -9,7 +9,7 @@ import { List, ListItem, withStyles } from "@material-ui/core";
 // @material-ui/icons
 import Favorite from "@material-ui/icons/Favorite";
 
-import footerStyle from "../../material-kit-react/components/footerStyle.jsx";
+import footerStyle from "./footerStyle";
 
 function Footer({ ...props }) {
   const { classes, whiteFont } = props;
