@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Document, { Head, Main, NextScript } from 'next/document';
 import flush from 'styled-jsx/server';
+
 import getPageContext from '../getPageContext';
 
 class MyDocument extends Document {
@@ -61,7 +62,6 @@ MyDocument.getInitialProps = async ctx => {
   // 2. page.getInitialProps
   // 3. app.render
   // 4. page.render
-
   // Render app and page and get the context of the page with collected side effects.
   let pageContext;
   const page = ctx.renderPage(Component => {

@@ -19,9 +19,6 @@ const options = {
       if (format === 'uppercase') return value.toUpperCase()
       return value
     }
-  },
-  react : {
-    wait:true
   }
   
 }

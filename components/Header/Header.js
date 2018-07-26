@@ -15,7 +15,7 @@ import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 // core components
 import headerStyle from "./headerStyle";
-
+import NoSSR from 'react-no-ssr';
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -92,7 +92,9 @@ class Header extends React.Component {
             )}
           </div>
           <Hidden smDown implementation="css">
-            {rightLinks}
+            <NoSSR>
+              {rightLinks}
+            </NoSSR>
           </Hidden>
           <Hidden mdUp>
             <IconButton

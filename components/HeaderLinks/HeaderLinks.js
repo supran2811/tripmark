@@ -71,7 +71,8 @@ function HeaderLinks({ ...props }) {
                  </a>
         }
         else {
-          return <Link href = {ele['href']} className={classes.dropdownLink}>
+          return <Link href = {ele['href']} 
+                      className={classes.dropdownLink}>
                       {ele['text']}
                  </Link>
         }

@@ -1,6 +1,14 @@
 
+import { Component } from 'react';
+
 import LandingPage from '../modules/app/containers/LandingPage';
 import "../assets/scss/material-kit-react.scss";
-export default () => (
-    <LandingPage />
-);
+import { withI18next } from '../lib/withI18next';
+
+class MainPage extends Component {
+  render() {
+    return <LandingPage />
+  }
+}
+
+export default withI18next(['common'])(MainPage);

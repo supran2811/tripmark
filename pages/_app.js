@@ -1,10 +1,9 @@
 import React from 'react';
 import App, { Container } from 'next/app';
-import { I18n as I18nR } from "react-i18next";
-import i18n from "../i18n";
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
+
 import getPageContext from '../getPageContext'
 
 class MyApp extends App {
@@ -25,10 +24,6 @@ class MyApp extends App {
     const { Component, pageProps } = this.props;
     return (
       <Container>
-       
-       <I18nR ns="common" i18n={(pageProps && pageProps.i18n) || i18n }>
-       {
-         (t) => (
             <JssProvider registry={this.pageContext.sheetsRegistry}
               generateClassName={this.pageContext.generateClassName}
             >
@@ -45,13 +40,10 @@ class MyApp extends App {
                 <Component pageContext={this.pageContext} {...pageProps} />
               </MuiThemeProvider>
             </JssProvider>
-          )
         }
-        </I18nR>
-           
       </Container>
     );
   }
 }
 
-export default MyApp;
+export default ( MyApp );

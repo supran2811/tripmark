@@ -1,16 +1,21 @@
 import React , {Component} from 'react';
+
+import NoSSR from 'react-no-ssr';
+import { Apps } from '@material-ui/icons';
+import { withStyles } from '@material-ui/core';
+import { translate } from 'react-i18next';
+
 import Header from '../../../../components/Header';
 import HeaderLinks from '../../../../components/HeaderLinks';
 import landingBg from '../../../../assets/img/landing-bg.jpg';
 import Parallax from '../../../../components/Parallax';
 import GridContainer from '../../../../components/GridContainer';
 import GridItem from '../../../../components/GridItem';
-
-import { translate } from 'react-i18next';
-import { withStyles } from '@material-ui/core';
 import landingPageStyle from './landingPageStyle';
+import SignUpForm from '../../../auth/components/SignUp';
 
 class LandingPage extends Component {
+
   render() {
 
     const { classes , t } = this.props;
@@ -24,13 +29,13 @@ class LandingPage extends Component {
           color:'red'
         },
         'Sample2':{
-          icon : '',
+          icon : Apps,
           type:'DropDown',
-          color:'white',
+          color:'transparent',
           childrens:[
             {
               text:'Dropdown1',
-              href:'www.google.com',
+              href:'http://www.google.com',
               isExternal:true
             },
             {
@@ -44,7 +49,7 @@ class LandingPage extends Component {
           type:'Tooltip',
           tooltipText:"this is a sample tooltip text",
           color:'transparent',
-          icon:''
+          icon:'fab fa-facebook'
         }
       }
       
@@ -59,7 +64,7 @@ class LandingPage extends Component {
             height: 400,
             color: "white"
           }}
-          rightLinks={<HeaderLinks  {...headerElementConfig}/>}
+          rightLinks={<HeaderLinks {...headerElementConfig}/>}
         />
         <Parallax filter image={landingBg}>
           <div className={classes.container}>
@@ -73,6 +78,9 @@ class LandingPage extends Component {
                   first impression.
                 </h4>
                 <br />
+              </GridItem>
+              <GridItem xs={12} sm={12} md = {6}>
+               <NoSSR> <SignUpForm /> </NoSSR>
               </GridItem>
             </GridContainer>
           </div>
