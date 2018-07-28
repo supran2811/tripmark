@@ -18,7 +18,7 @@ class LandingPage extends Component {
 
   render() {
 
-    const { classes , t } = this.props;
+    const { classes , t ,...rest } = this.props;
     const headerElementConfig = {
       headerElements : {
         'Sample1' : {
@@ -65,12 +65,13 @@ class LandingPage extends Component {
             color: "white"
           }}
           rightLinks={<HeaderLinks {...headerElementConfig}/>}
+          {...rest}
         />
-        <Parallax filter image={landingBg}>
+        <Parallax filter image={landingBg} className={classes.parrallexClass}>
           <div className={classes.container}>
             <GridContainer>
               <GridItem xs={12} sm={12} md={6}>
-                <h1>Your Story Starts With Us.</h1>
+                <h1 className={classes.title}>Your Story Starts With Us.</h1>
                 <h4>
                   Every landing page needs a small description after the big
                   bold title, that's why we added this text here. Add here all

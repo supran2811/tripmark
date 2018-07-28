@@ -40,7 +40,6 @@ class MyApp extends App {
                 <Component pageContext={this.pageContext} {...pageProps} />
               </MuiThemeProvider>
             </JssProvider>
-        }
       </Container>
     );
   }

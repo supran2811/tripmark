@@ -1,0 +1,9 @@
+{
+  "googleSignUpText":"Sign Up with Google",
+  "googleLoginText" : "Login with Google",
+  "loginLabel":"Login",
+  "enterNameInputPlaceholder" :"Full Name...",
+  "emailnputPlaceholder":"Email...",
+  "passwordInputPlaceholder":"Password",
+  "signUpActionText" :"Get started"
+}

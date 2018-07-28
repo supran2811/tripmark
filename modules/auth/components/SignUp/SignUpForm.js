@@ -10,6 +10,7 @@ import LockOutline from "@material-ui/icons/LockOutline";
 import People from "@material-ui/icons/People";
 
 import GoogleLogin ,{ FontAwesome } from 'react-google-login';
+import { translate } from 'react-i18next';
 
 import GridContainer from '../../../../components/GridContainer'
 import GridItem from '../../../../components/GridItem';
@@ -17,10 +18,9 @@ import Card , {CardBody , CardFooter , CardHeader} from '../../../../components/
 import CustomInput from '../../../../components/CustomInput';
 import signupFormStyle from './signupFormStyle';
 import Button from '../../../../components/CustomButtons';
+import { clientId } from '../../constants';
 
 class SignUpForm extends Component {
-
-  clientId = "246403049091-2hdd7bv6h1fttt7mjf7ka2mudv861bni.apps.googleusercontent.com";
 
   state = {
     cardAnimation:'cardHidden'
@@ -36,40 +36,44 @@ class SignUpForm extends Component {
   }
   
   render () {
-    const { classes } = this.props;
+    const { classes ,t} = this.props;
     return (
-      <GridContainer justify="center">
-        <GridItem xs={12} sm={12} md={10}>
+      <GridContainer justify="center" >
+        <GridItem xs={12} sm={12} md={this.props.isLogin? 10 : 10}>
         <Card className={classes[this.state.cardAnimaton]}>
           <form className={classes.form}>
-          <CardHeader>
+          <CardHeader className = {classes.cardHeader}>
           <GoogleLogin
-              clientId={this.clientId}
-              buttonText="Login"
+              clientId={clientId}
+              buttonText={t("loginLabel")}
               onSuccess={() => ""}
               onFailure={() => ""}
+              className={classes.googleLogin}
             >
-                <span> <i className={classes.socialIcons + " fab fa-google"} /> Login with Google</span>
+                <span> <i className={classes.socialIcons + " fab fa-google"} /> { this.props.isLogin ? t("googleLoginText") : t("googleSignUpText") }</span>
             </GoogleLogin>
           </CardHeader>
           <CardBody>
-              <CustomInput
-                labelText="First Name..."
-                id="first"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                inputProps={{
-                  type: "text",
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <People className={classes.inputIconsColor} />
-                    </InputAdornment>
-                  )
-                }}
-              />
-              <CustomInput
-                labelText="Email..."
+            {
+              !this.props.isLogin ? 
+                  <CustomInput
+                    labelText={t("enterNameInputPlaceholder")}
+                    id="first"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    inputProps={{
+                      type: "text",
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <People className={classes.inputIconsColor} />
+                        </InputAdornment>
+                      )
+                    }}
+                  /> : null
+            }
+            <CustomInput
+                labelText={t("emailnputPlaceholder")}
                 id="email"
                 formControlProps={{
                   fullWidth: true
@@ -84,7 +88,7 @@ class SignUpForm extends Component {
                 }}
               />
               <CustomInput
-                labelText="Password"
+                labelText={t("passwordInputPlaceholder")}
                 id="pass"
                 formControlProps={{
                   fullWidth: true
@@ -103,7 +107,7 @@ class SignUpForm extends Component {
             </CardBody>
             <CardFooter className={classes.cardFooter}>
               <Button simple color="primary" size="lg">
-                Get started
+               {this.props.isLogin ? t("loginLabel") : t("signUpActionText")}
               </Button>
             </CardFooter>
           </form>
@@ -114,4 +118,4 @@ class SignUpForm extends Component {
   }
 }
 
-export default withStyles(signupFormStyle)(SignUpForm);
+export default withStyles(signupFormStyle)(translate(['authdata'])(SignUpForm));

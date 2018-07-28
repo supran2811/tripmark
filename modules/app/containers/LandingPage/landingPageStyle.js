@@ -6,6 +6,10 @@ const landingPageStyle = {
     color: "#FFFFFF",
     ...container
   },
+  parrallexClass:{
+    overflow: "auto ",
+    height: "100vh",
+  },
   title: {
     ...title,
     display: "inline-block",

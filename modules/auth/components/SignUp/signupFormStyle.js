@@ -43,13 +43,11 @@ const signupPageStyle = {
     margin: "0"
   },
   cardHeader: {
-    width: "auto",
+    width: "100%",
     textAlign: "center",
-    marginLeft: "20px",
-    marginRight: "20px",
-    marginTop: "-40px",
-    padding: "20px 0",
+    marginTop: "0px",
     marginBottom: "15px"
+    
   },
   socialIcons: {
     maxWidth: "24px",
@@ -80,6 +78,17 @@ const signupPageStyle = {
   },
   inputIconsColor: {
     color: "#495057"
+  },
+  googleLogin: {
+    width:"80%",
+    backgroundColor:"rgb(209,72,54)",
+    color:"#ffffff",
+    fontWeight:"bold",
+    borderRadius:"2px",
+    border:"1px solid transparent",
+    display:"inline-block",
+    marginRight:"10px",
+    cursor:"pointer"
   }
 };
 
