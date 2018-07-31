@@ -39,15 +39,15 @@ class SignUpForm extends Component {
     const { classes ,t} = this.props;
     return (
       <GridContainer justify="center" >
-        <GridItem xs={12} sm={12} md={this.props.isLogin? 10 : 10}>
+        <GridItem xs={12} sm={12} md={10}>
         <Card className={classes[this.state.cardAnimaton]}>
           <form className={classes.form}>
           <CardHeader className = {classes.cardHeader}>
           <GoogleLogin
               clientId={clientId}
               buttonText={t("loginLabel")}
-              onSuccess={() => ""}
-              onFailure={() => ""}
+              onSuccess={(response) => this.responseGoogle(response)}
+              onFailure={(response) => this.responseGoogle(response)}
               className={classes.googleLogin}
             >
                 <span> <i className={classes.socialIcons + " fab fa-google"} /> { this.props.isLogin ? t("googleLoginText") : t("googleSignUpText") }</span>
@@ -115,6 +115,10 @@ class SignUpForm extends Component {
         </GridItem>
       </GridContainer>
     );
+  }
+
+  responseGoogle = (response) => {
+    console.log(response);
   }
 }
 

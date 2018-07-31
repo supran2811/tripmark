@@ -21,13 +21,7 @@ class LandingPage extends Component {
     const { classes , t ,...rest } = this.props;
     const headerElementConfig = {
       headerElements : {
-        'Sample1' : {
-          icon : '',
-          type:'Button',
-          isExternal:false,
-          toolTipText:'',
-          color:'red'
-        },
+        
         'Sample2':{
           icon : Apps,
           type:'DropDown',
@@ -50,6 +44,14 @@ class LandingPage extends Component {
           tooltipText:"this is a sample tooltip text",
           color:'transparent',
           icon:'fab fa-facebook'
+        },
+        'Login' : {
+          icon : '',
+          type:'Button',
+          isExternal:false,
+          href:'/login',
+          toolTipText:'',
+          color:'transparent'
         }
       }
       

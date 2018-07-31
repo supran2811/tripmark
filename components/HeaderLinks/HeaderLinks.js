@@ -49,15 +49,32 @@ function HeaderLinks({ ...props }) {
   const headers = _.keys(headerElements).map(elementName => {
     const elementObject = headerElements[elementName];
     if(elementObject['type'] === 'Button') {
-      return <ListItem key={elementName} className={classes.listItem}>
+      if(elementObject['isExternal']){
+        return <ListItem key={elementName} className={classes.listItem}>
                 <Button
+                  href={elementObject['href']}
                   color={elementObject['color']}
                   target="_blank"
                   className={classes.navLink}
                 >
                   {elementObject['icon']}{elementName}
               </Button>
-            </ListItem>
+              </ListItem>
+      }
+      else {
+        return <ListItem key={elementName} className={classes.listItem}>
+                <Link href={elementObject['href']}>
+                  <Button
+                    color={elementObject['color']}
+                    target="_blank"
+                    className={classes.navLink}
+                  >
+                    {elementObject['icon']}{elementName}
+                </Button>
+                </Link>
+                </ListItem>
+      }
+      
     }
     else if(elementObject['type'] === 'DropDown') {
 
@@ -78,7 +95,6 @@ function HeaderLinks({ ...props }) {
         }
       });
 
-      console.log(elements);
       return <ListItem key={elementName} className={classes.listItem}>
                 <CustomDropdown
                   noLiPadding
@@ -93,7 +109,7 @@ function HeaderLinks({ ...props }) {
            </ListItem>
     }
     else if(elementObject['type'] === 'Tooltip') {
-        return <ListItem className={classes.listItem}>
+        return <ListItem className={classes.listItem}  key={elementName} >
                   <Tooltip
                     id={elementObject['icon']}
                     title={elementObject['tooltipText']}
@@ -111,7 +127,6 @@ function HeaderLinks({ ...props }) {
                 </ListItem>
     }
   });
-  console.log(headers,headerElements);
   return (
     <List className={classes.list}>
       {headers}
