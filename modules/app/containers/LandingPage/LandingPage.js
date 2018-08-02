@@ -1,5 +1,5 @@
 import React , {Component} from 'react';
-
+import {connect} from 'react-redux';
 import NoSSR from 'react-no-ssr';
 import { Apps } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core';
@@ -13,11 +13,13 @@ import GridContainer from '../../../../components/GridContainer';
 import GridItem from '../../../../components/GridItem';
 import landingPageStyle from './landingPageStyle';
 import SignUpForm from '../../../auth/components/SignUp';
+import { signUpRequest } from '../../../auth/store/action';
+
 
 class LandingPage extends Component {
 
   render() {
-
+    console.log("Landing page ",this.props);
     const { classes , t ,...rest } = this.props;
     const headerElementConfig = {
       headerElements : {
@@ -92,4 +94,4 @@ class LandingPage extends Component {
     );
   }
 }
-export default withStyles(landingPageStyle)(translate(['common'])(LandingPage));
+export default connect( state => state)(withStyles(landingPageStyle)(translate(['common'])((LandingPage))));

@@ -1,12 +1,20 @@
 import React from 'react';
+import { Provider } from 'react-redux'
 import App, { Container } from 'next/app';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 
+import { withReduxSaga } from '../lib/withReduxSaga';
 import getPageContext from '../getPageContext'
 
 class MyApp extends App {
+
+  static async getInitialProps({Component , ctx}) {
+    const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+    return {pageProps};
+  }
+
   constructor(props) {
     super(props);
     this.pageContext = getPageContext();
@@ -21,9 +29,11 @@ class MyApp extends App {
   }
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, store } = this.props;
+    
     return (
       <Container>
+       
             <JssProvider registry={this.pageContext.sheetsRegistry}
               generateClassName={this.pageContext.generateClassName}
             >
@@ -37,12 +47,15 @@ class MyApp extends App {
                 <CssBaseline />
                 {/* Pass pageContext to the _document though the renderPage enhancer
                     to render collected styles on server side. */}
+                 <Provider store={store}>
                 <Component pageContext={this.pageContext} {...pageProps} />
+                </Provider>
               </MuiThemeProvider>
             </JssProvider>
+     
       </Container>
     );
   }
 }
 
-export default ( MyApp );
+export default ( withReduxSaga(MyApp) );

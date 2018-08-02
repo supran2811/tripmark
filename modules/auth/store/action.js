@@ -1,8 +1,19 @@
-import { ACTION_LOGIN, ACTION_LOGOUT } from "./actionTypes";
+import { ACTION_LOGIN, ACTION_LOGOUT ,ACTION_SIGNUP } from "./actionTypes";
 
-export function loginRequest() {
+export function loginRequest(email,password) {
   return {
-    type:ACTION_LOGIN
+    type:ACTION_LOGIN,
+    email,
+    password
+  }
+}
+
+export function signUpRequest(fullName,email,password) {
+  return {
+    type:ACTION_SIGNUP,
+    fullName,
+    email,
+    password
   }
 }
 
@@ -11,3 +22,4 @@ export function logoutRequest() {
     type:ACTION_LOGOUT
   }
 }
+
