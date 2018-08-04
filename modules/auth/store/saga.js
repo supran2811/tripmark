@@ -1,20 +1,26 @@
-import {fork,takeEvery} from 'redux-saga/effects';
+import {fork,takeEvery,put} from 'redux-saga/effects';
 
+import { auth } from '../../../firebase';
 import { ACTION_LOGIN, ACTION_SIGNUP } from "./actionTypes";
 
-export function* doSignUp() {
+export function* doSignUp(action) {
+  console.log("Inside doSignUp",action);
   try{
      yield put({type:ACTION_SIGNUP.PENDING});
  
      //////Call method to perform login/////
- 
+     
+     const authUser = auth.doCreateUser(action.email,action.password);
+
+     console.log("after create user ",authUser);
+
      yield put({type:ACTION_SIGNUP.SUCCESS , user:{name:action.fullName , email:action.email}});
    } catch(error) {
      yield put({type:ACTION_SIGNUP.ERROR , error});
    }
  }
 
-export function* doLogin() {
+export function* doLogin(action) {
  try{
     yield put({type:ACTION_LOGIN.PENDING});
 

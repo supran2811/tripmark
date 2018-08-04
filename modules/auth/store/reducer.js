@@ -7,7 +7,7 @@ const initialState = {
 }
 
 export default function authReducer(state=initialState , action) {
-
+ console.log("Coming here in reducer ",action.type);
   switch(action.type) {
     case ACTION_LOGIN.SUCCESS: 
     case ACTION_SIGNUP.SUCCESS: {

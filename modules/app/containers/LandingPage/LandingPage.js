@@ -85,7 +85,7 @@ class LandingPage extends Component {
                 <br />
               </GridItem>
               <GridItem xs={12} sm={12} md = {6}>
-               <NoSSR> <SignUpForm /> </NoSSR>
+               <NoSSR> <SignUpForm requestSignUp = { (name,email,password) => this.props.dispatch(signUpRequest(name,email,password)) }/> </NoSSR>
               </GridItem>
             </GridContainer>
           </div>

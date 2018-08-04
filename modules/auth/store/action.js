@@ -10,7 +10,7 @@ export function loginRequest(email,password) {
 
 export function signUpRequest(fullName,email,password) {
   return {
-    type:ACTION_SIGNUP,
+    type:ACTION_SIGNUP.ACTION,
     fullName,
     email,
     password

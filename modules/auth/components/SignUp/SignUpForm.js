@@ -3,6 +3,7 @@ import React , {Component} from 'react';
 // @material-ui/core components
 import { withStyles } from '@material-ui/core';
 import InputAdornment from "@material-ui/core/InputAdornment";
+import validator from 'validator';
 
 // @material-ui/icons
 import Email from "@material-ui/icons/Email";
@@ -23,8 +24,12 @@ import { clientId } from '../../constants';
 class SignUpForm extends Component {
 
   state = {
-    cardAnimation:'cardHidden'
-  }
+    cardAnimation:'cardHidden',
+    enableSubmit:false,
+    name:'',
+    email:'',
+    password:'',
+}
 
   componentDidMount() {
     setTimeout(
@@ -35,6 +40,26 @@ class SignUpForm extends Component {
     );
   }
   
+
+  onChangeName = (e) => {
+    console.log(e);
+    this.setState({name:e.target.value});
+  }
+
+  onChangeEmail = (e) => {
+    this.setState({email : e.target.value});
+  }
+
+  onChangePassword = (e) => {
+    this.setState({password : e.target.value});
+  }
+
+  enableSubmit() {
+    return this.state.name.trim().length > 0 && 
+                this.state.email.trim().length > 0 && validator.isEmail(this.state.email)
+                  this.state.password.trim().length > 5
+  }
+
   render () {
     const { classes ,t} = this.props;
     return (
@@ -59,6 +84,7 @@ class SignUpForm extends Component {
                   <CustomInput
                     labelText={t("enterNameInputPlaceholder")}
                     id="first"
+                    value = {this.state.name}
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -68,7 +94,8 @@ class SignUpForm extends Component {
                         <InputAdornment position="end">
                           <People className={classes.inputIconsColor} />
                         </InputAdornment>
-                      )
+                      ),
+                      onChange: this.onChangeName
                     }}
                   /> : null
             }
@@ -84,7 +111,8 @@ class SignUpForm extends Component {
                     <InputAdornment position="end">
                       <Email className={classes.inputIconsColor} />
                     </InputAdornment>
-                  )
+                  ),
+                  onChange: this.onChangeEmail
                 }}
               />
               <CustomInput
@@ -101,12 +129,13 @@ class SignUpForm extends Component {
                         className={classes.inputIconsColor}
                       />
                     </InputAdornment>
-                  )
+                  ),
+                  onChange: this.onChangePassword
                 }}
               />
             </CardBody>
             <CardFooter className={classes.cardFooter}>
-              <Button simple color="primary" size="lg">
+              <Button simple color="primary" size="lg" onClick={() =>  this.props.requestSignUp(this.state.name,this.state.email,this.state.password)  } disabled={!this.enableSubmit()}>
                {this.props.isLogin ? t("loginLabel") : t("signUpActionText")}
               </Button>
             </CardFooter>
