@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider } from 'react-redux'
+import { Provider,connect } from 'react-redux'
 import App, { Container } from 'next/app';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,6 +7,8 @@ import JssProvider from 'react-jss/lib/JssProvider';
 
 import { withReduxSaga } from '../lib/withReduxSaga';
 import getPageContext from '../getPageContext'
+import { auth } from '../firebase/firebase';
+import { setToken, logoutRequest } from '../modules/auth/store/action';
 
 class MyApp extends App {
 
@@ -20,12 +22,32 @@ class MyApp extends App {
     this.pageContext = getPageContext();
   }
 
+  componentWillMount() {
+    auth.onAuthStateChanged(user => {
+      if( user ) {
+        this.props.dispatch(setToken());
+      }
+      else {
+        this.props.dispatch(logoutRequest());
+      }
+   })
+  }
+
   componentDidMount() {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+
+    // auth.onAuthStateChanged(user => {
+    //    if( user ) {
+    //      this.props.dispatch(setToken());
+    //    }
+    //    else {
+    //      this.props.dispatch(logoutRequest());
+    //    }
+    // })
   }
 
   render() {
@@ -58,4 +80,4 @@ class MyApp extends App {
   }
 }
 
-export default ( withReduxSaga(MyApp) );
+export default ( withReduxSaga(  connect()(MyApp)) );

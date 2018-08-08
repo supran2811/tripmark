@@ -68,7 +68,7 @@ class SignUpForm extends Component {
         <Card className={classes[this.state.cardAnimaton]}>
           <form className={classes.form}>
           <CardHeader className = {classes.cardHeader}>
-          <GoogleLogin
+          {/* <GoogleLogin
               clientId={clientId}
               buttonText={t("loginLabel")}
               onSuccess={(response) => this.responseGoogle(response)}
@@ -76,7 +76,10 @@ class SignUpForm extends Component {
               className={classes.googleLogin}
             >
                 <span> <i className={classes.socialIcons + " fab fa-google"} /> { this.props.isLogin ? t("googleLoginText") : t("googleSignUpText") }</span>
-            </GoogleLogin>
+            </GoogleLogin> */}
+            <Button className={classes.googleLogin} onClick={this.props.googleSignUp}>
+                <span> <i className={classes.socialIcons + " fab fa-google"} /> { this.props.isLogin ? t("googleLoginText") : t("googleSignUpText") }</span>
+            </Button>
           </CardHeader>
           <CardBody>
             {

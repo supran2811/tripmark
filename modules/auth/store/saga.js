@@ -1,24 +1,37 @@
 import {fork,takeEvery,put} from 'redux-saga/effects';
 
 import { auth } from '../../../firebase';
-import { ACTION_LOGIN, ACTION_SIGNUP } from "./actionTypes";
+import { ACTION_LOGIN, ACTION_SIGNUP, ACTION_SET_TOKEN, ACTION_GOOGLE_SIGNUP } from "./actionTypes";
 
 export function* doSignUp(action) {
   console.log("Inside doSignUp",action);
   try{
      yield put({type:ACTION_SIGNUP.PENDING});
  
-     //////Call method to perform login/////
+     //////Call method to perform signup/////
      
-     const authUser = auth.doCreateUser(action.email,action.password);
+     yield auth.doCreateUser(action.email,action.password);
+   
+     yield auth.doUpdateProfile(action.fullName);
+  
+     yield put({ type:ACTION_SIGNUP.SUCCESS });
 
-     console.log("after create user ",authUser);
-
-     yield put({type:ACTION_SIGNUP.SUCCESS , user:{name:action.fullName , email:action.email}});
+    //  Router.replace({pathname:'/home'});
    } catch(error) {
      yield put({type:ACTION_SIGNUP.ERROR , error});
    }
  }
+
+export function* doSignUpWithGoogle() {
+  console.log("Inside doSignUpWithGoogle");
+  try {
+    yield auth.doGoogleSignIn();
+    yield put({ type:ACTION_GOOGLE_SIGNUP.SUCCESS });
+  } catch(error) {
+    console.log("Inside doSignUpWithGoogle",error);
+    yield put({type:ACTION_GOOGLE_SIGNUP.ERROR , error});
+  }
+} 
 
 export function* doLogin(action) {
  try{
@@ -32,7 +45,22 @@ export function* doLogin(action) {
   }
 }
 
+export function* doSetToken() {
+  try {
+    yield put({type:ACTION_SET_TOKEN.PENDING});
+
+    const token = yield auth.getToken();
+
+    yield put({type:ACTION_SET_TOKEN.SUCCESS , data:token});
+
+  } catch(error) {
+    yield put({type:ACTION_SET_TOKEN.ERROR});
+  }
+}
+
 export default function* saga() {
   yield fork(takeEvery,ACTION_LOGIN.ACTION , doLogin);
   yield fork(takeEvery,ACTION_SIGNUP.ACTION , doSignUp);
+  yield fork(takeEvery,ACTION_SET_TOKEN.ACTION , doSetToken);
+  yield fork(takeEvery,ACTION_GOOGLE_SIGNUP.ACTION , doSignUpWithGoogle);
 }

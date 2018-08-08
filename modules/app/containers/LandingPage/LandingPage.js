@@ -1,6 +1,8 @@
 import React , {Component} from 'react';
 import {connect} from 'react-redux';
 import NoSSR from 'react-no-ssr';
+import Router from 'next/router';
+
 import { Apps } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core';
 import { translate } from 'react-i18next';
@@ -13,13 +15,29 @@ import GridContainer from '../../../../components/GridContainer';
 import GridItem from '../../../../components/GridItem';
 import landingPageStyle from './landingPageStyle';
 import SignUpForm from '../../../auth/components/SignUp';
-import { signUpRequest } from '../../../auth/store/action';
+import { signUpRequest, googleSignUpRequest } from '../../../auth/store/action';
+import { isAuthenticated } from '../../../auth/store/selector';
 
 
 class LandingPage extends Component {
 
+  componentDidMount() {
+    console.log("componentDidMount",this.props.isAuthenticated);
+    
+    if(this.props.isAuthenticated) {
+      Router.replace({pathname:'/home'});
+    }
+  }
+
+  componentDidUpdate() {
+    console.log("componentDidUpdate",this.props.isAuthenticated);
+
+    if(this.props.isAuthenticated) {
+      Router.replace({pathname:'/home'});
+    }
+  }
+
   render() {
-    console.log("Landing page ",this.props);
     const { classes , t ,...rest } = this.props;
     const headerElementConfig = {
       headerElements : {
@@ -85,7 +103,9 @@ class LandingPage extends Component {
                 <br />
               </GridItem>
               <GridItem xs={12} sm={12} md = {6}>
-               <NoSSR> <SignUpForm requestSignUp = { (name,email,password) => this.props.dispatch(signUpRequest(name,email,password)) }/> </NoSSR>
+               <NoSSR> <SignUpForm 
+                            requestSignUp = { (name,email,password) => this.props.dispatch(signUpRequest(name,email,password)) }
+                            googleSignUp = { () => this.props.dispatch(googleSignUpRequest())}/> </NoSSR>
               </GridItem>
             </GridContainer>
           </div>
@@ -94,4 +114,11 @@ class LandingPage extends Component {
     );
   }
 }
-export default connect( state => state)(withStyles(landingPageStyle)(translate(['common'])((LandingPage))));
+
+const mapStateToProps = state => (
+  {
+    isAuthenticated: isAuthenticated(state)
+  }
+);
+
+export default connect(mapStateToProps)(withStyles(landingPageStyle)(translate(['common'])((LandingPage))));
