@@ -1,7 +1,7 @@
 import React , {Component} from 'react';
 
 // @material-ui/core components
-import { withStyles } from '@material-ui/core';
+import { withStyles, Checkbox, FormGroup, FormControlLabel } from '@material-ui/core';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import validator from 'validator';
 
@@ -10,7 +10,6 @@ import Email from "@material-ui/icons/Email";
 import LockOutline from "@material-ui/icons/LockOutline";
 import People from "@material-ui/icons/People";
 
-import GoogleLogin ,{ FontAwesome } from 'react-google-login';
 import { translate } from 'react-i18next';
 
 import GridContainer from '../../../../components/GridContainer'
@@ -19,7 +18,6 @@ import Card , {CardBody , CardFooter , CardHeader} from '../../../../components/
 import CustomInput from '../../../../components/CustomInput';
 import signupFormStyle from './signupFormStyle';
 import Button from '../../../../components/CustomButtons';
-import { clientId } from '../../constants';
 
 class SignUpForm extends Component {
 
@@ -29,6 +27,7 @@ class SignUpForm extends Component {
     name:'',
     email:'',
     password:'',
+    rememberPassword:false
 }
 
   componentDidMount() {
@@ -54,6 +53,10 @@ class SignUpForm extends Component {
     this.setState({password : e.target.value});
   }
 
+  onChangeRememberPassword = e => {
+    this.setState({rememberPassword:e.target.checked});
+  }
+
   enableSubmit() {
     return this.state.name.trim().length > 0 && 
                 this.state.email.trim().length > 0 && validator.isEmail(this.state.email)
@@ -64,30 +67,21 @@ class SignUpForm extends Component {
     const { classes ,t} = this.props;
     return (
       <GridContainer justify="center" >
-        <GridItem xs={12} sm={12} md={10}>
+        <GridItem xs={12} sm={12} md={this.props.isLogin ? 12 : 10}>
         <Card className={classes[this.state.cardAnimaton]}>
           <form className={classes.form}>
           <CardHeader className = {classes.cardHeader}>
-          {/* <GoogleLogin
-              clientId={clientId}
-              buttonText={t("loginLabel")}
-              onSuccess={(response) => this.responseGoogle(response)}
-              onFailure={(response) => this.responseGoogle(response)}
-              className={classes.googleLogin}
-            >
-                <span> <i className={classes.socialIcons + " fab fa-google"} /> { this.props.isLogin ? t("googleLoginText") : t("googleSignUpText") }</span>
-            </GoogleLogin> */}
-            <Button className={classes.googleLogin} onClick={this.props.googleSignUp}>
-                <span> <i className={classes.socialIcons + " fab fa-google"} /> { this.props.isLogin ? t("googleLoginText") : t("googleSignUpText") }</span>
-            </Button>
+            <Button className= {this.props.isLogin ? classes.googleLogin : classes.googleSignUp }
+                  onClick={this.props.googleSignUp}>
+               <span></span>
+           </Button>
           </CardHeader>
           <CardBody>
             {
               !this.props.isLogin ? 
                   <CustomInput
                     labelText={t("enterNameInputPlaceholder")}
-                    id="first"
-                    value = {this.state.name}
+                    id="name"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -120,7 +114,7 @@ class SignUpForm extends Component {
               />
               <CustomInput
                 labelText={t("passwordInputPlaceholder")}
-                id="pass"
+                id="password"
                 formControlProps={{
                   fullWidth: true
                 }}
@@ -136,9 +130,31 @@ class SignUpForm extends Component {
                   onChange: this.onChangePassword
                 }}
               />
+              {
+                this.props.isLogin && 
+                <FormGroup row>
+                    <FormControlLabel
+                      control = {<Checkbox 
+                                    checked={this.state.rememberPassword}
+                                     color="primary"
+                                     value="rememberPassword"
+                                     onChange = {this.onChangeRememberPassword}
+                                />}
+                      label="Remember Password"          
+                      />
+                     <Button simple color="info" size="lg">Forgot Password</Button>
+                  </FormGroup>  
+                
+              }
+              
             </CardBody>
             <CardFooter className={classes.cardFooter}>
-              <Button simple color="primary" size="lg" onClick={() =>  this.props.requestSignUp(this.state.name,this.state.email,this.state.password)  } disabled={!this.enableSubmit()}>
+              <Button color="primary" 
+                      fullWidth
+                      block
+                      size="lg" 
+                      onClick={() => this.props.isLogin ? this.props.requestLogin(this.state.email,this.state.password) : this.props.requestSignUp(this.state.name,this.state.email,this.state.password)  } 
+                      disabled={!this.enableSubmit()}>
                {this.props.isLogin ? t("loginLabel") : t("signUpActionText")}
               </Button>
             </CardFooter>

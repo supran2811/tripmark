@@ -1,4 +1,22 @@
 import { container } from "../../../../assets/jss/material-kit-react.jsx";
+import signupBg from '../../../../assets/img/google_signup.jpg';
+import signinBg from '../../../../assets/img/google_signin.jpg';
+
+const loginButtonStyle = {
+     width:"80%",
+    color:"#ffffff",
+    fontWeight:"bold",
+    borderRadius:"2px",
+    border:"1px solid transparent",
+    display:"inline-block",
+    marginRight:"10px",
+    padding:'15px',
+    cursor:"pointer",
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize:'cover',
+    backgroundOrigin:'border-box'
+}
 
 const signupPageStyle = {
   container: {
@@ -79,16 +97,13 @@ const signupPageStyle = {
   inputIconsColor: {
     color: "#495057"
   },
+  googleSignUp: {
+    ...loginButtonStyle,
+    backgroundImage:`url(${signupBg})`
+  },
   googleLogin: {
-    width:"80%",
-    backgroundColor:"rgb(209,72,54)",
-    color:"#ffffff",
-    fontWeight:"bold",
-    borderRadius:"2px",
-    border:"1px solid transparent",
-    display:"inline-block",
-    marginRight:"10px",
-    cursor:"pointer"
+    ...loginButtonStyle,
+    backgroundImage:`url(${signinBg})`
   }
 };
 

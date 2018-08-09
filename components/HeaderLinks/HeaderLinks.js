@@ -63,7 +63,7 @@ function HeaderLinks({ ...props }) {
       }
       else {
         return <ListItem key={elementName} className={classes.listItem}>
-                <Link href={elementObject['href']}>
+                <Link href={elementObject['href']} >
                   <Button
                     color={elementObject['color']}
                     target="_blank"

@@ -36,10 +36,11 @@ export function* doSignUpWithGoogle() {
 export function* doLogin(action) {
  try{
     yield put({type:ACTION_LOGIN.PENDING});
-
+    
     //////Call method to perform login/////
-
-    yield put({type:ACTION_LOGIN.SUCCESS , user:{fullName:'Supran Sengupta',email:'supransengupta@gmail.com'}});
+    yield auth.doSignInUser(action.email,action.password);
+    
+    yield put({type:ACTION_LOGIN.SUCCESS});
   } catch(error) {
     yield put({type:ACTION_LOGIN.ERROR , error});
   }

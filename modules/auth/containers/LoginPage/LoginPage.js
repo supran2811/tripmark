@@ -1,7 +1,6 @@
 import React , {Component} from 'react';
 import NoSSR from 'react-no-ssr';
 import { withStyles } from '@material-ui/core';
-import { Apps } from '@material-ui/icons';
 
 import Header from '../../../../components/Header';
 import HeaderLinks from '../../../../components/HeaderLinks';
@@ -14,35 +13,17 @@ class LoginPage extends Component {
     const { classes } = this.props;
     const headerElementConfig = {
       headerElements : {
-        'Sample1' : {
-          icon : '',
-          type:'Button',
-          isExternal:false,
-          toolTipText:'',
-          color:'red'
-        },
-        'Sample2':{
-          icon : Apps,
-          type:'DropDown',
-          color:'transparent',
-          childrens:[
-            {
-              text:'Dropdown1',
-              href:'http://www.google.com',
-              isExternal:true
-            },
-            {
-              text:'Dropdown2',
-              href:'/',
-              isExternal:true
-            }
-          ]
-        },
-        'Sample3':{
+        'facebook':{
           type:'Tooltip',
-          tooltipText:"this is a sample tooltip text",
+          tooltipText:"this is a tooltip text on facebook",
           color:'transparent',
           icon:'fab fa-facebook'
+        },
+        'twitter':{
+          type:'Tooltip',
+          tooltipText:"this is a tooltip text on twitter",
+          color:'transparent',
+          icon:'fab fa-twitter'
         }
       }
     }

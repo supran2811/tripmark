@@ -10,7 +10,7 @@ const i18nextMiddleware = require('i18next-express-middleware')
 const Backend = require('i18next-node-fs-backend')
 const i18n = require('./i18n')
 
-const auth = require('./firebase');
+
 
 // init i18next with serverside settings
 // using i18next-express-middleware

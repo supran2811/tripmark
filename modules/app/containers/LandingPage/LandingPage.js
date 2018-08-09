@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import NoSSR from 'react-no-ssr';
 import Router from 'next/router';
 
-import { Apps } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core';
 import { translate } from 'react-i18next';
 
@@ -17,6 +16,7 @@ import landingPageStyle from './landingPageStyle';
 import SignUpForm from '../../../auth/components/SignUp';
 import { signUpRequest, googleSignUpRequest } from '../../../auth/store/action';
 import { isAuthenticated } from '../../../auth/store/selector';
+import { isLoading , getErrorData , hasError } from '../../store/selector'; 
 
 
 class LandingPage extends Component {
@@ -41,29 +41,17 @@ class LandingPage extends Component {
     const { classes , t ,...rest } = this.props;
     const headerElementConfig = {
       headerElements : {
-        
-        'Sample2':{
-          icon : Apps,
-          type:'DropDown',
-          color:'transparent',
-          childrens:[
-            {
-              text:'Dropdown1',
-              href:'http://www.google.com',
-              isExternal:true
-            },
-            {
-              text:'Dropdown2',
-              href:'/',
-              isExternal:true
-            }
-          ]
-        },
-        'Sample3':{
+        'facebook':{
           type:'Tooltip',
-          tooltipText:"this is a sample tooltip text",
+          tooltipText:"this is a tooltip text on facebook",
           color:'transparent',
           icon:'fab fa-facebook'
+        },
+        'twitter':{
+          type:'Tooltip',
+          tooltipText:"this is a tooltip text on twitter",
+          color:'transparent',
+          icon:'fab fa-twitter'
         },
         'Login' : {
           icon : '',
@@ -71,7 +59,8 @@ class LandingPage extends Component {
           isExternal:false,
           href:'/login',
           toolTipText:'',
-          color:'transparent'
+          color:'transparent',
+          prefetch:true
         }
       }
       
@@ -105,7 +94,11 @@ class LandingPage extends Component {
               <GridItem xs={12} sm={12} md = {6}>
                <NoSSR> <SignUpForm 
                             requestSignUp = { (name,email,password) => this.props.dispatch(signUpRequest(name,email,password)) }
-                            googleSignUp = { () => this.props.dispatch(googleSignUpRequest())}/> </NoSSR>
+                            requestLogin = { (email,password) => this.props.dispatch(loginRequest(email,password)) }
+                            googleSignUp = { () => this.props.dispatch(googleSignUpRequest())}
+                            isLoading = {this.props.loading}
+                            hasError = {this.props.error}
+                            errorData = {this.props.errorData}/> </NoSSR>
               </GridItem>
             </GridContainer>
           </div>
@@ -117,7 +110,10 @@ class LandingPage extends Component {
 
 const mapStateToProps = state => (
   {
-    isAuthenticated: isAuthenticated(state)
+    isAuthenticated: isAuthenticated(state),
+    loading: isLoading(state),
+    error: hasError(state),
+    errorData: getErrorData(state)
   }
 );
 
