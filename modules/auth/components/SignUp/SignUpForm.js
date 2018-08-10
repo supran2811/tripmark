@@ -1,7 +1,7 @@
 import React , {Component} from 'react';
 
 // @material-ui/core components
-import { withStyles, Checkbox, FormGroup, FormControlLabel } from '@material-ui/core';
+import { withStyles, Checkbox, FormGroup, FormControlLabel, CircularProgress } from '@material-ui/core';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import validator from 'validator';
 
@@ -9,6 +9,7 @@ import validator from 'validator';
 import Email from "@material-ui/icons/Email";
 import LockOutline from "@material-ui/icons/LockOutline";
 import People from "@material-ui/icons/People";
+import Check from "@material-ui/icons/Check";
 
 import { translate } from 'react-i18next';
 
@@ -24,9 +25,9 @@ class SignUpForm extends Component {
   state = {
     cardAnimation:'cardHidden',
     enableSubmit:false,
-    name:'',
-    email:'',
-    password:'',
+    name:{ error: false, errorLabel:'' , value: ''},
+    email:{ error: false, errorLabel:'' , value: ''},
+    password:{ error: false, errorLabel:'' , value: ''},
     rememberPassword:false
 }
 
@@ -38,33 +39,91 @@ class SignUpForm extends Component {
       700
     );
   }
-  
 
   onChangeName = (e) => {
     console.log(e);
-    this.setState({name:e.target.value});
+    this.setState({name: { error: false, errorLabel:'' , value: e.target.value}});
   }
 
   onChangeEmail = (e) => {
-    this.setState({email : e.target.value});
+    this.setState({email : { error: false, errorLabel:'' , value: e.target.value}});
   }
 
   onChangePassword = (e) => {
-    this.setState({password : e.target.value});
+    this.setState({password : { error: false, errorLabel:'' , value: e.target.value}});
   }
 
   onChangeRememberPassword = e => {
     this.setState({rememberPassword:e.target.checked});
   }
 
-  enableSubmit() {
-    return this.state.name.trim().length > 0 && 
-                this.state.email.trim().length > 0 && validator.isEmail(this.state.email)
-                  this.state.password.trim().length > 5
+  validateForm(t) {
+    console.log("Inside validateform",this.state.name);
+    if(this.props.isLogin && this.isEmailValid(t) && this.isPasswordValid(t)) {
+      this.props.requestLogin(this.state.email.value ,this.state.password.value);
+    }
+    else if( this.isNameValid(t)  && this.isEmailValid(t) && this.isPasswordValid(t)) {
+      this.props.requestSignUp(this.state.name.value,this.state.email.value , this.state.password.value);
+    }
+  }
+
+  isNameValid(t) {
+      const name = this.state.name.value.trim();
+      let nameObj;
+      if(name.length == 0) {
+        nameObj = {...this.state.name , error:true , errorLabel:t('nameIsRequiredErrorText')}
+        this.setState({name:nameObj});
+        return false;
+      }
+      else if(name.length < 4) {
+        nameObj = {...this.state.name , error:true , errorLabel:t('nameLenghtErrorText')}
+        this.setState({name:nameObj});
+        return false;
+      }
+      else {
+        return true;
+      }
+  }
+
+  isEmailValid(t) {
+    const email = this.state.email.value.trim();
+    let emailObj;
+    if(email.length == 0) {
+      emailObj = {...this.state.email , error:true , errorLabel:t('emailIsRequiredErrorText')}
+      this.setState({email:emailObj});
+      return false;
+    }
+    else if(!validator.isEmail(email)) {
+      emailObj = {...this.state.email , error:true , errorLabel:t('emailLengthErrorText')}
+      this.setState({email:emailObj});
+      return false;
+    }
+    return true;
+  } 
+
+  isPasswordValid(t) {
+    const password = this.state.password.value.trim();
+    let passwordObj;
+    if(password.length == 0) {
+      passwordObj = {...this.state.password , error:true , errorLabel:t('passwordIsRequiredErrorText')}
+      this.setState({password:passwordObj});
+      return false;
+    }
+    else if(password.length <= 6) {
+      passwordObj = {...this.state.password , error:true , errorLabel:t('passwordLengthErrorText')}
+      this.setState({password:passwordObj});
+      return false;
+    }
+    else {
+      return true;
+    }
   }
 
   render () {
     const { classes ,t} = this.props;
+
+    console.log("Is loading ",this.props.isLoading);
+
     return (
       <GridContainer justify="center" >
         <GridItem xs={12} sm={12} md={this.props.isLogin ? 12 : 10}>
@@ -80,7 +139,8 @@ class SignUpForm extends Component {
             {
               !this.props.isLogin ? 
                   <CustomInput
-                    labelText={t("enterNameInputPlaceholder")}
+                    error={this.state.name.error}
+                    labelText={ this.state.name.error ? this.state.name.errorLabel : t("enterNameInputPlaceholder")}
                     id="name"
                     formControlProps={{
                       fullWidth: true
@@ -97,7 +157,8 @@ class SignUpForm extends Component {
                   /> : null
             }
             <CustomInput
-                labelText={t("emailnputPlaceholder")}
+                error={this.state.email.error}
+                labelText={ this.state.email.error ? this.state.email.errorLabel : t("emailnputPlaceholder")}
                 id="email"
                 formControlProps={{
                   fullWidth: true
@@ -113,7 +174,8 @@ class SignUpForm extends Component {
                 }}
               />
               <CustomInput
-                labelText={t("passwordInputPlaceholder")}
+                error={this.state.password.error}
+                labelText={this.state.password.error ? this.state.password.errorLabel :t("passwordInputPlaceholder")}
                 id="password"
                 formControlProps={{
                   fullWidth: true
@@ -132,31 +194,41 @@ class SignUpForm extends Component {
               />
               {
                 this.props.isLogin && 
+                <div className = {
+                  classes.checkboxAndRadio +
+                  " " +
+                  classes.checkboxAndRadioHorizontal
+                }>
                 <FormGroup row>
                     <FormControlLabel
                       control = {<Checkbox 
                                     checked={this.state.rememberPassword}
-                                     color="primary"
                                      value="rememberPassword"
                                      onChange = {this.onChangeRememberPassword}
+                                     checkedIcon={<Check className={classes.checkedIcon} />}
+                                     icon={<Check className={classes.uncheckedIcon} />}
+                                     classes={{ checked: classes.checked }}
                                 />}
                       label="Remember Password"          
                       />
-                     <Button simple color="info" size="lg">Forgot Password</Button>
-                  </FormGroup>  
-                
+                     <Button simple color="primary" size="lg">Forgot Password</Button>
+                </FormGroup>  
+                </div>
               }
-              
             </CardBody>
             <CardFooter className={classes.cardFooter}>
               <Button color="primary" 
                       fullWidth
                       block
                       size="lg" 
-                      onClick={() => this.props.isLogin ? this.props.requestLogin(this.state.email,this.state.password) : this.props.requestSignUp(this.state.name,this.state.email,this.state.password)  } 
-                      disabled={!this.enableSubmit()}>
-               {this.props.isLogin ? t("loginLabel") : t("signUpActionText")}
+                      loading={this.props.isLoading}
+                      onClick={() => this.validateForm(t)  } 
+                      >
+                {
+                  this.props.isLogin ? t("loginLabel") : t("signUpActionText")
+                }
               </Button>
+              
             </CardFooter>
           </form>
         </Card>

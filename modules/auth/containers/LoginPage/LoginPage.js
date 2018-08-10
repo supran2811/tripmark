@@ -1,13 +1,35 @@
 import React , {Component} from 'react';
+import {connect} from 'react-redux';
 import NoSSR from 'react-no-ssr';
 import { withStyles } from '@material-ui/core';
+import Router from 'next/router';
+import { loginRequest, googleSignUpRequest } from '../../../auth/store/action';
 
 import Header from '../../../../components/Header';
 import HeaderLinks from '../../../../components/HeaderLinks';
 import SignUp from '../../../auth/components/SignUp';
 import loginPageStyle from './loginPageStyle';
+import { isAuthenticated } from '../../../auth/store/selector';
+import { isLoading , getErrorData , hasError } from '../../../app/store/selector';
 
 class LoginPage extends Component {
+
+  componentDidMount() {
+    console.log("componentDidMount",this.props.isAuthenticated);
+    
+    if(this.props.isAuthenticated) {
+      Router.replace({pathname:'/home'});
+    }
+  }
+
+  componentDidUpdate() {
+    console.log("componentDidUpdate",this.props.isAuthenticated);
+
+    if(this.props.isAuthenticated) {
+      Router.replace({pathname:'/home'});
+    }
+  }
+
   render() {
 
     const { classes } = this.props;
@@ -36,12 +58,25 @@ class LoginPage extends Component {
           rightLinks={<HeaderLinks {...headerElementConfig}/>}
         />
         <div className={classes.container}>
-            <NoSSR> <SignUp isLogin /> </NoSSR>
+            <NoSSR> <SignUp isLogin 
+                            requestLogin = { (email,password) => this.props.dispatch(loginRequest(email,password)) }
+                            googleSignUp = { () => this.props.dispatch(googleSignUpRequest())}
+                            isLoading = {this.props.loading}
+                            hasError = {this.props.error}
+                            errorData = {this.props.errorData} /> </NoSSR>
         </div>
       </div>
 
     );
   }
 }
+const mapStateToProps = state => (
+  {
+    isAuthenticated: isAuthenticated(state),
+    loading: isLoading(state),
+    error: hasError(state),
+    errorData: getErrorData(state)
+  }
+);
 
-export default withStyles(loginPageStyle)(LoginPage);
+export default connect(mapStateToProps)(withStyles(loginPageStyle)(LoginPage));

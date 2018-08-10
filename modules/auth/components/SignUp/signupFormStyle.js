@@ -1,4 +1,5 @@
-import { container } from "../../../../assets/jss/material-kit-react.jsx";
+import { container } from "../../../../assets/jss/material-kit-react";
+import  checkboxStyle  from '../../../../assets/jss/material-kit-react/customCheckboxRadioSwitch';
 import signupBg from '../../../../assets/img/google_signup.jpg';
 import signinBg from '../../../../assets/img/google_signin.jpg';
 
@@ -104,7 +105,8 @@ const signupPageStyle = {
   googleLogin: {
     ...loginButtonStyle,
     backgroundImage:`url(${signinBg})`
-  }
+  },
+  ...checkboxStyle
 };
 
 export default signupPageStyle;

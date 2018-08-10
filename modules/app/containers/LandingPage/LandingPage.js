@@ -59,8 +59,7 @@ class LandingPage extends Component {
           isExternal:false,
           href:'/login',
           toolTipText:'',
-          color:'transparent',
-          prefetch:true
+          color:'transparent'
         }
       }
       
@@ -94,7 +93,6 @@ class LandingPage extends Component {
               <GridItem xs={12} sm={12} md = {6}>
                <NoSSR> <SignUpForm 
                             requestSignUp = { (name,email,password) => this.props.dispatch(signUpRequest(name,email,password)) }
-                            requestLogin = { (email,password) => this.props.dispatch(loginRequest(email,password)) }
                             googleSignUp = { () => this.props.dispatch(googleSignUpRequest())}
                             isLoading = {this.props.loading}
                             hasError = {this.props.error}

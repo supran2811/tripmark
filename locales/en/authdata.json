@@ -5,5 +5,11 @@
   "enterNameInputPlaceholder" :"Full Name...",
   "emailnputPlaceholder":"Email...",
   "passwordInputPlaceholder":"Password",
-  "signUpActionText" :"Get started"
+  "signUpActionText" :"Get started",
+  "nameIsRequiredErrorText" : "Name is required",
+  "nameLenghtErrorText" : "Name must be more than 4 letters",
+  "emailIsRequiredErrorText" : "Email is required",
+  "emailLengthErrorText" : "Email format is not correct",
+  "passwordIsRequiredErrorText" : "Password is required",
+  "passwordLengthErrorText" : "Password must be more than 6 letters"
 }

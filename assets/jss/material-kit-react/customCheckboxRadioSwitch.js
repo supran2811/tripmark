@@ -3,7 +3,7 @@ import {
   dangerColor,
   roseColor,
   grayColor
-} from "../material-kit-react.jsx";
+} from "../material-kit-react";
 
 const customCheckboxRadioSwitch = {
   checkboxAndRadio: {
@@ -30,7 +30,7 @@ const customCheckboxRadioSwitch = {
   checkedIcon: {
     width: "20px",
     height: "20px",
-    border: "1px solid rgba(0, 0, 0, .54)",
+    border: "1px solid  rgba(0, 0, 0, .54)",
     borderRadius: "3px"
   },
   uncheckedIcon: {

@@ -6,9 +6,13 @@ import {
   successColor,
   warningColor,
   dangerColor
-} from "../../assets/jss/material-kit-react.jsx";
+} from "../../assets/jss/material-kit-react";
 
 const buttonStyle = {
+ 
+  buttonProgress: {
+    color:"#ffffff"
+  },
   button: {
     minHeight: "auto",
     minWidth: "auto",

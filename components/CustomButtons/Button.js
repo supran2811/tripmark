@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 // core components
 
 import buttonStyle from "./buttonStyle";
+import { CircularProgress } from "@material-ui/core";
 
 function RegularButton({ ...props }) {
   const {
@@ -25,6 +26,7 @@ function RegularButton({ ...props }) {
     block,
     link,
     justIcon,
+    loading,
     className,
     ...rest
   } = props;
@@ -42,10 +44,10 @@ function RegularButton({ ...props }) {
     [className]: className
   });
   return (
-    <Button {...rest} className={btnClasses}>
-      {children}
-    </Button>
-  );
+      <Button {...rest} className={btnClasses}>
+        { loading ? <CircularProgress size={24} className={classes.buttonProgress} /> : children}
+      </Button>
+   );
 }
 
 RegularButton.propTypes = {
