@@ -80,17 +80,24 @@ function HeaderLinks({ ...props }) {
 
       const dropDownElements = elementObject['childrens'];
       const elements = dropDownElements.map(ele => {
-        if(ele['isExternal']){
+        if(ele['isExternal']) {
           return <a href={ele['href']} 
                     target="_blank"
                     className={classes.dropdownLink}>
-                      {ele['text']}
+                      { ele['text'] }
+                 </a>
+        }
+        else if(ele['handleClick']) {
+          return <a onClick={ele['handleClick']}
+                    target="_blank"
+                    className={classes.dropdownLink}>
+                      { ele['text'] }
                  </a>
         }
         else {
           return <Link href = {ele['href']} 
                       className={classes.dropdownLink}>
-                      {ele['text']}
+                      { ele['text'] }
                  </Link>
         }
       });

@@ -1,4 +1,4 @@
-import { ACTION_LOGIN, ACTION_SIGNUP ,ACTION_SET_TOKEN } from "./actionTypes";
+import { ACTION_LOGIN, ACTION_SIGNUP ,ACTION_SET_TOKEN, ACTION_LOGOUT } from "./actionTypes";
 
 
 const initialState = {
@@ -13,6 +13,13 @@ export default function authReducer(state=initialState , action) {
          ...state,
          authenticated:true,
          token:action.data
+       }
+     }
+     case ACTION_LOGOUT.SUCCESS :{
+       return {
+         ...state,
+         authenticated:false,
+         token:''
        }
      }
   }

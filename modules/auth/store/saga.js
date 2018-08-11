@@ -1,7 +1,7 @@
 import {fork,takeEvery,put} from 'redux-saga/effects';
 
 import { auth } from '../../../firebase';
-import { ACTION_LOGIN, ACTION_SIGNUP, ACTION_SET_TOKEN, ACTION_GOOGLE_SIGNUP } from "./actionTypes";
+import { ACTION_LOGIN, ACTION_SIGNUP, ACTION_SET_TOKEN, ACTION_GOOGLE_SIGNUP, ACTION_LOGOUT } from "./actionTypes";
 
 export function* doSignUp(action) {
   console.log("Inside doSignUp",action);
@@ -59,9 +59,20 @@ export function* doSetToken() {
   }
 }
 
+export function* doLogOut() {
+  try{
+    yield put({type:ACTION_LOGOUT.PENDING});
+    yield auth.doSignOut();
+    yield put({type:ACTION_LOGOUT.SUCCESS});
+  } catch(error) {
+    yield put({type:ACTION_LOGOUT.ERROR , error});
+  }
+}
+
 export default function* saga() {
   yield fork(takeEvery,ACTION_LOGIN.ACTION , doLogin);
   yield fork(takeEvery,ACTION_SIGNUP.ACTION , doSignUp);
   yield fork(takeEvery,ACTION_SET_TOKEN.ACTION , doSetToken);
   yield fork(takeEvery,ACTION_GOOGLE_SIGNUP.ACTION , doSignUpWithGoogle);
+  yield fork(takeEvery,ACTION_LOGOUT.ACTION , doLogOut);
 }
