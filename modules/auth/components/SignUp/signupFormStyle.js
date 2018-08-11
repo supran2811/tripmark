@@ -106,6 +106,13 @@ const signupPageStyle = {
     ...loginButtonStyle,
     backgroundImage:`url(${signinBg})`
   },
+  error : {
+    color:'#ff0000',
+    fontFamily: 'inherit',
+    width:'100%',
+    fontWeight:300,
+    textAlign:'center'
+  },
   ...checkboxStyle
 };
 

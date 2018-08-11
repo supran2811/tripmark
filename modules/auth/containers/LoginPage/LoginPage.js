@@ -11,12 +11,15 @@ import SignUp from '../../../auth/components/SignUp';
 import loginPageStyle from './loginPageStyle';
 import { isAuthenticated } from '../../../auth/store/selector';
 import { isLoading , getErrorData , hasError } from '../../../app/store/selector';
+import { RESET_ERROR } from '../../../app/store/actionTypes';
 
 class LoginPage extends Component {
 
   componentDidMount() {
     console.log("componentDidMount",this.props.isAuthenticated);
     
+    this.props.dispatch({type:RESET_ERROR.ACTION});
+
     if(this.props.isAuthenticated) {
       Router.replace({pathname:'/home'});
     }

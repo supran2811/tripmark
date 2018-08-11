@@ -17,13 +17,15 @@ import SignUpForm from '../../../auth/components/SignUp';
 import { signUpRequest, googleSignUpRequest } from '../../../auth/store/action';
 import { isAuthenticated } from '../../../auth/store/selector';
 import { isLoading , getErrorData , hasError } from '../../store/selector'; 
-
+import { RESET_ERROR } from '../../store/actionTypes';
 
 class LandingPage extends Component {
 
   componentDidMount() {
     console.log("componentDidMount",this.props.isAuthenticated);
     
+    this.props.dispatch({type:RESET_ERROR.ACTION});
+
     if(this.props.isAuthenticated) {
       Router.replace({pathname:'/home'});
     }

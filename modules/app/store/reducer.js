@@ -1,3 +1,4 @@
+import { RESET_ERROR } from "./actionTypes";
 
 
 const initialState = {
@@ -35,6 +36,13 @@ export default function appReducer(state = initialState , action) {
       pendingRequestCount:pendingRequestCount,
       error:true,
       errorData:action.error ? action.error : {status:'Unable to connect to server'}
+    }
+  }
+  else if(action.type === RESET_ERROR.ACTION) {
+    return {
+      ...state,
+      error:false,
+      errorData:undefined
     }
   }
   return state;

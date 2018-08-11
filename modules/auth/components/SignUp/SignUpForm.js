@@ -29,9 +29,10 @@ class SignUpForm extends Component {
     email:{ error: false, errorLabel:'' , value: ''},
     password:{ error: false, errorLabel:'' , value: ''},
     rememberPassword:false
-}
+  }
 
   componentDidMount() {
+  
     setTimeout(
       function() {
         this.setState({ cardAnimaton: "" });
@@ -192,6 +193,13 @@ class SignUpForm extends Component {
                   onChange: this.onChangePassword
                 }}
               />
+              {
+                this.props.errorData &&
+                this.props.errorData.message && 
+                <div className={classes.error}>
+                    { this.props.errorData.message  }
+                </div>
+              }
               {
                 this.props.isLogin && 
                 <div className = {
