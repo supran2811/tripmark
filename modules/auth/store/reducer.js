@@ -1,4 +1,4 @@
-import { ACTION_LOGIN, ACTION_SIGNUP ,ACTION_SET_TOKEN, ACTION_LOGOUT } from "./actionTypes";
+import { ACTION_SET_TOKEN , ACTION_LOGOUT } from "./actionTypes";
 
 
 const initialState = {

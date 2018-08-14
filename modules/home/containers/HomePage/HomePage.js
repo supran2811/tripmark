@@ -1,8 +1,9 @@
 import React , { Component } from 'react';
 import {connect} from 'react-redux';
 import { translate } from 'react-i18next';
-import { Apps } from '@material-ui/icons';
 import Router from 'next/router';
+import Avatar from '@material-ui/core/Avatar';
+import { withStyles } from '@material-ui/core';
 
 import withAuth from '../../../../lib/withAuth';
 import Header from '../../../../components/Header';
@@ -10,6 +11,8 @@ import HeaderLinks from '../../../../components/HeaderLinks';
 import { auth } from '../../../../firebase';
 import { logoutRequest } from '../../../auth/store/action';
 import { isAuthenticated } from '../../../auth/store/selector';
+import homePageStyle from './homePageStyle';
+import { getNameInitials } from '../../../../lib/utils'
 
 class HomePage extends Component {
 
@@ -27,23 +30,30 @@ class HomePage extends Component {
 
   render() {
 
-    const {t} = this.props;
+    const {classes , t} = this.props;
 
     const displayName = auth.getUserName();
+
+    const profileImageUrl = auth.getProfilePhotoUrl();
+
+    console.log("HOMEPAGE::: displayName",displayName,"profileImageUrl",profileImageUrl ,getNameInitials(displayName));
+
+    const avatar = (profileImageUrl === "" || profileImageUrl == null) ? 
+                        (<Avatar className={classes.avatar}> {getNameInitials(displayName)} </Avatar>) : 
+                          (<Avatar  src={profileImageUrl} className={classes.avatar}/>);
 
     const headerElementConfig = {
       headerElements : {
         [displayName] : {
-          icon: Apps,
+          avatar: avatar,
           childrens: [
             {
-              text : 'linkname1',
+              text : t('yourProfileText'),
               href : '/url',
               isExternal: false,
             },
             {
-              text : 'Log Out',
-              href : '/url',
+              text :  t('logoutText'),
               isExternal: false,
               handleClick: () => this.props.dispatch(logoutRequest())
             }
@@ -78,4 +88,4 @@ const mapStatetoProps = state => (
     isAuthenticated: isAuthenticated(state)
   }
 );
-export default connect(mapStatetoProps)(withAuth( translate(['common']) (HomePage) ));
+export default connect(mapStatetoProps)(withAuth(translate(['common'])(withStyles(homePageStyle)(HomePage))));

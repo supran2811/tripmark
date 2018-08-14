@@ -1,0 +1,10 @@
+ Fetures inside home page
+ 
+ 1- option to add city for mark
+ 
+ 2- recently viewed city
+ 
+ 3- Popular places
+ 
+ 4- Marked cities
+ 

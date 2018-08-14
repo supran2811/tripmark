@@ -1,7 +1,6 @@
 /*eslint-disable*/
 import React from "react";
 // react components for routing our app without refresh
-// import { Link } from "react-router-dom";
 import Link from 'next/link'
 import _ from 'lodash';
 
@@ -10,9 +9,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "@material-ui/core/Tooltip";
-
-// @material-ui/icons
-import { Apps, CloudDownload } from "@material-ui/icons";
 
 // core components
 import CustomDropdown from "../CustomDropdown";
@@ -64,14 +60,14 @@ function HeaderLinks({ ...props }) {
       else {
         return <ListItem key={elementName} className={classes.listItem}>
                 <Link href={elementObject['href']} >
-                  <Button
-                    color={elementObject['color']}
-                    target="_blank"
-                    className={classes.navLink}
-                  >
+                    <Button
+                      color={elementObject['color']}
+                      target="_blank"
+                      className={classes.navLink}
+                    >
                     {elementObject['icon']}{elementName}
-                </Button>
-                </Link>
+                    </Button>
+                  </Link>
                 </ListItem>
       }
       
@@ -95,9 +91,11 @@ function HeaderLinks({ ...props }) {
                  </a>
         }
         else {
-          return <Link href = {ele['href']} 
-                      className={classes.dropdownLink}>
+          return <Link href = {ele['href']}> 
+                    <a target="_blank"
+                       className={ classes.dropdownLink }>
                       { ele['text'] }
+                    </a>
                  </Link>
         }
       });
@@ -112,6 +110,7 @@ function HeaderLinks({ ...props }) {
                   }}
                   buttonIcon={elementObject['icon']}
                   dropdownList={elements}
+                  avatar = {elementObject['avatar']}
                 />
            </ListItem>
     }

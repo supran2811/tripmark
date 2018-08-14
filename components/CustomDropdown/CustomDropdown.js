@@ -48,7 +48,8 @@ class CustomDropdown extends React.Component {
       hoverColor,
       left,
       rtlActive,
-      noLiPadding
+      noLiPadding,
+      avatar
     } = this.props;
     const caretClasses = classNames({
       [classes.caret]: true,
@@ -74,7 +75,9 @@ class CustomDropdown extends React.Component {
             {buttonIcon !== undefined ? (
               <this.props.buttonIcon className={classes.buttonIcon} />
             ) : null}
+            {avatar !== undefined ? ( avatar ) : null }
             {buttonText !== undefined ? buttonText : null}
+            
             {caret ? <b className={caretClasses} /> : null}
           </Button>
         </Target>
