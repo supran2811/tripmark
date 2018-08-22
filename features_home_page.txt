@@ -8,3 +8,4 @@
  
  4- Marked cities
  
+ 5- Get location

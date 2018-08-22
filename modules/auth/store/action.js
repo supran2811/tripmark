@@ -1,4 +1,4 @@
-import { ACTION_LOGIN, ACTION_LOGOUT ,ACTION_SIGNUP, ACTION_SET_TOKEN, ACTION_GOOGLE_SIGNUP } from "./actionTypes";
+import { ACTION_LOGIN, ACTION_LOGOUT ,ACTION_SIGNUP, ACTION_SET_TOKEN, ACTION_GOOGLE_SIGNUP, ACTION_SET_PATH_TO_REDIRECT } from "./actionTypes";
 
 export function loginRequest(email,password) {
   return {
@@ -22,14 +22,23 @@ export function signUpRequest(fullName,email,password) {
     password
   }
 }
+
 export function googleSignUpRequest() {
   return {
     type:ACTION_GOOGLE_SIGNUP.ACTION
   }
 }
+
 export function logoutRequest() {
   return {
     type:ACTION_LOGOUT.ACTION
   }
 }
 
+export function setRedirectPath(pathToRedirect) {
+  console.log("Setting redirect path",pathToRedirect);
+  return {
+    type:ACTION_SET_PATH_TO_REDIRECT.ACTION,
+    pathToRedirect
+  }
+}

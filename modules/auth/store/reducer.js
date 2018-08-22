@@ -1,9 +1,10 @@
-import { ACTION_SET_TOKEN , ACTION_LOGOUT } from "./actionTypes";
+import { ACTION_SET_TOKEN , ACTION_LOGOUT, ACTION_SET_PATH_TO_REDIRECT } from "./actionTypes";
 
 
 const initialState = {
   authenticated:false,
-  token:''
+  token:'',
+  pathToRedirect : '/home'
 }
 
 export default function authReducer(state=initialState , action) {
@@ -20,6 +21,13 @@ export default function authReducer(state=initialState , action) {
          ...state,
          authenticated:false,
          token:''
+       }
+     }
+     case ACTION_SET_PATH_TO_REDIRECT.ACTION: {
+       console.log("Cming herre ACTION_SET_PATH_TO_REDIRECT",action);
+       return {
+         ...state,
+         pathToRedirect:action.pathToRedirect
        }
      }
   }

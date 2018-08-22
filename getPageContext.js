@@ -18,6 +18,12 @@ const theme = createMuiTheme({
       dark: '#ab003c',
     },
   },
+  transitions:{
+    duration:{
+      enteringScreen:1000,
+      leavingScreen:1000
+    }
+  }
 });
 
 function createPageContext() {

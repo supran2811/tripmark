@@ -7,3 +7,5 @@ export const isAuthenticated = state => {
 export const getToken = state => {
   return state[NAME].token;
 };
+
+export const getPathToRedirect = state => state[NAME].pathToRedirect;

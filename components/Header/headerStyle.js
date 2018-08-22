@@ -28,21 +28,22 @@ const headerStyle = {
     alignItems: "center",
     flexFlow: "row nowrap",
     justifyContent: "flex-start",
-    position: "relative",
-    zIndex: "unset"
+    position: "relative"
   },
   absolute: {
     position: "absolute"
   },
   fixed: {
     position: "fixed",
-    zIndex: "1100"
+    zIndex: "1900"
   },
   container: {
     ...container,
     minHeight: "50px",
     flex: "1",
     alignItems: "center",
+    marginLeft:"30px",
+    marginRight:"30px",
     justifyContent: "space-between",
     display: "flex",
     flexWrap: "nowrap"
@@ -135,8 +136,7 @@ const headerStyle = {
     top: "0",
     height: "100vh",
     maxHeight: "1200px",
-    right: "0",
-    left: "auto",
+    left: "0",
     visibility: "visible",
     overflowY: "visible",
     borderTop: "none",

@@ -84,14 +84,24 @@ class Header extends React.Component {
     return (
       <AppBar className={appBarClasses}>
         <Toolbar className={classes.container}>
-          {leftLinks !== undefined ? brandComponent : null}
           <div className={classes.flex}>
             {leftLinks !== undefined ? (
-              <Hidden smDown implementation="css">
-                {leftLinks}
-              </Hidden>
+                <div>
+                  <Hidden smUp implementation="css">
+                  <IconButton
+                      color="inherit"
+                      aria-label="open drawer"
+                      onClick={this.handleDrawerToggle}
+                    >
+                      <Menu />
+                   </IconButton>
+                   </Hidden>
+                   <Hidden smDown implementation="css">
+                        {brandComponent}
+                   </Hidden>
+                </div>
             ) : (
-              brandComponent
+                brandComponent
             )}
           </div>
           <Hidden smDown implementation="css">
@@ -99,32 +109,23 @@ class Header extends React.Component {
               {rightLinks}
             </NoSSR>
           </Hidden>
-          <Hidden mdUp>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={this.handleDrawerToggle}
-            >
-              <Menu />
-            </IconButton>
-          </Hidden>
         </Toolbar>
-        <Hidden mdUp implementation="css">
+        <Hidden smUp implementation="css">
           <Drawer
-            variant="temporary"
-            anchor={"right"}
-            open={this.state.mobileOpen}
+            variant = "temporary"
+            anchor = {"left"}
+            open = { this.state.mobileOpen }
             classes={{
               paper: classes.drawerPaper
             }}
             onClose={this.handleDrawerToggle}
           >
             <div className={classes.appResponsive}>
-              {leftLinks}
-              {rightLinks}
+              { leftLinks }
             </div>
           </Drawer>
         </Hidden>
+        
       </AppBar>
     );
   }

@@ -3,8 +3,14 @@ import {connect} from 'react-redux';
 import { translate } from 'react-i18next';
 import Router from 'next/router';
 import Avatar from '@material-ui/core/Avatar';
-import { withStyles } from '@material-ui/core';
+import { withStyles, Grid } from '@material-ui/core';
+import Zoom from '@material-ui/core/Zoom';
+import AddIcon from '@material-ui/icons/Add';
+import Button from '@material-ui/core/Button';
+import Search from "@material-ui/icons/Search"
+import InputAdornment from "@material-ui/core/InputAdornment";
 
+import GridContainer from '../../../../components/GridContainer';
 import withAuth from '../../../../lib/withAuth';
 import Header from '../../../../components/Header';
 import HeaderLinks from '../../../../components/HeaderLinks';
@@ -13,6 +19,8 @@ import { logoutRequest } from '../../../auth/store/action';
 import { isAuthenticated } from '../../../auth/store/selector';
 import homePageStyle from './homePageStyle';
 import { getNameInitials } from '../../../../lib/utils'
+import CustomInput from '../../../../components/CustomInput';
+import GridItem from '../../../../components/GridItem';
 
 class HomePage extends Component {
 
@@ -30,19 +38,17 @@ class HomePage extends Component {
 
   render() {
 
-    const {classes , t} = this.props;
+    const {classes , t , theme } = this.props;
 
     const displayName = auth.getUserName();
 
     const profileImageUrl = auth.getProfilePhotoUrl();
 
-    console.log("HOMEPAGE::: displayName",displayName,"profileImageUrl",profileImageUrl ,getNameInitials(displayName));
-
     const avatar = (profileImageUrl === "" || profileImageUrl == null) ? 
                         (<Avatar className={classes.avatar}> {getNameInitials(displayName)} </Avatar>) : 
                           (<Avatar  src={profileImageUrl} className={classes.avatar}/>);
 
-    const headerElementConfig = {
+    const rightHeaderElementConfig = {
       headerElements : {
         [displayName] : {
           avatar: avatar,
@@ -67,7 +73,19 @@ class HomePage extends Component {
       }
     };
 
+    const leftHeaderElementConfig = {
+      headerElements : {
+        "Sample1" : {
+          href: '/', 
+          type:'Button', /// DropDown , Button or Tooltip
+          isExternal:false, /// true or false,
+          color:'transparent'
+        }
+      }
+    };
+
     return (
+
       <div>
         <Header
           color="primary"
@@ -77,9 +95,29 @@ class HomePage extends Component {
               height: 400,
               color: "white"
             }}
-            rightLinks={<HeaderLinks { ...headerElementConfig }/>}
+            rightLinks={<HeaderLinks { ...rightHeaderElementConfig }/>}
+            leftLinks={<HeaderLinks { ...leftHeaderElementConfig }/>}
           />
-        </div>
+          <GridContainer className={classes.container}>
+            <GridItem xs = {12}>
+              <CustomInput
+                labelText="Where are you planning to go?"
+                id="search"
+                formControlProps={{
+                  fullWidth: true
+                }}
+                inputProps={{
+                  type: "text",
+                  startAdornment: (
+                    <InputAdornment position = "start">
+                      <Search/>
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </GridItem>
+          </GridContainer>
+      </div>
     );
   }
 }
@@ -88,4 +126,4 @@ const mapStatetoProps = state => (
     isAuthenticated: isAuthenticated(state)
   }
 );
-export default connect(mapStatetoProps)(withAuth(translate(['common'])(withStyles(homePageStyle)(HomePage))));
+export default connect(mapStatetoProps)(withAuth(translate(['common'])(withStyles(homePageStyle,{withTheme:true})(HomePage))));
