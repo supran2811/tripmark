@@ -3,12 +3,9 @@ import {connect} from 'react-redux';
 import { translate } from 'react-i18next';
 import Router from 'next/router';
 import Avatar from '@material-ui/core/Avatar';
-import { withStyles, Grid } from '@material-ui/core';
-import Zoom from '@material-ui/core/Zoom';
-import AddIcon from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
-import Search from "@material-ui/icons/Search"
-import InputAdornment from "@material-ui/core/InputAdornment";
+import { withStyles } from '@material-ui/core';
+import Geosuggest from 'react-geosuggest';
+import LocationCity from  '@material-ui/icons/LocationCity'
 
 import GridContainer from '../../../../components/GridContainer';
 import withAuth from '../../../../lib/withAuth';
@@ -19,8 +16,8 @@ import { logoutRequest } from '../../../auth/store/action';
 import { isAuthenticated } from '../../../auth/store/selector';
 import homePageStyle from './homePageStyle';
 import { getNameInitials } from '../../../../lib/utils'
-import CustomInput from '../../../../components/CustomInput';
 import GridItem from '../../../../components/GridItem';
+import withGoogleMap from '../../../../lib/withGoogleMap';
 
 class HomePage extends Component {
 
@@ -73,17 +70,7 @@ class HomePage extends Component {
       }
     };
 
-    const leftHeaderElementConfig = {
-      headerElements : {
-        "Sample1" : {
-          href: '/', 
-          type:'Button', /// DropDown , Button or Tooltip
-          isExternal:false, /// true or false,
-          color:'transparent'
-        }
-      }
-    };
-
+    
     return (
 
       <div>
@@ -96,29 +83,40 @@ class HomePage extends Component {
               color: "white"
             }}
             rightLinks={<HeaderLinks { ...rightHeaderElementConfig }/>}
-            leftLinks={<HeaderLinks { ...leftHeaderElementConfig }/>}
+            
           />
           <GridContainer className={classes.container}>
             <GridItem xs = {12}>
-              <CustomInput
-                labelText="Where are you planning to go?"
-                id="search"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                inputProps={{
-                  type: "text",
-                  startAdornment: (
-                    <InputAdornment position = "start">
-                      <Search/>
-                    </InputAdornment>
-                  )
-                }}
-              />
+             <Geosuggest types={['(cities)']} 
+                inputClassName={classes.suggestInput}
+                suggestsClassName={classes.suggestList}
+                suggestsHiddenClassName={classes.suggestHiddenList}
+                renderSuggestItem = {(item) => this.renderSuggestItem(item,classes)}
+                placeholder="Where do you want to go?"
+                onSuggestSelect={this.onSuggestSelect}/>
             </GridItem>
+            <div ref='map'></div>
           </GridContainer>
       </div>
     );
+  }
+
+  renderSuggestItem(item,classes) {
+    console.log("Inside renderSuggestItem",item);
+    return (
+      <div className = {classes.suggestItemClassName}>
+          <LocationCity color='primary' /> <span className={classes.label}>{item.label}</span>
+      </div>
+    );
+  }
+
+  onSuggestSelect = (item) => {
+    // console.log("Inside onSuggestSelect ",this.props.google);
+    // const {google} = this.props;
+
+    // const service = new google.maps.places.PlacesService(this.refs.map);
+    // service.getDetails({placeId:item.placeId}, response => { console.log("Res",response) });
+    
   }
 }
 const mapStatetoProps = state => (
@@ -126,4 +124,4 @@ const mapStatetoProps = state => (
     isAuthenticated: isAuthenticated(state)
   }
 );
-export default connect(mapStatetoProps)(withAuth(translate(['common'])(withStyles(homePageStyle,{withTheme:true})(HomePage))));
+export default connect(mapStatetoProps)(withAuth(translate(['common'])(withStyles(homePageStyle,{withTheme:true})( withGoogleMap( HomePage )))));

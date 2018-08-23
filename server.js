@@ -11,7 +11,6 @@ const Backend = require('i18next-node-fs-backend')
 const i18n = require('./i18n')
 
 
-
 // init i18next with serverside settings
 // using i18next-express-middleware
 i18n
