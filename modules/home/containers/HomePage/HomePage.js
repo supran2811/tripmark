@@ -117,6 +117,8 @@ class HomePage extends Component {
     // const service = new google.maps.places.PlacesService(this.refs.map);
     // service.getDetails({placeId:item.placeId}, response => { console.log("Res",response) });
     
+    Router.push({ pathname : '/city' , query:{id:item.placeId}});
+    Router.prefetch('/city');
   }
 }
 const mapStatetoProps = state => (
