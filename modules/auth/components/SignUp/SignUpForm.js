@@ -1,5 +1,7 @@
 import React , {Component} from 'react';
 
+import Router from 'next/router';
+
 // @material-ui/core components
 import { withStyles, Checkbox, FormGroup, FormControlLabel, CircularProgress } from '@material-ui/core';
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -124,7 +126,8 @@ class SignUpForm extends Component {
     const { classes ,t} = this.props;
 
     console.log("Is loading ",this.props.isLoading);
-
+    Router.prefetch('/login');
+    
     return (
       <GridContainer justify="center" >
         <GridItem xs={12} sm={12} md={this.props.isLogin ? 12 : 10}>

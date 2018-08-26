@@ -19,3 +19,20 @@ export const getPlaceDetails = (google , mapRef , placeId) => {
   })
   
 }
+
+export const getOptimalBGImageUrl = (photos = [] , maxWidth) => {
+  let url = "";
+  for(let photo of photos) {
+    console.log("photo ::: ",photo);
+    if(photo.width >= maxWidth) {
+      url = photo.getUrl({maxWidth:maxWidth});
+      break;
+    }
+  }
+
+  if(url === '' && photos.length > 0) {
+    url = photos[0].getUrl({maxWidth :maxWidth});
+  }
+
+  return url;
+}

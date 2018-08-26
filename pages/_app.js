@@ -40,14 +40,6 @@ class MyApp extends App {
       jssStyles.parentNode.removeChild(jssStyles);
     }
 
-    // auth.onAuthStateChanged(user => {
-    //    if( user ) {
-    //      this.props.dispatch(setToken());
-    //    }
-    //    else {
-    //      this.props.dispatch(logoutRequest());
-    //    }
-    // })
   }
 
   render() {

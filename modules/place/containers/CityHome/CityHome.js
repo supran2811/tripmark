@@ -2,8 +2,13 @@ import React , { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { getSelectedCityDetails } from '../../store/selector';
-import { fetchCityDetails } from '../../store/action';
+import { fetchCityDetails, resetCityDetails } from '../../store/action';
 import withGoogleMap from '../../../../lib/withGoogleMap';
+import Parallax from '../../../../components/Parallax';
+import GridContainer from '../../../../components/GridContainer';
+import GridItem from '../../../../components/GridItem';
+import Button from '../../../../components/CustomButtons';
+import { getOptimalBGImageUrl } from '../../../../google/places';
 
 class CityHome extends Component {
 
@@ -25,15 +30,41 @@ class CityHome extends Component {
     }
   }
 
-  render() {
+  componentWillUnmount() {
+    console.log("COming herer!!!");
+    const { dispatch } = this.props;
 
-    const { city } = this.props;
-    console.log("Render cityhome ",city);
-    return <div>
-        {city ? (<div> This home page of {city.name} </div>) : <div> Loading....</div>}
-        <div ref="place"></div>
-    </div>
+    if(dispatch) {
+      dispatch(resetCityDetails());
+    }
   }
+
+  render() {
+    const { city } = this.props;
+ 
+
+    return ( 
+    <div>
+        
+        {city ? this.renderCityDetails(city) : this.renderDefault()}
+        <div ref="place"></div>
+    </div> );
+  }
+
+  renderCityDetails(city) {
+    console.log("city details",city,window.innerWidth,window.innerHeight);
+return (
+    <Parallax image={getOptimalBGImageUrl(city.photos,window.innerWidth)}>
+       
+    </Parallax>
+    )
+    
+  }
+
+  renderDefault() {
+    return (<div> Loading....</div>)
+  }
+
 }
 
 const mapStateToProps = state => {

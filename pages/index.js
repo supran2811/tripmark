@@ -12,6 +12,4 @@ class MainPage extends Component {
   }
 }
 
-
-
-export default (withI18next(['common','authdata'])(MainPage));
+export default withI18next(['common','authdata'])(MainPage);

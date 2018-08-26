@@ -35,7 +35,7 @@ class HomePage extends Component {
 
   render() {
 
-    const {classes , t , theme } = this.props;
+    const {classes , t } = this.props;
 
     const displayName = auth.getUserName();
 
@@ -51,12 +51,12 @@ class HomePage extends Component {
           avatar: avatar,
           childrens: [
             {
-              text : t('yourProfileText'),
+              text : t('common:yourProfileText'),
               href : '/url',
               isExternal: false,
             },
             {
-              text :  t('logoutText'),
+              text :  t('common:logoutText'),
               isExternal: false,
               handleClick: () => this.props.dispatch(logoutRequest())
             }
@@ -70,20 +70,20 @@ class HomePage extends Component {
       }
     };
 
+    Router.prefetch('/city');
     
     return (
 
       <div>
         <Header
           color="primary"
-            brand={t('appName')}
+            brand={t('common:appName')}
             fixed
             changeColorOnScroll={{
               height: 400,
               color: "white"
             }}
             rightLinks={<HeaderLinks { ...rightHeaderElementConfig }/>}
-            
           />
           <GridContainer className={classes.container}>
             <GridItem xs = {12}>
@@ -92,7 +92,7 @@ class HomePage extends Component {
                 suggestsClassName={classes.suggestList}
                 suggestsHiddenClassName={classes.suggestHiddenList}
                 renderSuggestItem = {(item) => this.renderSuggestItem(item,classes)}
-                placeholder="Where do you want to go?"
+                placeholder={t("searchBoxPlaceHolder")}
                 onSuggestSelect={this.onSuggestSelect}/>
             </GridItem>
             <div ref='map'></div>
@@ -111,14 +111,8 @@ class HomePage extends Component {
   }
 
   onSuggestSelect = (item) => {
-    // console.log("Inside onSuggestSelect ",this.props.google);
-    // const {google} = this.props;
-
-    // const service = new google.maps.places.PlacesService(this.refs.map);
-    // service.getDetails({placeId:item.placeId}, response => { console.log("Res",response) });
-    
-    Router.push({ pathname : '/city' , query:{id:item.placeId}});
-    Router.prefetch('/city');
+    console.log("Inside onSuggestSelect ",item);
+    item && Router.push({ pathname : '/city' , query:{id:item.placeId}});
   }
 }
 const mapStatetoProps = state => (
@@ -126,4 +120,4 @@ const mapStatetoProps = state => (
     isAuthenticated: isAuthenticated(state)
   }
 );
-export default connect(mapStatetoProps)(withAuth(translate(['common'])(withStyles(homePageStyle,{withTheme:true})( withGoogleMap( HomePage )))));
+export default connect(mapStatetoProps)(withAuth(translate(['homedata','common'])(withStyles(homePageStyle,{withTheme:true})( withGoogleMap( HomePage )))));

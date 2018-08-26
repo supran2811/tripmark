@@ -6,3 +6,5 @@ export const FETCH_CITY_DETAILS = defineAction('FETCH_CITY_DETAILS' ,[ERROR,PEND
 
 export const SET_CITY_DETAILS = defineAction('SET_CITY_DETAILS',[],NAME);
 
+export const RESET_CITY_DETAILS = defineAction('RESET_CITY_DETAILS',[],NAME);
+

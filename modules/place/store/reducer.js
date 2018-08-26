@@ -1,4 +1,4 @@
-import { FETCH_CITY_DETAILS } from "./actionTypes";
+import { FETCH_CITY_DETAILS, RESET_CITY_DETAILS } from "./actionTypes";
 
 const initialState = {
    selectedCity:null,
@@ -12,6 +12,14 @@ export default function placeReducer( state=initialState , action ) {
       return {
         ...state,
         selectedCity:action.place
+      }
+    }
+    case RESET_CITY_DETAILS.ACTION: {
+      return {
+        ...state,
+        selectedCity:null,
+        selectedPlace:null,
+        places:[]
       }
     }
   }
