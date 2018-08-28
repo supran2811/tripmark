@@ -6,8 +6,7 @@ import Router from 'next/router';
 import { withStyles } from '@material-ui/core';
 import { translate } from 'react-i18next';
 
-import Header from '../../../../components/Header';
-import HeaderLinks from '../../../../components/HeaderLinks';
+
 import landingBg from '../../../../assets/img/landing-bg.jpg';
 import Parallax from '../../../../components/Parallax';
 import GridContainer from '../../../../components/GridContainer';
@@ -18,11 +17,13 @@ import { signUpRequest, googleSignUpRequest } from '../../../auth/store/action';
 import { isAuthenticated, getPathToRedirect } from '../../../auth/store/selector';
 import { isLoading , getErrorData , hasError } from '../../store/selector'; 
 import { RESET_ERROR } from '../../store/actionTypes';
+import AppHeader from '../../components/AppHeader';
+
 
 class LandingPage extends Component {
 
   componentDidMount() {
-    console.log("componentDidMount",this.props.isAuthenticated);
+    console.log("componentDidMount",this.props.isAuthenticated , this.props.path);
     
     this.props.dispatch({type:RESET_ERROR.ACTION});
 
@@ -32,7 +33,7 @@ class LandingPage extends Component {
   }
 
   componentDidUpdate() {
-    console.log("componentDidUpdate",this.props.isAuthenticated);
+    console.log("componentDidUpdate",this.props.isAuthenticated , this.props.path);
 
     if(this.props.isAuthenticated) {
       Router.replace({pathname:this.props.path});
@@ -41,44 +42,17 @@ class LandingPage extends Component {
 
   render() {
     const { classes , t ,...rest } = this.props;
-    const headerElementConfig = {
-      headerElements : {
-        'facebook':{
-          type:'Tooltip',
-          tooltipText:"this is a tooltip text on facebook",
-          color:'transparent',
-          icon:'fab fa-facebook'
-        },
-        'twitter':{
-          type:'Tooltip',
-          tooltipText:"this is a tooltip text on twitter",
-          color:'transparent',
-          icon:'fab fa-twitter'
-        },
-        'Login' : {
-          icon : '',
-          type:'Button',
-          isExternal:false,
-          href:'/login',
-          toolTipText:'',
-          color:'transparent'
-        }
-      }
-      
-    }
     
     return (
       <div>
-        <Header
-         color="primary"
-          brand={t('appName')}
-          fixed
-          changeColorOnScroll={{
+        <AppHeader 
+          color="primary"
+          fixed 
+          changeColorOnScroll = {{
             height: 400,
             color: "white"
           }}
-          rightLinks={<HeaderLinks {...headerElementConfig}/>}
-          {...rest}
+          t = {t}
         />
         <Parallax filter image={landingBg} className={classes.parrallexClass}>
           <div className={classes.container}>

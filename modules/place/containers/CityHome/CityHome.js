@@ -1,14 +1,22 @@
 import React , { Component } from 'react';
 import { connect } from 'react-redux';
+import { translate } from 'react-i18next';
 
 import { getSelectedCityDetails } from '../../store/selector';
+import withAuth from '../../../../lib/withAuth';
 import { fetchCityDetails, resetCityDetails } from '../../store/action';
 import withGoogleMap from '../../../../lib/withGoogleMap';
 import Parallax from '../../../../components/Parallax';
 import GridContainer from '../../../../components/GridContainer';
 import GridItem from '../../../../components/GridItem';
 import Button from '../../../../components/CustomButtons';
+import Header from '../../../../components/Header';
+import HeaderLinks from '../../../../components/HeaderLinks';
 import { getOptimalBGImageUrl } from '../../../../google/places';
+import { withGoogleApiLibs } from '../../../../lib/withLibs';
+import cityHomeStyle from './cityHomeStyle';
+import AppHeader from '../../../app/components/AppHeader';
+
 
 class CityHome extends Component {
 
@@ -40,11 +48,18 @@ class CityHome extends Component {
   }
 
   render() {
-    const { city } = this.props;
- 
-
+    const { city , t , google } = this.props;
+        
     return ( 
     <div>
+         <AppHeader 
+          color = "transparent"
+          fixed
+          isAuthenticated
+          t = {t}
+          google = {google}
+          selectedCityName = {city ? city.name :''}
+         />
         
         {city ? this.renderCityDetails(city) : this.renderDefault()}
         <div ref="place"></div>
@@ -52,12 +67,12 @@ class CityHome extends Component {
   }
 
   renderCityDetails(city) {
-    console.log("city details",city,window.innerWidth,window.innerHeight);
-return (
-    <Parallax image={getOptimalBGImageUrl(city.photos,window.innerWidth)}>
-       
-    </Parallax>
-    )
+    
+    return (
+        <Parallax filter image={getOptimalBGImageUrl(city.photos,window.innerWidth)}>
+          
+        </Parallax>
+        )
     
   }
 
@@ -72,4 +87,4 @@ const mapStateToProps = state => {
      city: getSelectedCityDetails(state)
   }
 }
-export default  connect(mapStateToProps)( withGoogleMap(CityHome));
+export default  connect(mapStateToProps)(withGoogleApiLibs(CityHome , ['common'] , cityHomeStyle));

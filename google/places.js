@@ -25,13 +25,13 @@ export const getOptimalBGImageUrl = (photos = [] , maxWidth) => {
   for(let photo of photos) {
     console.log("photo ::: ",photo);
     if(photo.width >= maxWidth) {
-      url = photo.getUrl({maxWidth:maxWidth});
+      url = photo.getUrl({maxWidth:maxWidth  , maxHeight:400});
       break;
     }
   }
 
   if(url === '' && photos.length > 0) {
-    url = photos[0].getUrl({maxWidth :maxWidth});
+    url = photos[0].getUrl({maxWidth :maxWidth ,maxHeight:400});
   }
 
   return url;
