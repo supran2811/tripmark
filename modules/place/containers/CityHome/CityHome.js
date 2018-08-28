@@ -1,17 +1,10 @@
 import React , { Component } from 'react';
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
 
 import { getSelectedCityDetails } from '../../store/selector';
-import withAuth from '../../../../lib/withAuth';
 import { fetchCityDetails, resetCityDetails } from '../../store/action';
-import withGoogleMap from '../../../../lib/withGoogleMap';
 import Parallax from '../../../../components/Parallax';
-import GridContainer from '../../../../components/GridContainer';
-import GridItem from '../../../../components/GridItem';
 import Button from '../../../../components/CustomButtons';
-import Header from '../../../../components/Header';
-import HeaderLinks from '../../../../components/HeaderLinks';
 import { getOptimalBGImageUrl } from '../../../../google/places';
 import { withGoogleApiLibs } from '../../../../lib/withLibs';
 import cityHomeStyle from './cityHomeStyle';
@@ -48,7 +41,7 @@ class CityHome extends Component {
   }
 
   render() {
-    const { city , t , google } = this.props;
+    const { city , t , google , classes } = this.props;
         
     return ( 
     <div>
@@ -61,18 +54,31 @@ class CityHome extends Component {
           selectedCityName = {city ? city.name :''}
          />
         
-        {city ? this.renderCityDetails(city) : this.renderDefault()}
+        {city ? this.renderCityDetails(city , classes) : this.renderDefault()}
         <div ref="place"></div>
     </div> );
   }
 
-  renderCityDetails(city) {
+  renderCityDetails(city ,classes) {
     
     return (
-        <Parallax filter image={getOptimalBGImageUrl(city.photos,window.innerWidth)}>
-          
+      <React.Fragment>
+        <Parallax small filter image={getOptimalBGImageUrl(city.photos,window.innerWidth)}>
+          <div className = {classes.container}>
+              <Button
+                  color="primary"
+                  size="lg"
+                  href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i className="fas fa-play" />Watch video
+                </Button>
+          </div>
         </Parallax>
-        )
+
+      </React.Fragment>
+      )
     
   }
 

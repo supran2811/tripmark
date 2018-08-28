@@ -88,12 +88,12 @@ class AppHeader extends Component {
                   </div>
                 )}
                 <Header
-                color= {this.props.color}
-                  brand={t('common:appName')}
-                  fixed={this.props.fixed}
-                  changeColorOnScroll={this.props.changeColorOnScroll}
-                  rightLinks={<HeaderLinks { ...headerElementConfig }/>}
-                />
+                  color= {this.props.color}
+                    brand={t('common:appName')}
+                    fixed={this.props.fixed}
+                    changeColorOnScroll={this.props.changeColorOnScroll}
+                    rightLinks={<HeaderLinks { ...headerElementConfig }/>}
+                  />
                 </div>)
   }
 

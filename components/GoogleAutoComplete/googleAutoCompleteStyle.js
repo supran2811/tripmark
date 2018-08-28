@@ -37,9 +37,12 @@ const googleAutoCompleteStyle = {
     backgroundColor:'#fff',
     display:'flex',
     justifyContent:'flex-start',
-    '&:hover':{
+    '&:hover , &:focus':{
       backgroundColor:'#F5F5F5'
     }
+  },
+  suggestActiveClass : {
+    backgroundColor:'#F5F5F5'
   },
   label:{
     color:'#000',

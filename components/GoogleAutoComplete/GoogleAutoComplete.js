@@ -1,5 +1,6 @@
 import React , { Component } from 'react';
 import { withStyles } from '@material-ui/core';
+import classNames from 'classnames'
 import PropTypes from "prop-types";
 import Geosuggest from 'react-geosuggest';
 import Search from '@material-ui/icons/Search';
@@ -9,13 +10,29 @@ import googleAutoCompleteStyle from './googleAutoCompleteStyle';
 
 class GoogleAutoComplete extends Component {
 
+
+  state = {
+    activatedPlaceId: ''
+  }
+
   renderSuggestItem(item,classes) {
-    console.log("Inside renderSuggestItem",item);
+    const itemClassNames = classNames([classes.suggestItemClassName] , 
+              { [classes.suggestActiveClass] : (item && item.placeId === this.state.activatedPlaceId) });
     return (
-      <div className = {classes.suggestItemClassName}>
+      <div className = {itemClassNames}>
           <LocationCity color='primary' /> <span className={classes.label}>{item.label}</span>
       </div>
     );
+  }
+
+  onActivateSuggest = (suggest) => {
+    console.log("onActivateSuggest",suggest);
+    this.setState({activatedPlaceId:suggest.placeId});
+  }
+
+  onUpdateSuggests = (suggests , activeSuggest) => {
+    console.log("onUpdateSuggests ",suggests,activeSuggest);
+    this.setState({activatedPlaceId:''});
   }
 
   render() {
@@ -29,9 +46,13 @@ class GoogleAutoComplete extends Component {
                   suggestsClassName={classes.suggestList}
                   suggestsHiddenClassName={classes.suggestHiddenList}
                   renderSuggestItem = {(item) => this.renderSuggestItem(item,classes)}
+                  suggestItemActiveClassName={classes.suggestActiveClass}
                   placeholder={t("common:searchBoxPlaceHolder")}
                   onSuggestSelect={onSuggestSelect}
-                  initialValue={initialValue || ''}/>
+                  initialValue={initialValue || ''}
+                  onActivateSuggest={this.onActivateSuggest}
+                  onUpdateSuggests = {this.onUpdateSuggests}
+                  />
       </div>          
     )
   }
