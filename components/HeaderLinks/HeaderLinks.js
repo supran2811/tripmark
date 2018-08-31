@@ -57,7 +57,8 @@ function HeaderLinks({ ...props }) {
               </Button>
               </ListItem>
       }
-      else {
+      else if(elementObject['href']) {
+        
         return <ListItem key={elementName} className={classes.listItem}>
                 <Link href={elementObject['href']} >
                     <Button
@@ -68,6 +69,18 @@ function HeaderLinks({ ...props }) {
                     {elementObject['icon']}{elementName}
                     </Button>
                   </Link>
+                </ListItem>
+      }
+      else if(elementObject['handleClick']) {
+        const icon = elementObject['icon'];
+        return <ListItem key={elementName} className={classes.listItem}>
+                    <Button
+                      color={elementObject['color']}
+                      onClick = {elementObject['handleClick']}
+                      className={classes.navLink}
+                    >
+                      {icon} {elementName}
+                    </Button>
                 </ListItem>
       }
       

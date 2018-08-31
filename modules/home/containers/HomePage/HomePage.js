@@ -9,6 +9,7 @@ import GridItem from '../../../../components/GridItem';
 import { withGoogleApiLibs } from '../../../../lib/withLibs';
 import AppHeader from '../../../app/components/AppHeader';
 import GoogleAutoComplete from '../../../../components/GoogleAutoComplete';
+import { resetCityDetails } from '../../../place/store/action';
 
 class HomePage extends Component {
 
@@ -16,6 +17,9 @@ class HomePage extends Component {
     if(!this.props.isAuthenticated) {
       Router.replace({pathname:'/login'});
     }
+   
+    this.props.dispatch(resetCityDetails());
+
   }
 
   componentDidUpdate() {
@@ -26,7 +30,7 @@ class HomePage extends Component {
 
   render() {
 
-    const {classes , t } = this.props;
+    const {classes , t ,google } = this.props;
 
     Router.prefetch('/city');
     
@@ -43,7 +47,7 @@ class HomePage extends Component {
             <GridItem xs = {12}>
              <GoogleAutoComplete searchTypes = {['(cities)']}
                                   onSuggestSelect = {this.onSuggestSelect}
-                                  t = {t} />
+                                  t = {t}/>
             </GridItem>
             <div ref='map'></div>
           </GridContainer>

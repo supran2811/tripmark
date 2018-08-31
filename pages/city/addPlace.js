@@ -1,11 +1,10 @@
-import { Component } from 'react';
+import React , { Component } from 'react';
 
+import AddNewPlace from '../../modules/place/containers/AddNewPlace';
 import { withI18next } from '../../lib/withI18next';
-import CityHome from '../../modules/place/containers/CityHome';
-import { getQueryParam } from '../../lib/utils';
 
-class CityPage extends Component {
-  
+class AddPlace extends Component {
+
   state = {
     query:''
   }
@@ -24,8 +23,8 @@ class CityPage extends Component {
 
 
   render() {
-    return <CityHome query  = {this.state.query} />
+    return <AddNewPlace query = {this.state.query }  />
   }
 }
 
-export default (withI18next(['placedata','common'])(CityPage));
+export default withI18next(['placedata','common'])(AddPlace);

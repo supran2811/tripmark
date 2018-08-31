@@ -36,21 +36,26 @@ class GoogleAutoComplete extends Component {
   }
 
   render() {
-    const {classes ,searchTypes , onSuggestSelect , t ,initialValue } = this.props;
-
+    const {classes ,
+            searchTypes , 
+            onSuggestSelect , 
+            t ,
+            initialValue , 
+            placeholder} = this.props;
+ 
     return (
       <div className = {classes.main}>
         <Search color='primary' classes={ { root:classes.searchIcon } }/>
-        <Geosuggest types={searchTypes} 
-                  inputClassName={classes.suggestInput}
-                  suggestsClassName={classes.suggestList}
-                  suggestsHiddenClassName={classes.suggestHiddenList}
+        <Geosuggest types = {searchTypes || null} 
+                  inputClassName = {classes.suggestInput}
+                  suggestsClassName = {classes.suggestList}
+                  suggestsHiddenClassName = {classes.suggestHiddenList}
                   renderSuggestItem = {(item) => this.renderSuggestItem(item,classes)}
-                  suggestItemActiveClassName={classes.suggestActiveClass}
-                  placeholder={t("common:searchBoxPlaceHolder")}
-                  onSuggestSelect={onSuggestSelect}
-                  initialValue={initialValue || ''}
-                  onActivateSuggest={this.onActivateSuggest}
+                  suggestItemActiveClassName = {classes.suggestActiveClass}
+                  placeholder = {placeholder || t('common:searchBoxPlaceHolder')}
+                  onSuggestSelect = {onSuggestSelect}
+                  initialValue = {initialValue || ''}
+                  onActivateSuggest = {this.onActivateSuggest}
                   onUpdateSuggests = {this.onUpdateSuggests}
                   />
       </div>          
@@ -59,9 +64,9 @@ class GoogleAutoComplete extends Component {
 }
 
 GoogleAutoComplete.propTypes = {
-  searchTypes: PropTypes.array.isRequired,
-  t: PropTypes.func.isRequired,
+  searchTypes: PropTypes.array,
   onSuggestSelect:PropTypes.func.isRequired,
+  placeholder:PropTypes.string,
   initialValue:PropTypes.string
 }
 

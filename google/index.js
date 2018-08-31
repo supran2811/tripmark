@@ -1,3 +1,3 @@
 import * as googlePlace from './places';
-
-export { googlePlace };
+import * as googlePlacesApi from './placesApi';
+export { googlePlace , googlePlacesApi };

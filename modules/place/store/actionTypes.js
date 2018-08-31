@@ -8,3 +8,5 @@ export const SET_CITY_DETAILS = defineAction('SET_CITY_DETAILS',[],NAME);
 
 export const RESET_CITY_DETAILS = defineAction('RESET_CITY_DETAILS',[],NAME);
 
+export const TEXT_SEARCH = defineAction('TEXT_SEARCH' , [ ERROR , PENDING , SUCCESS] , NAME);
+

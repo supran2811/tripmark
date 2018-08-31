@@ -1,43 +1,43 @@
 import React , { Component } from 'react';
 import { connect } from 'react-redux';
+import Router from 'next/router';
 
 import { getSelectedCityDetails } from '../../store/selector';
-import { fetchCityDetails, resetCityDetails } from '../../store/action';
+import { fetchCityDetails } from '../../store/action';
 import Parallax from '../../../../components/Parallax';
 import Button from '../../../../components/CustomButtons';
 import { getOptimalBGImageUrl } from '../../../../google/places';
 import { withGoogleApiLibs } from '../../../../lib/withLibs';
 import cityHomeStyle from './cityHomeStyle';
 import AppHeader from '../../../app/components/AppHeader';
-
+import { getQueryParam } from '../../../../lib/utils';
 
 class CityHome extends Component {
 
   componentDidMount() {
     
-    const { google , city  , dispatch , id } = this.props;
+    const { city  , dispatch ,query , google} = this.props;
+  
+    const id = getQueryParam('id',query);
 
-    if( (!city  && id !== '') ||  (city.place_id !== id)) {
-      dispatch(fetchCityDetails(google ,this.refs.place , id ));
+    if( (!city  && id && id !== '') ||  (city && id && city.place_id !== id)) {
+      dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
     }
   }
 
   componentDidUpdate() {
     
-    const { google , city  , dispatch , id } = this.props;
+    const { city  , dispatch , query , google} = this.props;
+    
+    const id = getQueryParam('id' ,query);
 
-    if( (!city  && id !== '') ||  (city.place_id !== id)) {
-      dispatch(fetchCityDetails(google ,this.refs.place , id ));
+    if( (!city  && id && id !== '') ||  (city &&  id && city.place_id !== id)) {
+      dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
     }
   }
 
-  componentWillUnmount() {
-    console.log("COming herer!!!");
-    const { dispatch } = this.props;
-
-    if(dispatch) {
-      dispatch(resetCityDetails());
-    }
+  openAddFavoritePlace(city) {
+    Router.push({pathname:'/city/addPlace' , query:{id:city.place_id}});
   }
 
   render() {
@@ -45,38 +45,38 @@ class CityHome extends Component {
         
     return ( 
     <div>
-         <AppHeader 
-          color = "transparent"
-          fixed
-          isAuthenticated
-          t = {t}
-          google = {google}
-          selectedCityName = {city ? city.name :''}
-         />
-        
-        {city ? this.renderCityDetails(city , classes) : this.renderDefault()}
+        {city ? 
+          (<React.Fragment>
+                <AppHeader 
+                color = "transparent"
+                fixed
+                isAuthenticated
+                t = {t}
+                google = {google}
+                selectedCityName = {city ? city.name :''}
+              /> 
+             { this.renderCityDetails(city , classes , t) }
+           </React.Fragment>
+          )
+           : this.renderDefault()}
         <div ref="place"></div>
     </div> );
   }
 
-  renderCityDetails(city ,classes) {
+  renderCityDetails(city ,classes ,t) {
     
     return (
       <React.Fragment>
-        <Parallax small filter image={getOptimalBGImageUrl(city.photos,window.innerWidth)}>
+        <Parallax small image={getOptimalBGImageUrl(city.photos,window.innerWidth)}>
           <div className = {classes.container}>
               <Button
-                  color="primary"
                   size="lg"
-                  href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <i className="fas fa-play" />Watch video
-                </Button>
+                  onClick= {() => this.openAddFavoritePlace(city)}
+                  className={classes.addPlaceButton}>
+                  <i className="fas fa-plus" />{t('addYourFavorite')}
+              </Button>
           </div>
         </Parallax>
-
       </React.Fragment>
       )
     
@@ -93,4 +93,4 @@ const mapStateToProps = state => {
      city: getSelectedCityDetails(state)
   }
 }
-export default  connect(mapStateToProps)(withGoogleApiLibs(CityHome , ['common'] , cityHomeStyle));
+export default  connect(mapStateToProps)(withGoogleApiLibs(CityHome , ['placedata','common'] , cityHomeStyle));
