@@ -51,7 +51,9 @@ class AutoComplete extends Component {
       && _.differenceWith(this.state.suggestions , suggestions  , _.isEqual).length > 0 
       && this.setState({suggestions:suggestions});
     
-    _.isEmpty(suggestions) && this.setState({suggestions:defaultSuggestions})  
+    _.isEmpty(suggestions) && 
+                _.differenceWith(this.state.suggestions , defaultSuggestions  , _.isEqual).length > 0 && 
+                  this.setState({suggestions:defaultSuggestions})  
   }
 
   renderInputField = (inputProps) => {

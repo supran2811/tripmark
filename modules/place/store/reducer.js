@@ -16,9 +16,10 @@ export default function placeReducer( state=initialState , action ) {
       }
     }
     case TEXT_SEARCH.SUCCESS: {
+      const results = action.response.data;
+
       return {
-        ...state,
-        suggestedPlaces:action.suggestions
+        ...state
       }
     }
     case RESET_CITY_DETAILS.ACTION: {

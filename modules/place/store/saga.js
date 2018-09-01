@@ -14,9 +14,17 @@ export function* dofetchCityDetails( { google , mapRef , placeId } ) {
   }
 }
 
-export async function doTextSearch(query , { location , radius }) {
-  console.log("Inside doTextSearch ",query);
-  await googlePlacesApi.textSearch(query ,  { location , radius });
+export function* doTextSearch( {query , params }) {
+  console.log("Inside doTextSearch ",query,params);
+  try {
+   const response = yield call(googlePlacesApi.textSearch,query,params);
+   yield put({ type: TEXT_SEARCH.SUCCESS , response});
+  }
+  catch(error) {
+    console.log("doTextSearch error",error);
+    yield put({type: TEXT_SEARCH.ERROR,error});
+  }
+  
 }
 
 export default function* saga() {

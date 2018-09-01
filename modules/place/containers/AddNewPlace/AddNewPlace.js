@@ -135,12 +135,18 @@ class AddNewPlace extends Component {
 
   fetchSuggestions = (query) => {
     const { dispatch , city } = this.props;
+    console.log("Inside fetchSuggestions",query,city);
 
-    console.log("Inside fetchSuggestions",query);
+    const latlngObj = city.geometry ? city.geometry.location : undefined;
+    const radius  = "100000";
+
+    const params = { latlngObj  , radius};
+
+    dispatch(textSearch(query,params));
   }
 
   handleSuggestionClicked = (suggestion) => {
-
+    console.log("handleSuggestionClicked",suggestion);
   }
 }
 
