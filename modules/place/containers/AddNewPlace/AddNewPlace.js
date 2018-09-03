@@ -8,9 +8,9 @@ import GridItem from '../../../../components/GridItem';
 import { withGoogleApiLibs } from '../../../../lib/withLibs'
 import addNewPlaceStyle from './addNewPlaceStyle';
 import AppHeader from '../../../app/components/AppHeader';
-import { getSelectedCityDetails, getSuggestedPlaces } from '../../store/selector';
+import { getSelectedCityDetails, getSuggestedPlaces, getPredictions } from '../../store/selector';
 import Close from '@material-ui/icons/Close'
-import { fetchCityDetails, textSearch } from '../../store/action';
+import { fetchCityDetails, autoCompleteSearch } from '../../store/action';
 import { getQueryParam } from '../../../../lib/utils';
 import AutoComplete from '../../components/AutoComplete';
 
@@ -142,7 +142,7 @@ class AddNewPlace extends Component {
 
     const params = { latlngObj  , radius};
 
-    dispatch(textSearch(query,params));
+    dispatch(autoCompleteSearch(query,params));
   }
 
   handleSuggestionClicked = (suggestion) => {
@@ -153,7 +153,7 @@ class AddNewPlace extends Component {
 const mapStateToProps = state => (
   {
     city : getSelectedCityDetails(state),
-    suggestions:getSuggestedPlaces(state)
+    suggestions:getPredictions(state)
   }
 );
 

@@ -77,8 +77,11 @@ class AutoComplete extends Component {
   }
 
    renderSuggestion = (suggestion, { query, isHighlighted }) => {
-    const matches = match(suggestion.label, query);
-    const parts = parse(suggestion.label, matches);
+
+    const suggestionText = this.getSuggestionText(suggestion);
+
+    const matches = match(suggestionText, query);
+    const parts = parse(suggestionText, matches);
   
     return (
       <MenuItem selected={isHighlighted} component="div">
@@ -163,6 +166,10 @@ class AutoComplete extends Component {
                 </Paper>
               )}
             /></div>
+  }
+
+  getSuggestionText = suggestion => {
+    return suggestion.label || suggestion['structured_formatting']['main_text']
   }
 
 }

@@ -10,3 +10,5 @@ export const RESET_CITY_DETAILS = defineAction('RESET_CITY_DETAILS',[],NAME);
 
 export const TEXT_SEARCH = defineAction('TEXT_SEARCH' , [ ERROR , PENDING , SUCCESS] , NAME);
 
+export const AUTOCOMPLETE_SEARCH = defineAction('AUTOCOMPLETE_SEARCH' , [ ERROR , PENDING , SUCCESS] , NAME);
+

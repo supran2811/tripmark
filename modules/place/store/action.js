@@ -1,4 +1,4 @@
-import { FETCH_CITY_DETAILS, SET_CITY_DETAILS, RESET_CITY_DETAILS, TEXT_SEARCH } from "./actionTypes";
+import { FETCH_CITY_DETAILS, SET_CITY_DETAILS, RESET_CITY_DETAILS, TEXT_SEARCH, AUTOCOMPLETE_SEARCH } from "./actionTypes";
 
 export function fetchCityDetails(google , mapRef , placeId) {
   return {
@@ -25,6 +25,14 @@ export function resetCityDetails() {
 export function textSearch(query , params) {
   return {
     type:TEXT_SEARCH.ACTION , 
+    query,
+    params
+  }
+}
+
+export function autoCompleteSearch(query , params) {
+  return {
+    type:AUTOCOMPLETE_SEARCH.ACTION , 
     query,
     params
   }
