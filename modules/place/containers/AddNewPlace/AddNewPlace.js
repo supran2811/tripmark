@@ -1,7 +1,6 @@
 import React , { Component } from 'react';
 import {connect} from 'react-redux';
 import Router from 'next/router';
-import AutoSuggest from 'react-autosuggest';
 
 import GridContainer from '../../../../components/GridContainer';
 import GridItem from '../../../../components/GridItem';
@@ -10,42 +9,11 @@ import addNewPlaceStyle from './addNewPlaceStyle';
 import AppHeader from '../../../app/components/AppHeader';
 import { getSelectedCityDetails, getSuggestedPlaces, getPredictions } from '../../store/selector';
 import Close from '@material-ui/icons/Close'
-import { fetchCityDetails, autoCompleteSearch } from '../../store/action';
+import { fetchCityDetails, autoCompleteSearch, cancelAutoCompleteSearch } from '../../store/action';
 import { getQueryParam } from '../../../../lib/utils';
 import AutoComplete from '../../components/AutoComplete';
 
 class AddNewPlace extends Component {
-
-  state = {
-    places:[
-      {
-        label:"Entertainment",
-        term:"entertainment",
-        type:"cat"
-      },
-      {
-        label:"History",
-        term:"history",
-        type:"cat"
-      },
-      {
-        label:"Art",
-        term:"art",
-        type:"cat"
-      },
-      {
-        label:"Museum",
-        term:"museum",
-        type:"cat"
-      },
-      {
-        label:"Restaurants",
-        term:"food",
-        type:"cat"
-      },
-    ],
-    value:''
-  }
 
   componentDidMount() {
     
@@ -134,7 +102,9 @@ class AddNewPlace extends Component {
   }
 
   fetchSuggestions = (query) => {
+    
     const { dispatch , city } = this.props;
+
     console.log("Inside fetchSuggestions",query,city);
 
     const latlngObj = city.geometry ? city.geometry.location : undefined;
@@ -142,11 +112,19 @@ class AddNewPlace extends Component {
 
     const params = { latlngObj  , radius};
 
-    dispatch(autoCompleteSearch(query,params));
+     dispatch(autoCompleteSearch(query,params));
   }
+
 
   handleSuggestionClicked = (suggestion) => {
     console.log("handleSuggestionClicked",suggestion);
+
+    if(suggestion.type === 'category') {
+
+    }
+    else {
+      window.open(`${window.location.protocol}//${window.location.hostname}:${window.location.port}/place?id=${suggestion.place_id}`, "_blank");
+    }
   }
 }
 

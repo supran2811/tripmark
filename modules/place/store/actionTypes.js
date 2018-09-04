@@ -1,5 +1,5 @@
 import { defineAction } from "redux-define";
-import { ERROR,PENDING,SUCCESS } from "../../app/constants";
+import { ERROR,PENDING,SUCCESS, CANCEL } from "../../app/constants";
 import { NAME } from "./constants";
 
 export const FETCH_CITY_DETAILS = defineAction('FETCH_CITY_DETAILS' ,[ERROR,PENDING,SUCCESS] , NAME);
@@ -10,5 +10,6 @@ export const RESET_CITY_DETAILS = defineAction('RESET_CITY_DETAILS',[],NAME);
 
 export const TEXT_SEARCH = defineAction('TEXT_SEARCH' , [ ERROR , PENDING , SUCCESS] , NAME);
 
-export const AUTOCOMPLETE_SEARCH = defineAction('AUTOCOMPLETE_SEARCH' , [ ERROR , PENDING , SUCCESS] , NAME);
+export const AUTOCOMPLETE_SEARCH = defineAction('AUTOCOMPLETE_SEARCH' , [ ERROR , PENDING , SUCCESS , CANCEL] , NAME);
 
+export const CANCEL_AUTOCOMPLETE_SEARCH = defineAction('CANCEL_AUTOCOMPLETE_SEARCH' , [] , NAME);

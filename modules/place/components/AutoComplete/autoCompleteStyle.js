@@ -1,6 +1,6 @@
 const autoCompleteStyle = theme => ( {
 
-  root: {
+  autoComplete: {
     height: 250,
     flexGrow: 1,
   },
@@ -20,7 +20,8 @@ const autoCompleteStyle = theme => ( {
   suggestionsList: {
     margin: 0,
     padding: 0,
-    listStyleType: 'none',
+    listStyleType: 'none'
+    
   },
 
   bootstrapRoot: {
@@ -41,6 +42,28 @@ const autoCompleteStyle = theme => ( {
       boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
     },
   },
+  menuItem:{
+    height:"100%"
+  },
+  menuItemContent:{
+    display:"flex",
+    alignItems:"center",
+    alignContent:"center",
+    height:"100%",
+    width:"100%"
+  },
+  menuItemBody: {
+    display:"block",
+    paddingLeft:"20px"
+  },
+  mainContent:{
+    fontSize: 16,
+    color:"#000"
+  },
+  secondaryContent:{
+    fontSize: 12,
+    color:"#777"
+  }
 }
 )
 export default autoCompleteStyle;

@@ -1,0 +1,37 @@
+[
+  {
+    "label":"Art",
+    "term":"art",
+    "type":"category"
+  },
+  {
+    "label":"Museum",
+    "term":"museum",
+    "type":"category"
+  },
+  {
+    "label":"History",
+    "term":"history",
+    "type":"category"
+  },
+  {
+    "label":"Food",
+    "term":"food",
+    "type":"category"
+  },
+  {
+    "label":"Entertainment",
+    "term":"entertainment",
+    "type":"category"
+  },
+  {
+    "label":"Park",
+    "term":"park",
+    "type":"category"
+  },
+  {
+    "label":"Amusement Park",
+    "term":"amusement park",
+    "type":"category"
+  }
+]

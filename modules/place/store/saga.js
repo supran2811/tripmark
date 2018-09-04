@@ -1,5 +1,5 @@
-import {fork,takeEvery,put, take, takeLatest , call } from 'redux-saga/effects';
-import { FETCH_CITY_DETAILS, TEXT_SEARCH, AUTOCOMPLETE_SEARCH } from './actionTypes';
+import {fork,takeEvery,put, take, takeLatest , call, cancelled } from 'redux-saga/effects';
+import { FETCH_CITY_DETAILS, TEXT_SEARCH, AUTOCOMPLETE_SEARCH, CANCEL_AUTOCOMPLETE_SEARCH } from './actionTypes';
 import { googlePlace , googlePlacesApi } from '../../../google';
 
 
@@ -28,22 +28,44 @@ export function* doTextSearch( {query , params }) {
   
 }
 
-export function* doAutoCompleteSearch( { query , params }) {
+export function* doAutoCompleteSearchCancellable({query , params }) {
   console.log("Inside doAutoCompleteSearch ",query,params);
   yield put({ type: AUTOCOMPLETE_SEARCH.PENDING});
   try {
    const response = yield call(googlePlacesApi.autoCompleteSearch,query,params);
-   yield put({ type: AUTOCOMPLETE_SEARCH.SUCCESS , response});
+   yield put({ type: AUTOCOMPLETE_SEARCH.SUCCESS , response,query});
   }
   catch(error) {
     console.log("doAutoCompleteSearch error",error);
     yield put({type: AUTOCOMPLETE_SEARCH.ERROR,error});
   }
+  finally {
+    if( yield cancelled() ){
+      console.log("Coming doAutoCompleteSearchCancellable to cancel search for ",query);
+      yield put({type:AUTOCOMPLETE_SEARCH.CANCEL});
+    }
+  }
+}
+
+export function* doAutoCompleteSearch( { query , params }) {
+ try {
+  const autoCompleteSearchTask = yield fork( doAutoCompleteSearchCancellable , { query , params } );
+  yield takeLatest(CANCEL_AUTOCOMPLETE_SEARCH.ACTION , cancelTask , autoCompleteSearchTask );
+ } finally {
+  if(yield cancelled()) {
+    console.log("Coming doAutoCompleteSearch to cancel search for ",query);
+    yield put({type:AUTOCOMPLETE_SEARCH.CANCEL});
+  }
+ }
   
+}
+
+export function* cancelTask(task) {
+   yield cancel(task);
 }
 
 export default function* saga() {
   yield fork(takeEvery,FETCH_CITY_DETAILS.ACTION , dofetchCityDetails);
   yield fork(takeEvery,TEXT_SEARCH.ACTION , doTextSearch);
-  yield fork(takeEvery,AUTOCOMPLETE_SEARCH.ACTION , doAutoCompleteSearch);
+  yield fork(takeLatest,AUTOCOMPLETE_SEARCH.ACTION , doAutoCompleteSearch);
 }

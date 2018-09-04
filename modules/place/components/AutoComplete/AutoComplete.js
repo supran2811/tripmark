@@ -7,54 +7,20 @@ import deburr from 'lodash/deburr';
 import MenuItem from '@material-ui/core/MenuItem';
 import Autosuggest from 'react-autosuggest';
 import PropTypes from "prop-types";
+import AccountBalance from '@material-ui/icons/AccountBalance';
+import LocationOn from '@material-ui/icons/LocationOn';
+import _ from 'lodash';
 
 import autoCompleteStyle from './autoCompleteStyle';
 import { TextField } from '@material-ui/core';
-
-const defaultSuggestions  = [
-  {
-    label:'Art',
-    value:'art'
-  },
-  {
-    label:'Museum',
-    value:'museum'
-  },
-  {
-    label:'History',
-    value:'history'
-  },
-  {
-    label:'Food',
-    value:'food'
-  },
-  {
-    label:'Entertainment',
-    value:'entertainment'
-  }
-];
+import { filterCategory } from '../../../../google/placesApi';
 
 class AutoComplete extends Component {
 
    state = {
-    value:'',
-    suggestions:defaultSuggestions
+    value:''
   }
 
-  componentDidUpdate() {
-
-    const { suggestions } = this.props;
-
-    console.log("AUTOCOMPLETE:: componentDidUpdate",suggestions);
-
-    !_.isEmpty(suggestions)  
-      && _.differenceWith(this.state.suggestions , suggestions  , _.isEqual).length > 0 
-      && this.setState({suggestions:suggestions});
-    
-    _.isEmpty(suggestions) && 
-                _.differenceWith(this.state.suggestions , defaultSuggestions  , _.isEqual).length > 0 && 
-                  this.setState({suggestions:defaultSuggestions})  
-  }
 
   renderInputField = (inputProps) => {
     const { classes , inputRef = () => {}, ref, ...other } = inputProps;
@@ -77,15 +43,23 @@ class AutoComplete extends Component {
   }
 
    renderSuggestion = (suggestion, { query, isHighlighted }) => {
-
+    const { classes , suggestionClicked } = this.props;
     const suggestionText = this.getSuggestionText(suggestion);
-
+    const type = suggestion['type'];
     const matches = match(suggestionText, query);
     const parts = parse(suggestionText, matches);
   
     return (
-      <MenuItem selected={isHighlighted} component="div">
-        <div>
+      <MenuItem divider selected={isHighlighted} 
+                      component="div" 
+                      classes={{ root:classes.menuItem}} 
+                      >
+       <div className={classes.menuItemContent}>
+       {
+         type !== 'category' ? <LocationOn /> : <AccountBalance />
+       }
+       <div className={classes.menuItemBody}>
+        <div className={classes.mainContent}>
           {parts.map((part, index) => {
             return part.highlight ? (
               <span key={String(index)} style={{ fontWeight: 500 }}>
@@ -98,6 +72,14 @@ class AutoComplete extends Component {
             );
           })}
         </div>
+        {
+          type !== 'category' &&
+          ( <div className={classes.secondaryContent}>
+            {this.getSuggestionSecondaryText(suggestion)}
+          </div>)  
+        }
+       </div>
+       </div>
       </MenuItem>
     );
   }
@@ -105,48 +87,48 @@ class AutoComplete extends Component {
   shouldRenderSuggestions = value => true;
 
   getSuggestionValue = (suggestion) => {
-
-    console.log("getSuggestionValue",suggestion);
-
-    this.props.suggestionClicked(suggestion);
-
-    return '';
+    console.log("getSuggestionValue")
+    return this.state.value;
   }
   
   handleSuggestionsFetchRequested = ({ value, reason }) => {
+    console.log("handleSuggestionsFetchRequested",value,reason);
     const inputValue = deburr(value.trim()).toLowerCase();
-    (reason === 'input-changed') &&
-                  this.props.fetchSuggestions(inputValue);
+    (reason === 'input-changed') && 
+                  _.debounce( this.props.fetchSuggestions , 500 , {trailing : true})(inputValue);
 
        
   };
 
+
   handleSuggestionsClearRequested = () => {
     this.setState({
-      suggestions: defaultSuggestions,
+      suggestions: filterCategory(),
     });
   };
 
-  handleChange = name => (event, { newValue }) => {
+  handleChange = name => (event, { newValue  , method }) => {
+    console.log("handleChange",method);
     this.setState({
       [name]: newValue,
     });
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes , suggestions } = this.props;
 
     const autosuggestProps = {
       renderInputComponent:this.renderInputField,
-      suggestions: this.state.suggestions,
+      suggestions: suggestions,
       onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
       onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
       getSuggestionValue:this.getSuggestionValue,
       renderSuggestion:this.renderSuggestion,
-      shouldRenderSuggestions:this.shouldRenderSuggestions
+      shouldRenderSuggestions:this.shouldRenderSuggestions,
+      onSuggestionSelected:this.onSuggestionSelected
     };
 
-    return  <div className={classes.root}><Autosuggest
+    return  <div className={classes.autoComplete}><Autosuggest
               {...autosuggestProps}
               inputProps={{
                 classes,
@@ -172,9 +154,14 @@ class AutoComplete extends Component {
     return suggestion.label || suggestion['structured_formatting']['main_text']
   }
 
+  onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+    console.log("onSuggestionSelected",suggestion,method);
+    this.props.suggestionClicked(suggestion);
+  }
+  getSuggestionSecondaryText = suggestion => suggestion['structured_formatting'] ? suggestion['structured_formatting']['secondary_text']: "";
 }
 
-AutoComplete.PropTypes = {
+AutoComplete.propTypes = {
   translation:PropTypes.object.isRequired,
   fetchSuggestions:PropTypes.func.isRequired,
   suggestionClicked:PropTypes.func.isRequired,
