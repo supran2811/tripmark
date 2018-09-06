@@ -12,7 +12,7 @@ import { setToken, logoutRequest } from '../modules/auth/store/action';
 
 class MyApp extends App {
 
-  static async getInitialProps({Component , ctx}) {
+  static async getInitialProps({ Component , ctx }) {
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
     return {pageProps};
   }
@@ -22,7 +22,8 @@ class MyApp extends App {
     this.pageContext = getPageContext();
   }
 
-  componentWillMount() {
+  componentDidMount() {
+
     auth.onAuthStateChanged(user => {
       if( user ) {
         this.props.dispatch(setToken());
@@ -30,10 +31,8 @@ class MyApp extends App {
       else {
         this.props.dispatch(logoutRequest());
       }
-   })
-  }
+   });
 
-  componentDidMount() {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) {
@@ -62,7 +61,7 @@ class MyApp extends App {
                 {/* Pass pageContext to the _document though the renderPage enhancer
                     to render collected styles on server side. */}
                  <Provider store={store}>
-                <Component pageContext={this.pageContext} {...pageProps} />
+                  <Component pageContext={this.pageContext} {...pageProps} />
                 </Provider>
               </MuiThemeProvider>
             </JssProvider>

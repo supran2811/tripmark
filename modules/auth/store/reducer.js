@@ -4,7 +4,8 @@ import { ACTION_SET_TOKEN , ACTION_LOGOUT, ACTION_SET_PATH_TO_REDIRECT } from ".
 const initialState = {
   authenticated:false,
   token:'',
-  pathToRedirect : '/home'
+  pathToRedirect : '/mypage',
+  firebaseLoaded:false
 }
 
 export default function authReducer(state=initialState , action) {
@@ -13,14 +14,16 @@ export default function authReducer(state=initialState , action) {
        return {
          ...state,
          authenticated:true,
-         token:action.data
+         token:action.data,
+         firebaseLoaded:true
        }
      }
      case ACTION_LOGOUT.SUCCESS :{
        return {
          ...state,
          authenticated:false,
-         token:''
+         token:'',
+         firebaseLoaded:true
        }
      }
      case ACTION_SET_PATH_TO_REDIRECT.ACTION: {

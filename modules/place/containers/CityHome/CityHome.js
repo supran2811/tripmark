@@ -1,6 +1,6 @@
 import React , { Component } from 'react';
 import { connect } from 'react-redux';
-import Router from 'next/router';
+import  { Router } from '../../../../routes';
 
 import { getSelectedCityDetails } from '../../store/selector';
 import { fetchCityDetails } from '../../store/action';
@@ -10,34 +10,29 @@ import { getOptimalBGImageUrl } from '../../../../google/places';
 import { withGoogleApiLibs } from '../../../../lib/withLibs';
 import cityHomeStyle from './cityHomeStyle';
 import AppHeader from '../../../app/components/AppHeader';
-import { getQueryParam } from '../../../../lib/utils';
 
 class CityHome extends Component {
 
   componentDidMount() {
-    
-    const { city  , dispatch ,query , google} = this.props;
+    console.log("CityHome componentDidMount");
+    const { city  , dispatch ,query , google ,id} = this.props;
   
-    const id = getQueryParam('id',query);
-
     if( (!city  && id && id !== '') ||  (city && id && city.place_id !== id)) {
       dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
     }
   }
 
   componentDidUpdate() {
+    console.log("CityHome componentDidUpdate");
+    const { city  , dispatch , google , id} = this.props;
     
-    const { city  , dispatch , query , google} = this.props;
-    
-    const id = getQueryParam('id' ,query);
-
     if( (!city  && id && id !== '') ||  (city &&  id && city.place_id !== id)) {
       dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
     }
   }
 
   openAddFavoritePlace(city) {
-    Router.push({pathname:'/city/addPlace' , query:{id:city.place_id}});
+    Router.pushRoute('city/addfav' , {cityId:city.place_id } );
   }
 
   render() {

@@ -2,7 +2,7 @@ import React , { Component } from 'react';
 import PropTypes from "prop-types";
 import Avatar from '@material-ui/core/Avatar';
 import { withStyles } from '@material-ui/core';
-import Router from 'next/router';
+import { Router } from '../../../../routes';
 
 import { auth } from '../../../../firebase';
 import { logoutRequest } from '../../../auth/store/action';
@@ -101,8 +101,7 @@ class AppHeader extends Component {
   }
 
   onSuggestSelect = (item) => {
-    console.log("Inside onSuggestSelect in header",item);
-    item && Router.push({ pathname : '/city' , query:{id:item.placeId}});
+    item && Router.pushRoute('city' , {cityId:item.placeId});
   }
 }
 

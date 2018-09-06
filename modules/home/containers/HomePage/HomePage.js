@@ -1,9 +1,8 @@
 import React , { Component } from 'react';
 import {connect} from 'react-redux';
-import Router from 'next/router';
+import { Router } from '../../../../routes';
 
 import GridContainer from '../../../../components/GridContainer';
-import { isAuthenticated } from '../../../auth/store/selector';
 import homePageStyle from './homePageStyle';
 import GridItem from '../../../../components/GridItem';
 import { withGoogleApiLibs } from '../../../../lib/withLibs';
@@ -14,25 +13,13 @@ import { resetCityDetails } from '../../../place/store/action';
 class HomePage extends Component {
 
   componentDidMount() {
-    if(!this.props.isAuthenticated) {
-      Router.replace({pathname:'/login'});
-    }
-   
     this.props.dispatch(resetCityDetails());
-
   }
 
-  componentDidUpdate() {
-    if(!this.props.isAuthenticated) {
-      Router.replace({pathname:'/login'});
-    }
-  }
-
+ 
   render() {
 
-    const {classes , t ,google } = this.props;
-
-    Router.prefetch('/city');
+    const {classes , t } = this.props;
     
     return (
 
@@ -40,7 +27,7 @@ class HomePage extends Component {
         <AppHeader 
           color="primary"
           fixed 
-          isAuthenticated = {this.props.isAuthenticated}
+          isAuthenticated = {true}
           t = {t}
         />
           <GridContainer className={classes.container}>
@@ -56,14 +43,9 @@ class HomePage extends Component {
   }
 
   onSuggestSelect = (item) => {
-    console.log("Inside onSuggestSelect ",item);
-    item && Router.push({ pathname : '/city' , query:{id:item.placeId}});
+    item && Router.pushRoute('city' ,{cityId:item.placeId});
   }
 }
-const mapStatetoProps = state => (
-  {
-    isAuthenticated: isAuthenticated(state)
-  }
-);
 
-export default connect(mapStatetoProps)(withGoogleApiLibs(HomePage , ['homedata','common'] , homePageStyle));
+
+export default connect()(withGoogleApiLibs(HomePage , ['homedata','common'] , homePageStyle));

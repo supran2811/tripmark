@@ -18,26 +18,31 @@ import { isAuthenticated, getPathToRedirect } from '../../../auth/store/selector
 import { isLoading , getErrorData , hasError } from '../../store/selector'; 
 import { RESET_ERROR } from '../../store/actionTypes';
 import AppHeader from '../../components/AppHeader';
+import redirect from '../../../../lib/redirect';
 
 
 class LandingPage extends Component {
+
+  componentWillReceiveProps() {
+    console.log("LandingPage ::: Inside componentWillUpdate ",this.props.isAuthenticated);
+  }
 
   componentDidMount() {
     console.log("componentDidMount",this.props.isAuthenticated , this.props.path);
     
     this.props.dispatch({type:RESET_ERROR.ACTION});
 
-    if(this.props.isAuthenticated) {
-      Router.replace({pathname:this.props.path});
-    }
+    // if(this.props.isAuthenticated) {
+    //   Router.replace({pathname:this.props.path});
+    // }
   }
 
   componentDidUpdate() {
     console.log("componentDidUpdate",this.props.isAuthenticated , this.props.path);
 
-    if(this.props.isAuthenticated) {
-      Router.replace({pathname:this.props.path});
-    }
+    // if(this.props.isAuthenticated) {
+    //   Router.replace({pathname:this.props.path});
+    // }
   }
 
   render() {

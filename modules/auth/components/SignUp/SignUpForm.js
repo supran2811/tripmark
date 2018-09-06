@@ -126,7 +126,6 @@ class SignUpForm extends Component {
     const { classes ,t} = this.props;
 
     console.log("Is loading ",this.props.isLoading);
-    Router.prefetch('/login');
     
     return (
       <GridContainer justify="center" >

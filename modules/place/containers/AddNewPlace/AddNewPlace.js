@@ -7,21 +7,17 @@ import GridItem from '../../../../components/GridItem';
 import { withGoogleApiLibs } from '../../../../lib/withLibs'
 import addNewPlaceStyle from './addNewPlaceStyle';
 import AppHeader from '../../../app/components/AppHeader';
-import { getSelectedCityDetails, getSuggestedPlaces, getPredictions } from '../../store/selector';
+import { getSelectedCityDetails, getPredictions } from '../../store/selector';
 import Close from '@material-ui/icons/Close'
-import { fetchCityDetails, autoCompleteSearch, cancelAutoCompleteSearch } from '../../store/action';
-import { getQueryParam } from '../../../../lib/utils';
+import { fetchCityDetails, autoCompleteSearch } from '../../store/action';
 import AutoComplete from '../../components/AutoComplete';
 
 class AddNewPlace extends Component {
 
   componentDidMount() {
     
-    const { city  , dispatch ,query , google } = this.props;
-  
-    const id = getQueryParam('id',query);
-
-    console.log("componentDidMount ",city,id);
+    const { city  , dispatch , id , google } = this.props;
+   
     if( (!city  && id && id !== '') ||  (city && id && city.place_id !== id)) {
       dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
     }
@@ -29,11 +25,8 @@ class AddNewPlace extends Component {
 
   componentDidUpdate() {
     
-    const { city  , dispatch , query } = this.props;
+    const { city  , dispatch , id } = this.props;
     
-    const id = getQueryParam('id' ,query , google);
-
-    console.log("componentDidUpdate ",city,id);
     if( (!city  && id && id !== '') ||  (city &&  id && city.place_id !== id)) {
       dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
     }

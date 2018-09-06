@@ -1,7 +1,7 @@
 import axios from 'axios'
 import categories from './category.json'
 const googlePlacesAPI = "https://us-central1-triporg-1508486982436.cloudfunctions.net/searchPlace"
-const googleAutoCompleteAPI = "https://us-central1-triporg-1508486982436.cloudfunctions.net/autoCompleteSearch"
+const googleAutoCompleteAPI = "/autoCompleteSearch";//"https://us-central1-triporg-1508486982436.cloudfunctions.net/autoCompleteSearch"
 
 export function textSearch(query , {latlngObj,radius}) {
   console.log("Inside function textSearch ",query , googlePlacesAPI,location);

@@ -17,5 +17,6 @@ export const getProfilePhotoUrl = () => auth.currentUser ? auth.currentUser.phot
 
 export const doGoogleSignIn = (isMobile) => {
   const provider = new Auth.GoogleAuthProvider();
+  console.log("doGoogleSignIn",provider);
   return !isMobile ? auth.signInWithPopup(provider) : auth.signInWithRedirect(provider);
 }
