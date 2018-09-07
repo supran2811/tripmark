@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import AccountBalance from '@material-ui/icons/AccountBalance';
 import LocationOn from '@material-ui/icons/LocationOn';
 import _ from 'lodash';
+import  Link  from 'next/link'
 
 import autoCompleteStyle from './autoCompleteStyle';
 import { TextField } from '@material-ui/core';
@@ -54,32 +55,52 @@ class AutoComplete extends Component {
                       component="div" 
                       classes={{ root:classes.menuItem}} 
                       >
-       <div className={classes.menuItemContent}>
        {
-         type !== 'category' ? <LocationOn /> : <AccountBalance />
-       }
-       <div className={classes.menuItemBody}>
-        <div className={classes.mainContent}>
-          {parts.map((part, index) => {
-            return part.highlight ? (
-              <span key={String(index)} style={{ fontWeight: 500 }}>
-                {part.text}
-              </span>
-            ) : (
-              <strong key={String(index)} style={{ fontWeight: 300 }}>
-                {part.text}
-              </strong>
-            );
-          })}
-        </div>
-        {
-          type !== 'category' &&
-          ( <div className={classes.secondaryContent}>
-            {this.getSuggestionSecondaryText(suggestion)}
-          </div>)  
-        }
-       </div>
-       </div>
+         suggestion.type !== 'category'?
+         
+         <a href= {`/place/${suggestion.place_id}`} className={classes.menuItemContent} target="_blank">
+           <LocationOn />
+           <div className={classes.menuItemBody}>
+             <div className={classes.mainContent}>
+               {parts.map((part, index) => {
+                 return part.highlight ? (
+                   <span key={String(index)} style={{ fontWeight: 500 }}>
+                     {part.text}
+                   </span>
+                 ) : (
+                   <strong key={String(index)} style={{ fontWeight: 300 }}>
+                     {part.text}
+                   </strong>
+                 );
+               })}
+             </div>
+             <div className={classes.secondaryContent}>
+                 {this.getSuggestionSecondaryText(suggestion)}
+             </div> 
+           </div>
+         </a>
+         :
+          <a className={classes.menuItemContent} onClick={this.onSuggestionSelected}>
+           <AccountBalance />
+            <div className={classes.menuItemBody}>
+              <div className={classes.mainContent}>
+                {parts.map((part, index) => {
+                return part.highlight ? (
+                  <span key={String(index)} style={{ fontWeight: 500 }}>
+                    {part.text}
+                  </span>
+                ) : (
+                  <strong key={String(index)} style={{ fontWeight: 300 }}>
+                    {part.text}
+                  </strong>
+                );
+              })}
+              </div>
+            </div>
+          </a>
+        
+       }                 
+       
       </MenuItem>
     );
   }
@@ -156,7 +177,7 @@ class AutoComplete extends Component {
 
   onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
     console.log("onSuggestionSelected",suggestion,method);
-    this.props.suggestionClicked(suggestion);
+    // this.props.suggestionClicked(suggestion);
   }
   getSuggestionSecondaryText = suggestion => suggestion['structured_formatting'] ? suggestion['structured_formatting']['secondary_text']: "";
 }

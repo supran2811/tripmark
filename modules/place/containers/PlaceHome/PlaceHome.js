@@ -2,7 +2,7 @@ import React ,{ Component } from 'react';
 
 class PlaceHome extends Component {
   render() {
-    return <div>HOME OF PLACE</div>
+    return <div>HOME OF PLACE {this.props.id}</div>
   }
 }
 

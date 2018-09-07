@@ -2,7 +2,6 @@ import React , {Component} from 'react';
 import {connect} from 'react-redux';
 import NoSSR from 'react-no-ssr';
 import { withStyles } from '@material-ui/core';
-import Router from 'next/router';
 import { loginRequest, googleSignUpRequest } from '../../../auth/store/action';
 
 import Header from '../../../../components/Header';
@@ -16,21 +15,7 @@ import { RESET_ERROR } from '../../../app/store/actionTypes';
 class LoginPage extends Component {
 
   componentDidMount() {
-    console.log("componentDidMount",this.props.isAuthenticated);
-    
     this.props.dispatch({type:RESET_ERROR.ACTION});
-
-    if(this.props.isAuthenticated) {
-      Router.replace({pathname:'/home'});
-    }
-  }
-
-  componentDidUpdate() {
-    console.log("componentDidUpdate",this.props.isAuthenticated);
-
-    if(this.props.isAuthenticated) {
-      Router.replace({pathname:'/home'});
-    }
   }
 
   render() {

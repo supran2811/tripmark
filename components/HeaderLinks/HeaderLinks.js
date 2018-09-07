@@ -51,10 +51,9 @@ function HeaderLinks({ ...props }) {
                   href={elementObject['href']}
                   color={elementObject['color']}
                   target="_blank"
-                  className={classes.navLink}
-                >
-                  {elementObject['icon']}{elementName}
-              </Button>
+                  className={classes.navLink}>
+                    {elementObject['icon']}{elementName}
+                </Button>
               </ListItem>
       }
       else if(elementObject['href']) {

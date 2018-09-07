@@ -1,4 +1,4 @@
-import { ACTION_SET_TOKEN , ACTION_LOGOUT, ACTION_SET_PATH_TO_REDIRECT } from "./actionTypes";
+import { ACTION_SET_TOKEN , ACTION_LOGOUT, ACTION_SET_PATH_TO_REDIRECT, ACTION_RESET_PATH_TO_REDIRECT } from "./actionTypes";
 
 
 const initialState = {
@@ -31,6 +31,12 @@ export default function authReducer(state=initialState , action) {
        return {
          ...state,
          pathToRedirect:action.pathToRedirect
+       }
+     }
+     case ACTION_RESET_PATH_TO_REDIRECT: {
+       return {
+         ...state,
+         pathToRedirect:"/mypage"
        }
      }
   }

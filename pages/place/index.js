@@ -1,31 +1,16 @@
 import { Component } from 'react';
 
+import { withRouter } from 'next/router';
 import { withI18next } from '../../lib/withI18next';
 import PlaceHome from '../../modules/place/containers/PlaceHome';
+import withAuth from '../../lib/withAuth';
 
 class PlacePage extends Component {
-  state = {
-    query:''
-  }
-
-  componentDidMount() {
-     
-     if(window && window.location.search && this.state.query !== window.location.search ) {
-      console.log("Inside componentDidMount refreshing page!!");
-        this.setState({ query : window.location.search});
-     }
-  }
-
-  componentDidUpdate() {
-    if(window && window.location.search && this.state.query !== window.location.search ) {
-      console.log("Inside componentDidUpdate refreshing page!!");
-      this.setState({ query : window.location.search});
-   }
-  }
-
+  
   render() {
-    return <PlaceHome query  = {this.state.query} />
+    const { placeId } = this.props.router.query;
+    return <PlaceHome id  = {placeId} />
   }
 }
 
-export default (withI18next(['placedata','common'])(PlacePage));
+export default withRouter(withAuth(withI18next(['placedata','common'])(PlacePage)));

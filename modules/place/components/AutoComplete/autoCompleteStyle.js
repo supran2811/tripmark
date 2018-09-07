@@ -50,7 +50,8 @@ const autoCompleteStyle = theme => ( {
     alignItems:"center",
     alignContent:"center",
     height:"100%",
-    width:"100%"
+    width:"100%",
+    textDecoration:"none"
   },
   menuItemBody: {
     display:"block",
