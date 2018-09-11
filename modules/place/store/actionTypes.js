@@ -12,4 +12,6 @@ export const TEXT_SEARCH = defineAction('TEXT_SEARCH' , [ ERROR , PENDING , SUCC
 
 export const AUTOCOMPLETE_SEARCH = defineAction('AUTOCOMPLETE_SEARCH' , [ ERROR , PENDING , SUCCESS , CANCEL] , NAME);
 
+export const CLEAR_SUGGESTIONS = defineAction('CLEAR_SUGGESTIONS' , [] , NAME);
+
 export const CANCEL_AUTOCOMPLETE_SEARCH = defineAction('CANCEL_AUTOCOMPLETE_SEARCH' , [] , NAME);

@@ -1,11 +1,16 @@
 const autoCompleteStyle = theme => ( {
 
   autoComplete: {
-    height: 250,
+    width:'100%',
     flexGrow: 1,
+    display:"flex",
+    justifyContent:'center',
+    alignItems:"center"
   },
   container: {
     position: 'relative',
+    width:"80%",
+    marginTop:"5px"
   },
   suggestionsContainerOpen: {
     position: 'absolute',
@@ -35,11 +40,12 @@ const autoCompleteStyle = theme => ( {
     fontSize: 16,
     padding: '10px 12px',
     width: '100%',
+    height:"34px",
     transition: theme.transitions.create(['border-color', 'box-shadow']),
     fontFamily: 'inherit',
     '&:focus': {
       borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+      boxShadow: '0 0 0 0.01rem rgba(0,123,255,.25)',
     },
   },
   menuItem:{
@@ -64,6 +70,14 @@ const autoCompleteStyle = theme => ( {
   secondaryContent:{
     fontSize: 12,
     color:"#777"
+  },
+  buttonStye : {
+    marginLeft:"-50px",
+    borderRadius:"0",
+    marginBottom:"-1px"
+  },
+  iconStyle:{
+    marginTop:"-5px"
   }
 }
 )

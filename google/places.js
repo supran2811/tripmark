@@ -36,3 +36,7 @@ export const getOptimalBGImageUrl = (photos = [] , maxWidth) => {
 
   return url;
 }
+
+export function getPhotoUrl (photoReference , maxHeight) {
+  return `https://maps.googleapis.com/maps/api/place/photo?maxheight=${maxHeight}&photoreference=${photoReference}&key=${process.env._GOOGLE_API_KEY}`
+}

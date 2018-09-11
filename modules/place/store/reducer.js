@@ -1,4 +1,4 @@
-import { FETCH_CITY_DETAILS, RESET_CITY_DETAILS, TEXT_SEARCH, AUTOCOMPLETE_SEARCH } from "./actionTypes";
+import { FETCH_CITY_DETAILS, RESET_CITY_DETAILS, TEXT_SEARCH, AUTOCOMPLETE_SEARCH, CLEAR_SUGGESTIONS } from "./actionTypes";
 import { filterCategory } from "../../../google/placesApi";
 
 const initialState = {
@@ -41,6 +41,19 @@ export default function placeReducer( state=initialState , action ) {
         predictions
       }
 
+    }
+    case CLEAR_SUGGESTIONS.ACTION :{
+      return {
+        ...state,
+        predictions:[]
+      }
+    }
+    case TEXT_SEARCH.SUCCESS:{
+      let places = action.response.data['results'];
+      return {
+        ...state,
+        places
+      }
     }
     case RESET_CITY_DETAILS.ACTION: {
       return {

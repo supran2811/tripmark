@@ -19,13 +19,13 @@ export function* doTextSearch( {query , params }) {
   yield put({ type: TEXT_SEARCH.PENDING});
   try {
    const response = yield call(googlePlacesApi.textSearch,query,params);
+   console.log("Inside doTextSearch ",response);
    yield put({ type: TEXT_SEARCH.SUCCESS , response});
   }
   catch(error) {
     console.log("doTextSearch error",error);
     yield put({type: TEXT_SEARCH.ERROR,error});
   }
-  
 }
 
 export function* doAutoCompleteSearchCancellable({query , params }) {

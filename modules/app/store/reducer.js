@@ -16,16 +16,16 @@ export default function appReducer(state = initialState , action) {
       loading:true,
       error:false,
       errorData:undefined,
-      pendingRequestCount:pendingRequestCount
+      pendingRequestCount
     }
   }
-  else if(action.type.endsWith('SUCCESS')) {
+  else if(action.type.endsWith('SUCCESS') || action.type.endsWith('CANCEL')) {
     const pendingRequestCount = state.pendingRequestCount > 0 ? state.pendingRequestCount - 1:state.pendingRequestCount;
 
     return {
       ...state,
       loading:pendingRequestCount > 0,
-      pendingRequestCount:pendingRequestCount
+      pendingRequestCount
     }
   }
   else if(action.type.endsWith('ERROR')) {
@@ -33,7 +33,7 @@ export default function appReducer(state = initialState , action) {
     return {
       ...state,
       loading:pendingRequestCount > 0,
-      pendingRequestCount:pendingRequestCount,
+      pendingRequestCount,
       error:true,
       errorData:action.error ? action.error : {status:'Unable to connect to server'}
     }

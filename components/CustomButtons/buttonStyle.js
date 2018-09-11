@@ -11,7 +11,15 @@ import {
 const buttonStyle = {
  
   buttonProgress: {
-    color:"#ffffff"
+    color:"#ffffff",
+    position:'absolute',
+    top:"50%",
+    left:"50%",
+    marginLeft:-35,
+    marginTop:-10
+  },
+  buttonRoot:{
+    position:'relative'
   },
   button: {
     minHeight: "auto",

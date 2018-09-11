@@ -43,10 +43,17 @@ function RegularButton({ ...props }) {
     [classes.justIcon]: justIcon,
     [className]: className
   });
+  const btnDivClasses = classNames({
+    [classes.buttonRoot]:true,
+    [classes.fullWidth]: fullWidth
+  })
   return (
-      <Button {...rest} className={btnClasses}>
-        { loading ? <CircularProgress size={24} className={classes.buttonProgress} /> : children}
-      </Button>
+    <div className = {btnDivClasses}>
+        <Button {...rest} className={btnClasses}>
+          {!loading && children}     
+        </Button>
+         { loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+    </div>
    );
 }
 

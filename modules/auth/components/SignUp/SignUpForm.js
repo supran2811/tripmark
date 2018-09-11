@@ -132,7 +132,7 @@ class SignUpForm extends Component {
         <GridItem xs={12} sm={12} md={this.props.isLogin ? 12 : 10}>
         <Card className={classes[this.state.cardAnimaton]}>
           <form className={classes.form}>
-          <CardHeader className = {classes.cardHeader}>
+            <CardHeader className = {classes.cardHeader}>
             <Button className= {this.props.isLogin ? classes.googleLogin : classes.googleSignUp }
                   onClick={this.props.googleSignUp}>
                <span></span>

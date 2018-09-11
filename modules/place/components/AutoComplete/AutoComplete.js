@@ -10,11 +10,12 @@ import PropTypes from "prop-types";
 import AccountBalance from '@material-ui/icons/AccountBalance';
 import LocationOn from '@material-ui/icons/LocationOn';
 import _ from 'lodash';
-import  Link  from 'next/link'
+import { TextField} from '@material-ui/core';
+import Search from '@material-ui/icons/Search';
 
 import autoCompleteStyle from './autoCompleteStyle';
-import { TextField } from '@material-ui/core';
 import { filterCategory } from '../../../../google/placesApi';
+import Button from '../../../../components/CustomButtons';
 
 class AutoComplete extends Component {
 
@@ -58,7 +59,11 @@ class AutoComplete extends Component {
        {
          suggestion.type !== 'category'?
          
-         <a href= {`/place/${suggestion.place_id}`} className={classes.menuItemContent} target="_blank">
+         <a href= {`/place/${suggestion.place_id}`} 
+              rel = "noopener" 
+              className={classes.menuItemContent} 
+              target="_blank"
+             >
            <LocationOn />
            <div className={classes.menuItemBody}>
              <div className={classes.mainContent}>
@@ -80,7 +85,7 @@ class AutoComplete extends Component {
            </div>
          </a>
          :
-          <a className={classes.menuItemContent} onClick={this.onSuggestionSelected}>
+          <a className={classes.menuItemContent}>
            <AccountBalance />
             <div className={classes.menuItemBody}>
               <div className={classes.mainContent}>
@@ -117,10 +122,7 @@ class AutoComplete extends Component {
     const inputValue = deburr(value.trim()).toLowerCase();
     (reason === 'input-changed') && 
                   _.debounce( this.props.fetchSuggestions , 500 , {trailing : true})(inputValue);
-
-       
   };
-
 
   handleSuggestionsClearRequested = () => {
     this.setState({
@@ -136,7 +138,7 @@ class AutoComplete extends Component {
   };
 
   render() {
-    const { classes , suggestions } = this.props;
+    const { classes , suggestions , isLoading ,performSearch } = this.props;
 
     const autosuggestProps = {
       renderInputComponent:this.renderInputField,
@@ -149,13 +151,15 @@ class AutoComplete extends Component {
       onSuggestionSelected:this.onSuggestionSelected
     };
 
-    return  <div className={classes.autoComplete}><Autosuggest
+    return  <div className={classes.autoComplete}>
+              <Autosuggest
               {...autosuggestProps}
               inputProps={{
                 classes,
                 placeholder: 'Where do you want to go?',
                 value: this.state.value,
                 onChange: this.handleChange('value'),
+                onKeyPress: e => e.key === 'Enter' && performSearch(e.target.value)
               }}
               theme={{
                 container: classes.container,
@@ -168,7 +172,17 @@ class AutoComplete extends Component {
                   {options.children}
                 </Paper>
               )}
-            /></div>
+            />
+            <Button  className = {classes.buttonStye}
+                       color="info" 
+                       size = "lg"
+                       loading={isLoading} 
+                       justIcon
+                       onClick={ () => performSearch(this.state.value)}
+                       >
+                  <Search classes={ { root : classes.iconStyle} } />
+            </Button>
+            </div>
   }
 
   getSuggestionText = suggestion => {
@@ -176,8 +190,16 @@ class AutoComplete extends Component {
   }
 
   onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-    console.log("onSuggestionSelected",suggestion,method);
-    // this.props.suggestionClicked(suggestion);
+    console.log("onSuggestionSelected",suggestion,window.location);
+    if(method === 'enter' || method === 'click') {
+      if(suggestion.type !== 'category') {
+        window.open(`${window.location.origin}/place/${suggestion.place_id}`,"_blank");
+      }
+      else {
+        this.setState({value:suggestion.label});
+        this.props.performSearch(suggestion.label);
+      }
+    }
   }
   getSuggestionSecondaryText = suggestion => suggestion['structured_formatting'] ? suggestion['structured_formatting']['secondary_text']: "";
 }
@@ -185,7 +207,7 @@ class AutoComplete extends Component {
 AutoComplete.propTypes = {
   translation:PropTypes.object.isRequired,
   fetchSuggestions:PropTypes.func.isRequired,
-  suggestionClicked:PropTypes.func.isRequired,
+  performSearch:PropTypes.func.isRequired,
   suggestions:PropTypes.array
 }
 

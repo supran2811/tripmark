@@ -7,10 +7,13 @@ import GridItem from '../../../../components/GridItem';
 import { withGoogleApiLibs } from '../../../../lib/withLibs'
 import addNewPlaceStyle from './addNewPlaceStyle';
 import AppHeader from '../../../app/components/AppHeader';
-import { getSelectedCityDetails, getPredictions } from '../../store/selector';
+import { getSelectedCityDetails, getPredictions, getPlaces } from '../../store/selector';
 import Close from '@material-ui/icons/Close'
-import { fetchCityDetails, autoCompleteSearch } from '../../store/action';
+import { fetchCityDetails, autoCompleteSearch, clearSuggestion ,textSearch } from '../../store/action';
 import AutoComplete from '../../components/AutoComplete';
+import PlaceThumbnailView from '../../components/PlaceThumbnailView';
+import { isLoading } from '../../../app/store/selector'
+
 
 class AddNewPlace extends Component {
 
@@ -77,16 +80,26 @@ class AddNewPlace extends Component {
 
   renderMainContent = () => {
 
-    const { classes , t , suggestions} = this.props;
+    const { classes , t , suggestions , places , loading} = this.props;
 
+    const placesToRender = places ? places.map( place => {
+       return <GridItem xs = {3} key={place['id']}>
+                <PlaceThumbnailView {...place} />
+              </GridItem>
+              
+    }) : null;
+
+    
     return (<GridContainer className={classes.container}>
              <GridItem xs = {12}>
                <AutoComplete 
                     translations={t}
                     fetchSuggestions = {this.fetchSuggestions}
-                    suggestionClicked = {this.handleSuggestionClicked}
-                    suggestions={suggestions} />
+                    performSearch = {this.searchText}
+                    suggestions={suggestions} 
+                    isLoading={loading}/>
              </GridItem>
+             {placesToRender}
             </GridContainer>);
   }
 
@@ -108,23 +121,24 @@ class AddNewPlace extends Component {
      dispatch(autoCompleteSearch(query,params));
   }
 
+  searchText = (query) => {
+    console.log("searchText",query);
+    const { dispatch , city } = this.props;
+    const latlngObj = city.geometry ? city.geometry.location : undefined;
+    const radius  = "100000";
 
-  handleSuggestionClicked = (suggestion) => {
-    console.log("handleSuggestionClicked",suggestion);
-
-    if(suggestion.type === 'category') {
-
-    }
-    else {
-      window.open(`${window.location.protocol}//${window.location.hostname}:${window.location.port}/place?id=${suggestion.place_id}`, "_blank");
-    }
+    const params = { latlngObj  , radius};
+    dispatch(clearSuggestion());
+    dispatch(textSearch(query,params));
   }
 }
 
 const mapStateToProps = state => (
   {
     city : getSelectedCityDetails(state),
-    suggestions:getPredictions(state)
+    suggestions:getPredictions(state),
+    places:getPlaces(state),
+    loading:isLoading(state)
   }
 );
 
