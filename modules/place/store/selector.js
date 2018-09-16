@@ -7,7 +7,7 @@ export const getPredictionAsList = state => state.get(NAME).get('predictions');
 
 export const getPlaces = state => state.get(NAME).get('places');
 
-export const getPredictions = createSelector(getPredictionAsList , predictions => predictions.toJSON());
+export const getPredictions = createSelector(getPredictionAsList , predictions => predictions.toJSON ? predictions.toJSON() : predictions );
 
 
 
