@@ -1,49 +1,39 @@
+import { Map, Record } from "immutable";
 import { RESET_ERROR } from "./actionTypes";
 
-
-const initialState = {
-  loading:false,
-  error:false,
+const myRecord  = Record({
+  errorData:undefined,
   pendingRequestCount:0
-}
+});
+const initialState = new myRecord({
+  errorData:undefined,
+  pendingRequestCount:0
+});
 
 export default function appReducer(state = initialState , action) {
 
   if(action.type.endsWith('PENDING')) {
     const pendingRequestCount = state.pendingRequestCount+1;
-    return {
-      ...state,
-      loading:true,
-      error:false,
+    return state.merge({
       errorData:undefined,
       pendingRequestCount
-    }
+    });
   }
   else if(action.type.endsWith('SUCCESS') || action.type.endsWith('CANCEL')) {
-    const pendingRequestCount = state.pendingRequestCount > 0 ? state.pendingRequestCount - 1:state.pendingRequestCount;
-
-    return {
-      ...state,
-      loading:pendingRequestCount > 0,
-      pendingRequestCount
-    }
+    const pendingRequestCount = state.pendingRequestCount > 0 ? 
+                                        state.pendingRequestCount - 1:state.pendingRequestCount;
+    return state.merge({
+        pendingRequestCount});
   }
   else if(action.type.endsWith('ERROR')) {
     const pendingRequestCount = state.pendingRequestCount > 0 ? state.pendingRequestCount - 1:state.pendingRequestCount;
-    return {
-      ...state,
-      loading:pendingRequestCount > 0,
-      pendingRequestCount,
-      error:true,
-      errorData:action.error ? action.error : {status:'Unable to connect to server'}
-    }
+    return state.merge({pendingRequestCount,
+        errorData:action.error ? action.error : {status:'Unable to connect to server'}
+      });
   }
   else if(action.type === RESET_ERROR.ACTION) {
-    return {
-      ...state,
-      error:false,
-      errorData:undefined
-    }
+    return state.merge({
+        errorData:undefined})
   }
   return state;
 }

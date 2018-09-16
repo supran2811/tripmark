@@ -1,5 +1,8 @@
 import axios from 'axios'
-import categories from './category.json'
+import { List } from 'immutable';
+import _ from 'lodash';
+
+import categories from './category.json';
 const googlePlacesAPI = "https://us-central1-triporg-1508486982436.cloudfunctions.net/searchPlace"
 const googleAutoCompleteAPI = "/autoCompleteSearch";//"https://us-central1-triporg-1508486982436.cloudfunctions.net/autoCompleteSearch"
 
@@ -49,7 +52,9 @@ export function autoCompleteSearch( query , { latlngObj , radius }) {
   return axios.get(`${googleAutoCompleteAPI}`,config);
 }
 
-export function filterCategory(query) {
+ export const filterCategory = _.memoize(filter);
+
+ function filter(query) {
   if(!query || query.length == 0 ){
     return categories.slice(0,5);
   }
@@ -62,7 +67,10 @@ export function filterCategory(query) {
       if (keep) {
         count += 1;
       }
-      return keep;
+      return List(keep);
     });
   }
 }
+
+
+

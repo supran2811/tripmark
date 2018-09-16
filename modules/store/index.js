@@ -3,10 +3,12 @@ import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from './rootReducer';
 import rootSaga from './rootSaga';
+import { Map } from 'immutable';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStore(initialState = {}) {
+export default function configureStore(initialState = Map()) {
+  console.log("configureStore",initialState);
   // The DEVTOOLS stuff will enable the redux devtools in Chrome
   const composeEnhancers =
     typeof window === 'object' &&

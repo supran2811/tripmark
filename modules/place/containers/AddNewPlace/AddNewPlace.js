@@ -21,7 +21,7 @@ class AddNewPlace extends Component {
     
     const { city  , dispatch , id , google } = this.props;
    
-    if( (!city  && id && id !== '') ||  (city && id && city.place_id !== id)) {
+    if( (!city  && id && id !== '') ||  (city && id && city.get('place_id') !== id)) {
       dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
     }
   }
@@ -30,7 +30,7 @@ class AddNewPlace extends Component {
     
     const { city  , dispatch , id } = this.props;
     
-    if( (!city  && id && id !== '') ||  (city &&  id && city.place_id !== id)) {
+    if( (!city  && id && id !== '') ||  (city &&  id && city.get('place_id') !== id)) {
       dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
     }
   }
@@ -44,7 +44,7 @@ class AddNewPlace extends Component {
   }
 
   render() {
-
+    
     const { classes ,  t , city }  = this.props;
 
     const rightHeaderLinks = {
@@ -83,14 +83,14 @@ class AddNewPlace extends Component {
     const { classes , t , suggestions , places , loading} = this.props;
 
     const placesToRender = places ? places.map( place => {
+       console.log("placesToRender",place);
        return <GridItem xs = {3} key={place['id']}>
                 <PlaceThumbnailView {...place} />
               </GridItem>
               
     }) : null;
 
-    
-    return (<GridContainer className={classes.container}>
+  return (<GridContainer className={classes.container}>
              <GridItem xs = {12}>
                <AutoComplete 
                     translations={t}
@@ -113,7 +113,7 @@ class AddNewPlace extends Component {
 
     console.log("Inside fetchSuggestions",query,city);
 
-    const latlngObj = city.geometry ? city.geometry.location : undefined;
+    const latlngObj = city.get('geometry') ? city.get('geometry').get('location') : undefined;
     const radius  = "100000";
 
     const params = { latlngObj  , radius};
@@ -124,7 +124,7 @@ class AddNewPlace extends Component {
   searchText = (query) => {
     console.log("searchText",query);
     const { dispatch , city } = this.props;
-    const latlngObj = city.geometry ? city.geometry.location : undefined;
+    const latlngObj = city.get('geometry') ? city.get('geometry').get('location') : undefined;
     const radius  = "100000";
 
     const params = { latlngObj  , radius};
@@ -142,4 +142,5 @@ const mapStateToProps = state => (
   }
 );
 
-export default connect(mapStateToProps)(withGoogleApiLibs(AddNewPlace,['placedata','common'],addNewPlaceStyle));
+export default connect(mapStateToProps)
+                  (withGoogleApiLibs(AddNewPlace,['placedata','common'],addNewPlaceStyle));

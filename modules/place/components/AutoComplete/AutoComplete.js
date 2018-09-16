@@ -16,6 +16,7 @@ import Search from '@material-ui/icons/Search';
 import autoCompleteStyle from './autoCompleteStyle';
 import { filterCategory } from '../../../../google/placesApi';
 import Button from '../../../../components/CustomButtons';
+import { List } from 'immutable';
 
 class AutoComplete extends Component {
 
@@ -139,7 +140,7 @@ class AutoComplete extends Component {
 
   render() {
     const { classes , suggestions , isLoading ,performSearch } = this.props;
-
+    console.log("AutoComplete::: suggestions",suggestions);
     const autosuggestProps = {
       renderInputComponent:this.renderInputField,
       suggestions: suggestions,

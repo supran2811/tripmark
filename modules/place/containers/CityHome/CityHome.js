@@ -23,16 +23,16 @@ class CityHome extends Component {
   }
 
   componentDidUpdate() {
-    console.log("CityHome componentDidUpdate");
+    // console.log("CityHome componentDidUpdate");
     const { city  , dispatch , google , id} = this.props;
-    
-    if( (!city  && id && id !== '') ||  (city &&  id && city.place_id !== id)) {
+    console.log("CityHome componentDidUpdate ",city);
+    if( (!city  && id && id !== '') ||  (city &&  id && city.get('place_id') !== id)) {
       dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
     }
   }
 
   openAddFavoritePlace(city) {
-    Router.pushRoute('city/addfav' , {cityId:city.place_id } );
+    Router.pushRoute('city/addfav' , {cityId:city.get('place_id') } );
   }
 
   render() {
@@ -48,7 +48,7 @@ class CityHome extends Component {
                 isAuthenticated
                 t = {t}
                 google = {google}
-                selectedCityName = {city ? city.name :''}
+                selectedCityName = {city ? city.get('name') :''}
               /> 
              { this.renderCityDetails(city , classes , t) }
            </React.Fragment>
@@ -62,7 +62,7 @@ class CityHome extends Component {
     
     return (
       <React.Fragment>
-        <Parallax small image={getOptimalBGImageUrl(city.photos,window.innerWidth)}>
+        <Parallax small image={getOptimalBGImageUrl(city.get('photos'),window.innerWidth)}>
           <div className = {classes.container}>
               <Button
                   size="lg"
@@ -88,4 +88,5 @@ const mapStateToProps = state => {
      city: getSelectedCityDetails(state)
   }
 }
-export default  connect(mapStateToProps)(withGoogleApiLibs(CityHome , ['placedata','common'] , cityHomeStyle));
+export default  connect(mapStateToProps)
+                  (withGoogleApiLibs(CityHome , ['placedata','common'] , cityHomeStyle));

@@ -1,10 +1,14 @@
+import { createSelector } from "reselect";
 import { NAME } from "./constants";
 
-export const getErrorData = state => state[NAME].errorData;
+export const getErrorData = state => state.get(NAME).get('errorData');
 
-export const hasError = state => state[NAME].error;
+export const getPendingRequestCount = state => state.get(NAME).get('pendingRequestCount');
 
-export const isLoading = state => state[NAME].loading;
+export const hasError = createSelector(getErrorData , (errorData) => errorData != undefined);
+
+export const isLoading = createSelector(getPendingRequestCount , (pendingReqCount) => pendingReqCount > 0);
+
 
 
 
