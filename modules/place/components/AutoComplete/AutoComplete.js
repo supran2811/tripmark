@@ -16,7 +16,7 @@ import Search from '@material-ui/icons/Search';
 import autoCompleteStyle from './autoCompleteStyle';
 import { filterCategory } from '../../../../google/placesApi';
 import Button from '../../../../components/CustomButtons';
-import { List } from 'immutable';
+
 
 class AutoComplete extends Component {
 
@@ -24,9 +24,8 @@ class AutoComplete extends Component {
     value:''
   }
 
-
   renderInputField = (inputProps) => {
-    const { classes , inputRef = () => {}, ref, ...other } = inputProps;
+    const {classes , inputRef = () => {}, ref, ...other } = inputProps;
 
     return <TextField 
                 id="autoCompleteInput"
@@ -122,7 +121,7 @@ class AutoComplete extends Component {
     console.log("handleSuggestionsFetchRequested",value,reason);
     const inputValue = deburr(value.trim()).toLowerCase();
     (reason === 'input-changed') && 
-                  _.debounce( this.props.fetchSuggestions , 500 , {trailing : true})(inputValue);
+                  _.debounce( this.props.fetchSuggestions , 500 , {trailing : true})({term:inputValue,type:'text'});
   };
 
   handleSuggestionsClearRequested = () => {
@@ -139,8 +138,7 @@ class AutoComplete extends Component {
   };
 
   render() {
-    const { classes , suggestions , isLoading ,performSearch } = this.props;
-    console.log("AutoComplete::: suggestions",suggestions);
+    const { classes , suggestions , isLoading ,performSearch , translation} = this.props;
     const autosuggestProps = {
       renderInputComponent:this.renderInputField,
       suggestions: suggestions,
@@ -157,10 +155,10 @@ class AutoComplete extends Component {
               {...autosuggestProps}
               inputProps={{
                 classes,
-                placeholder: 'Where do you want to go?',
+                placeholder: translation('autoCompletePlaceHolder'),
                 value: this.state.value,
                 onChange: this.handleChange('value'),
-                onKeyPress: e => e.key === 'Enter' && performSearch(e.target.value)
+                onKeyPress: e => e.key === 'Enter' && performSearch({term:e.target.value , type:'text'})
               }}
               theme={{
                 container: classes.container,
@@ -179,7 +177,7 @@ class AutoComplete extends Component {
                        size = "lg"
                        loading={isLoading} 
                        justIcon
-                       onClick={ () => performSearch(this.state.value)}
+                       onClick={ () => performSearch({term:this.state.value,type:'text'})}
                        >
                   <Search classes={ { root : classes.iconStyle} } />
             </Button>
@@ -198,7 +196,7 @@ class AutoComplete extends Component {
       }
       else {
         this.setState({value:suggestion.label});
-        this.props.performSearch(suggestion.label);
+        this.props.performSearch(suggestion);
       }
     }
   }
@@ -206,7 +204,7 @@ class AutoComplete extends Component {
 }
 
 AutoComplete.propTypes = {
-  translation:PropTypes.object.isRequired,
+  translation:PropTypes.func.isRequired,
   fetchSuggestions:PropTypes.func.isRequired,
   performSearch:PropTypes.func.isRequired,
   suggestions:PropTypes.array

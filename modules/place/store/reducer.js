@@ -8,15 +8,20 @@ import { FETCH_CITY_DETAILS,
 import { filterCategory } from "../../../google/placesApi";
 
 const myRecord = Record({
-  predictions : filterCategory(),
+  predictions:undefined,
   selectedCity:undefined,
   places:undefined,
+  query:undefined
 });
 
 const initialState = new myRecord({
-  predictions : filterCategory(),
+  predictions : List(),
   selectedCity:undefined,
-  places:List(),
+  places:Map(),
+  query:Map({
+    term : '',
+    type:'text'
+  })
 });
 
 export default function placeReducer( state=initialState , action ) {
@@ -25,36 +30,43 @@ export default function placeReducer( state=initialState , action ) {
       return state.merge({selectedCity:action.place});
     }
     case AUTOCOMPLETE_SEARCH.SUCCESS : {
-
+      const query = action.query;
+      console.log("Coming inside autocomplete search reducer...",query);
       let predictions = List(action.response.data['predictions']);
-
       if(predictions.length > 5) {
         predictions = predictions.slice(0,4);
       }
-
-      const filteredCategories = filterCategory(action.query);
-
-      if(filteredCategories.length > 0){
-        const filterCategoryLength = filteredCategories.length;
-        const difference = 5-filterCategoryLength;
-        predictions = predictions.length > difference ? predictions.slice(0,difference):predictions; 
-
-        predictions = predictions.push(filteredCategories)//[ ...predictions , ...filteredCategories];
-      }
-      return state.merge({predictions});
+      return state.merge({predictions,query});
     }
     case CLEAR_SUGGESTIONS.ACTION :{
       return state.merge({predictions:[]});
     }
     case TEXT_SEARCH.SUCCESS:{
-      let places = List(action.response.data['results']);
-      return state.merge({places});
+      const query = action.query;
+      let places = Map(action.response.data);
+      const newToken = places.get('next_page_token');
+      
+      const oldPlace  = state.get('places');
+      const oldResults = oldPlace.get('results');
+      const oldToken = oldPlace.get('next_page_token');
+
+      
+      if(oldPlace && oldResults && oldToken !== newToken) {
+        const updatedResults = oldResults.concat(places.get('results'));
+        console.log("Coming here " , updatedResults);
+      }
+
+      return query['term'] ? state.merge({places,query}) : state.merge({places});
     }
     case RESET_CITY_DETAILS.ACTION: {
       return state.merge({
               selectedCity:undefined,
-              places:undefined,
-              predictions:filterCategory()})
+              places:Map(),
+              predictions:filterCategory(),
+              query:Map({
+                term : '',
+                type:'text'
+              })})
     }
   }
   return state;

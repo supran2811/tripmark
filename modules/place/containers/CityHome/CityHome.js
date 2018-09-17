@@ -10,6 +10,7 @@ import { getOptimalBGImageUrl } from '../../../../google/places';
 import { withGoogleApiLibs } from '../../../../lib/withLibs';
 import cityHomeStyle from './cityHomeStyle';
 import AppHeader from '../../../app/components/AppHeader';
+import PageLoader from '../../../app/components/PageLoader';
 
 class CityHome extends Component {
 
@@ -78,7 +79,7 @@ class CityHome extends Component {
   }
 
   renderDefault() {
-    return (<div> Loading....</div>)
+    return <PageLoader />
   }
 
 }

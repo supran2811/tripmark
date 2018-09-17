@@ -1,4 +1,4 @@
-import {fork,takeEvery,put, take, takeLatest , call, cancelled } from 'redux-saga/effects';
+import {fork,takeEvery,put, take, takeLatest , call, cancelled  , cancel} from 'redux-saga/effects';
 import { FETCH_CITY_DETAILS, TEXT_SEARCH, AUTOCOMPLETE_SEARCH, CANCEL_AUTOCOMPLETE_SEARCH } from './actionTypes';
 import { googlePlace , googlePlacesApi } from '../../../google';
 
@@ -17,10 +17,11 @@ export function* dofetchCityDetails( { google , mapRef , placeId } ) {
 export function* doTextSearch( {query , params }) {
   console.log("Inside doTextSearch ",query,params);
   yield put({ type: TEXT_SEARCH.PENDING});
+  yield put({ type : CANCEL_AUTOCOMPLETE_SEARCH.ACTION });
   try {
    const response = yield call(googlePlacesApi.textSearch,query,params);
    console.log("Inside doTextSearch ",response);
-   yield put({ type: TEXT_SEARCH.SUCCESS , response});
+   yield put({ type: TEXT_SEARCH.SUCCESS , response , query});
   }
   catch(error) {
     console.log("doTextSearch error",error);
@@ -33,7 +34,9 @@ export function* doAutoCompleteSearchCancellable({query , params }) {
   yield put({ type: AUTOCOMPLETE_SEARCH.PENDING});
   try {
    const response = yield call(googlePlacesApi.autoCompleteSearch,query,params);
-   yield put({ type: AUTOCOMPLETE_SEARCH.SUCCESS , response,query});
+   console.log("doAutoCompleteSearchCancellable:::response ",response);
+   yield put({ type: AUTOCOMPLETE_SEARCH.SUCCESS , response , query});
+   console.log("Coming ere 11111111111111111111111");
   }
   catch(error) {
     console.log("doAutoCompleteSearch error",error);

@@ -7,12 +7,14 @@ import GridItem from '../../../../components/GridItem';
 import { withGoogleApiLibs } from '../../../../lib/withLibs'
 import addNewPlaceStyle from './addNewPlaceStyle';
 import AppHeader from '../../../app/components/AppHeader';
-import { getSelectedCityDetails, getPredictions, getPlaces } from '../../store/selector';
+import { getSelectedCityDetails, getPredictions, getPlaces, getNextToken } from '../../store/selector';
 import Close from '@material-ui/icons/Close'
 import { fetchCityDetails, autoCompleteSearch, clearSuggestion ,textSearch } from '../../store/action';
 import AutoComplete from '../../components/AutoComplete';
 import PlaceThumbnailView from '../../components/PlaceThumbnailView';
 import { isLoading } from '../../../app/store/selector'
+import PageLoader from '../../../app/components/PageLoader';
+import PaginationComponent from '../../../../hoc/PaginationComponent';
 
 
 class AddNewPlace extends Component {
@@ -39,10 +41,6 @@ class AddNewPlace extends Component {
     Router.back();
   }
 
-  onSuggestSelect = (item) => {
-    console.log("onSuggestSelect Item",item);
-  }
-
   render() {
     
     const { classes ,  t , city }  = this.props;
@@ -60,13 +58,11 @@ class AddNewPlace extends Component {
       }
     }
 
-    console.log("AddNewPlace",city);
-
     return (
        <React.Fragment>
           <AppHeader 
                 color="primary"
-                headerTitle="Add Favorites"
+                headerTitle={t('addYourFavorite')}
                 rightLinks = {rightHeaderLinks}
             />
             {
@@ -85,7 +81,10 @@ class AddNewPlace extends Component {
     const placesToRender = places ? places.map( place => {
        console.log("placesToRender",place);
        return <GridItem xs = {3} key={place['id']}>
-                <PlaceThumbnailView {...place} />
+                <PlaceThumbnailView 
+                onMainClick = { placeId => this.openPlaceDetails(placeId) }
+                onBookmarkClick = { placeId => this.bookmarkPlace(placeId)}
+                place={place} />
               </GridItem>
               
     }) : null;
@@ -93,25 +92,36 @@ class AddNewPlace extends Component {
   return (<GridContainer className={classes.container}>
              <GridItem xs = {12}>
                <AutoComplete 
-                    translations={t}
+                    translation={t}
                     fetchSuggestions = {this.fetchSuggestions}
                     performSearch = {this.searchText}
                     suggestions={suggestions} 
                     isLoading={loading}/>
              </GridItem>
-             {placesToRender}
-            </GridContainer>);
+             <PaginationComponent
+                    onPagination = {this.searchTextNext} 
+                    loading = {loading}>
+              {placesToRender}
+             </PaginationComponent>
+          </GridContainer>);
   }
 
   renderLoading() {
-    return <div> LOADING....</div>
+    return <PageLoader />
+  }
+
+  openPlaceDetails = placeId => {
+    console.log("Inside openPlaceDetails ",placeId);
+    window.open(`${window.location.origin}/place/${placeId}`,"_blank");
+  }
+
+  bookmarkPlace = placeId => {
+    console.log("Inside bookmarkPlace ",placeId);
   }
 
   fetchSuggestions = (query) => {
     
     const { dispatch , city } = this.props;
-
-    console.log("Inside fetchSuggestions",query,city);
 
     const latlngObj = city.get('geometry') ? city.get('geometry').get('location') : undefined;
     const radius  = "100000";
@@ -122,7 +132,6 @@ class AddNewPlace extends Component {
   }
 
   searchText = (query) => {
-    console.log("searchText",query);
     const { dispatch , city } = this.props;
     const latlngObj = city.get('geometry') ? city.get('geometry').get('location') : undefined;
     const radius  = "100000";
@@ -131,6 +140,16 @@ class AddNewPlace extends Component {
     dispatch(clearSuggestion());
     dispatch(textSearch(query,params));
   }
+
+  searchTextNext = () => {
+   
+    const { dispatch , nextToken} = this.props;
+    console.log("searchTextNext::::::::::::",nextToken);
+    if(nextToken){
+      const query = {pagetoken:nextToken}
+      dispatch(textSearch(query, {}));
+    }
+  }
 }
 
 const mapStateToProps = state => (
@@ -138,7 +157,8 @@ const mapStateToProps = state => (
     city : getSelectedCityDetails(state),
     suggestions:getPredictions(state),
     places:getPlaces(state),
-    loading:isLoading(state)
+    loading:isLoading(state),
+    nextToken:getNextToken(state)
   }
 );
 

@@ -9,6 +9,7 @@ import { withGoogleApiLibs } from '../../../../lib/withLibs';
 import AppHeader from '../../../app/components/AppHeader';
 import GoogleAutoComplete from '../../../../components/GoogleAutoComplete';
 import { resetCityDetails } from '../../../place/store/action';
+import { List, Map } from 'immutable';
 
 class HomePage extends Component {
 

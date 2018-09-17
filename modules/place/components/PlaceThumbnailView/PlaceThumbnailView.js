@@ -9,6 +9,7 @@ import StarRatings from 'react-star-ratings';
 import Bookmark from '@material-ui/icons/Bookmark';
 import Map from '@material-ui/icons/Map';
 import IconButton from '@material-ui/core/IconButton';
+import PropTypes from 'prop-types';
 
 import placeThumbnailStyle from './placeThumbnailViewStyle'
 import Card from '../../../../components/Card';
@@ -18,12 +19,20 @@ import { getPhotoUrl } from '../../../../google/places';
 class PlaceThumbnailView extends Component {
   render() {
 
-    const { name , photos , opening_hours , rating , classes } = this.props;
+    const { place ,
+            classes ,
+            onMainClick ,
+            onBookmarkClick } = this.props;
 
+    const name          = place['name'];
+    const photos        = place['photos'];
+    const opening_hours = place['opening_hours'];
+    const rating        = place['rating']; 
+    const place_id      = place['place_id'];
     const photoUrl = photos ? getPhotoUrl(photos[0]['photo_reference'] , 280) : null ;
-    console.log("photoUrl",photoUrl);
+
     return <Card className = {classes.card}>
-              <CardActionArea>
+              <CardActionArea onClick = {() => onMainClick(place_id)}>
                 <CardMedia
                   className={classes.media}
                   image={photoUrl}
@@ -55,15 +64,20 @@ class PlaceThumbnailView extends Component {
                 </CardContent>
               </CardActionArea>
               <CardActions className={classes.actions} disableActionSpacing>
-                <IconButton aria-label="Add to favorites">
-                  <Bookmark color="default" />
+                <IconButton aria-label="Add to favorites" onClick = {() => onBookmarkClick(place_id)}>
+                  <Bookmark  />
                 </IconButton>
-                <IconButton aria-label="Share">
+                <IconButton aria-label="Open in google map">
                   <Map />
                 </IconButton>
                </CardActions> 
            </Card>
   }
+}
+
+PlaceThumbnailView.propTypes = {
+  onMainClick : PropTypes.func.isRequired,
+  onBookmarkClick: PropTypes.func.isRequired
 }
 
 export default withStyles(placeThumbnailStyle)(PlaceThumbnailView);
