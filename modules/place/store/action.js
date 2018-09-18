@@ -9,6 +9,15 @@ export function fetchCityDetails(google , mapRef , placeId) {
   }
 }
 
+export function fetchPlaceDetails(google , mapRef , placeId) {
+  return {
+    type:FETCH_PLACE_DETAILS.ACTION,
+    google, 
+    mapRef,
+    placeId
+  }
+}
+
 export function setCityDetails(city) {
   return {
     type:SET_CITY_DETAILS.ACTION,

@@ -11,7 +11,7 @@ import { getSelectedCityDetails, getPredictions, getPlaces, getNextToken } from 
 import Close from '@material-ui/icons/Close'
 import { fetchCityDetails, autoCompleteSearch, clearSuggestion ,textSearch } from '../../store/action';
 import AutoComplete from '../../components/AutoComplete';
-import PlaceThumbnailView from '../../components/PlaceThumbnailView';
+import PlaceResultGrid from '../../components/PlaceResultGrid';
 import { isLoading } from '../../../app/store/selector'
 import PageLoader from '../../../app/components/PageLoader';
 import PaginationComponent from '../../../../hoc/PaginationComponent';
@@ -76,20 +76,8 @@ class AddNewPlace extends Component {
 
   renderMainContent = () => {
 
-    const { classes , t , suggestions , places , loading} = this.props;
-
-    const placesToRender = places ? places.map( place => {
-       console.log("placesToRender",place);
-       return <GridItem xs = {3} key={place['id']}>
-                <PlaceThumbnailView 
-                onMainClick = { placeId => this.openPlaceDetails(placeId) }
-                onBookmarkClick = { placeId => this.bookmarkPlace(placeId)}
-                place={place} />
-              </GridItem>
-              
-    }) : null;
-
-  return (<GridContainer className={classes.container}>
+      const { classes , t , suggestions , places , loading} = this.props;
+      return (<GridContainer className={classes.container}>
              <GridItem xs = {12}>
                <AutoComplete 
                     translation={t}
@@ -101,22 +89,13 @@ class AddNewPlace extends Component {
              <PaginationComponent
                     onPagination = {this.searchTextNext} 
                     loading = {loading}>
-              {placesToRender}
+              <PlaceResultGrid places = {places} />
              </PaginationComponent>
           </GridContainer>);
   }
 
   renderLoading() {
     return <PageLoader />
-  }
-
-  openPlaceDetails = placeId => {
-    console.log("Inside openPlaceDetails ",placeId);
-    window.open(`${window.location.origin}/place/${placeId}`,"_blank");
-  }
-
-  bookmarkPlace = placeId => {
-    console.log("Inside bookmarkPlace ",placeId);
   }
 
   fetchSuggestions = (query) => {

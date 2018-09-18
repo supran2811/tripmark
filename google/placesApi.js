@@ -17,7 +17,7 @@ export function textSearch({term , pagetoken} , {latlngObj,radius}) {
   if(term) {
     config = { 
       params : {
-        text:term,
+        query:term,
         location,
         radius,
         key:process.env._GOOGLE_API_KEY

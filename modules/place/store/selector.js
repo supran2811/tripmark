@@ -5,11 +5,13 @@ import { filterCategory } from "../../../google/placesApi";
 
 export const getSelectedCityDetails = state => state.get(NAME).get('selectedCity');
 
+export const getSelectedPlace       = (state,placeId) => state.get(NAME).get('selectedPlaces').get(placeId);
+
 export const getPredictionAsList = state => state.get(NAME).get('predictions');
 
 export const getPlacesObject = state => state.get(NAME).get('places');
 
-export const getQueryString = state => state.get(NAME).get('query')
+export const getQueryString = state => state.get(NAME).get('query');
 
 export const getPredictions = 
   createSelector( getPredictionAsList ,getQueryString , 

@@ -1,5 +1,9 @@
-import {fork,takeEvery,put, take, takeLatest , call, cancelled  , cancel} from 'redux-saga/effects';
-import { FETCH_CITY_DETAILS, TEXT_SEARCH, AUTOCOMPLETE_SEARCH, CANCEL_AUTOCOMPLETE_SEARCH } from './actionTypes';
+import { fork,takeEvery,put,takeLatest,call,cancelled,cancel ,all } from 'redux-saga/effects';
+
+import { FETCH_CITY_DETAILS, 
+          TEXT_SEARCH, 
+          AUTOCOMPLETE_SEARCH, 
+          CANCEL_AUTOCOMPLETE_SEARCH } from './actionTypes';
 import { googlePlace , googlePlacesApi } from '../../../google';
 
 
@@ -11,6 +15,17 @@ export function* dofetchCityDetails( { google , mapRef , placeId } ) {
     yield put({ type:FETCH_CITY_DETAILS.SUCCESS , place });
   } catch(error) {
     yield put({ type:FETCH_CITY_DETAILS.ERROR , error });
+  }
+}
+
+export function* dofetchPlaceDetails( { google , mapRef , placeId } ) {
+  try {
+    yield put({ type:FETCH_PLACE_DETAILS.PENDING });
+    const place = yield googlePlace.getPlaceDetails(google , mapRef ,placeId);
+    console.log("Inside dofetchCityDetails",place);
+    yield put({ type:FETCH_PLACE_DETAILS.SUCCESS , place });
+  } catch(error) {
+    yield put({ type:FETCH_PLACE_DETAILS.ERROR , error });
   }
 }
 
@@ -68,7 +83,8 @@ export function* cancelTask(task) {
 }
 
 export default function* saga() {
-  yield fork(takeEvery,FETCH_CITY_DETAILS.ACTION , dofetchCityDetails);
-  yield fork(takeEvery,TEXT_SEARCH.ACTION , doTextSearch);
-  yield fork(takeLatest,AUTOCOMPLETE_SEARCH.ACTION , doAutoCompleteSearch);
+  yield all ( [ fork(takeEvery,FETCH_CITY_DETAILS.ACTION , dofetchCityDetails),
+                fork(takeEvery,FETCH_PLACE_DETAILS.ACTION , dofetchPlaceDetails),
+                fork(takeEvery,TEXT_SEARCH.ACTION , doTextSearch),
+                fork(takeLatest,AUTOCOMPLETE_SEARCH.ACTION , doAutoCompleteSearch)  ]);
 }
