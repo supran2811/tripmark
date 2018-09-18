@@ -18,7 +18,7 @@ class CityHome extends Component {
     console.log("CityHome componentDidMount");
     const { city  , dispatch ,query , google ,id} = this.props;
   
-    if( (!city  && id && id !== '') ||  (city && id && city.place_id !== id)) {
+    if( (!city  && id && id !== '') ||  (city && id &&  city.get('place_id') !== id)) {
       dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
     }
   }

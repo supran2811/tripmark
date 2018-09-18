@@ -4,7 +4,8 @@ import {  FETCH_CITY_DETAILS,
           RESET_CITY_DETAILS, 
           TEXT_SEARCH, 
           AUTOCOMPLETE_SEARCH, 
-          CLEAR_SUGGESTIONS } from "./actionTypes";
+          CLEAR_SUGGESTIONS ,
+         FETCH_PLACE_DETAILS } from "./actionTypes";
 import { filterCategory } from "../../../google/placesApi";
 
 const myRecord = Record({
@@ -33,7 +34,7 @@ export default function placeReducer( state=initialState , action ) {
     }
     case FETCH_PLACE_DETAILS.SUCCESS: {
       let selectedPlaces = state.get('selectedPlaces');
-      selectedPlaces = selectedPlaces.set([action.place['place_id']] , action.place);
+      selectedPlaces = selectedPlaces.set(action.place['place_id'] , action.place);
       return state.merge({selectedPlaces});
     }
     case AUTOCOMPLETE_SEARCH.SUCCESS : {

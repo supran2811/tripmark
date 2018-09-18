@@ -5,7 +5,7 @@ import { filterCategory } from "../../../google/placesApi";
 
 export const getSelectedCityDetails = state => state.get(NAME).get('selectedCity');
 
-export const getSelectedPlace       = (state,placeId) => state.get(NAME).get('selectedPlaces').get(placeId);
+export const getSelectedPlace = (state,placeId) => state.get(NAME).get('selectedPlaces').get(placeId);
 
 export const getPredictionAsList = state => state.get(NAME).get('predictions');
 
@@ -36,7 +36,5 @@ export const getPlaces = createSelector(getPlacesObject , placesObject => {
 export const getNextToken = createSelector(getPlacesObject , placesObject => {
   return placesObject ? placesObject.get('next_page_token'):placesObject;
 });
-
-
 
 

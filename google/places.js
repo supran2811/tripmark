@@ -1,4 +1,4 @@
-
+import { List } from 'immutable';
 
 
 export const getPlaceDetails = (google , mapRef , placeId) => {
@@ -22,17 +22,30 @@ export const getPlaceDetails = (google , mapRef , placeId) => {
 
 export const getOptimalBGImageUrl = (photos = [] , maxWidth) => {
   let url = "";
-  for(let photo of photos) {
-    if(photo.get('width') >= maxWidth) {
-      url = photo.get('getUrl')({maxWidth:maxWidth});
-      break;
+  if(List.isList(photos)) {
+    for(let photo of photos) {
+      if(photo.get('width') >= maxWidth) {
+        url = photo.get('getUrl')({maxWidth:maxWidth});
+        break;
+      }
+    }
+
+    if(url === '' && photos.size > 0) {
+      url = photos[0].get('getUrl')({maxWidth :maxWidth});
     }
   }
+  else {
+    for(let photo of photos) {
+      if(photo['width'] >= maxWidth) {
+        url = photo.getUrl({maxWidth:maxWidth});
+        break;
+      }
+    }
 
-  if(url === '' && photos.size > 0) {
-    url = photos[0].get('getUrl')({maxWidth :maxWidth});
+    if(url === '' && photos.length > 0) {
+      url = photos[0].getUrl({maxWidth :maxWidth});
+    }
   }
-
   return url;
 }
 

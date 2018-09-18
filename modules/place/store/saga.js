@@ -1,9 +1,10 @@
 import { fork,takeEvery,put,takeLatest,call,cancelled,cancel ,all } from 'redux-saga/effects';
 
-import { FETCH_CITY_DETAILS, 
+import {  FETCH_CITY_DETAILS, 
           TEXT_SEARCH, 
           AUTOCOMPLETE_SEARCH, 
-          CANCEL_AUTOCOMPLETE_SEARCH } from './actionTypes';
+          CANCEL_AUTOCOMPLETE_SEARCH ,
+          FETCH_PLACE_DETAILS} from './actionTypes';
 import { googlePlace , googlePlacesApi } from '../../../google';
 
 
@@ -22,7 +23,7 @@ export function* dofetchPlaceDetails( { google , mapRef , placeId } ) {
   try {
     yield put({ type:FETCH_PLACE_DETAILS.PENDING });
     const place = yield googlePlace.getPlaceDetails(google , mapRef ,placeId);
-    console.log("Inside dofetchCityDetails",place);
+    console.log("Inside dofetchPlaceDetails",place);
     yield put({ type:FETCH_PLACE_DETAILS.SUCCESS , place });
   } catch(error) {
     yield put({ type:FETCH_PLACE_DETAILS.ERROR , error });
