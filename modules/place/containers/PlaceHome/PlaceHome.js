@@ -1,5 +1,9 @@
 import React ,{ Component } from 'react';
 import { connect } from 'react-redux';
+import Typography from '@material-ui/core/Typography';
+import Bookmark from '@material-ui/icons/Bookmark';
+import Avatar from '@material-ui/core/Avatar';
+import StarRatings from 'react-star-ratings';
 
 import { withGoogleApiLibs } from '../../../../lib/withLibs';
 import { fetchPlaceDetails } from '../../store/action';
@@ -10,6 +14,9 @@ import Parallax from '../../../../components/Parallax';
 import Button from '../../../../components/CustomButtons';
 import { getOptimalBGImageUrl } from '../../../../google/places';
 import placeHomeStyle from './placeHomeStyle';
+import GridContainer from '../../../../components/GridContainer';
+import GridItem from '../../../../components/GridItem';
+import Card, { CardHeader, CardFooter, CardBody } from '../../../../components/Card';
 
 class PlaceHome extends Component {
 
@@ -62,22 +69,145 @@ class PlaceHome extends Component {
   }
 
   renderPlaceDetails() {
-    const { place  , classes } = this.props;
+    const { place  , classes ,t } = this.props;
     return (
       <React.Fragment>
         <Parallax small image={getOptimalBGImageUrl(place['photos'],window.innerWidth)}>
           <div className = {classes.container}>
               <Button
                   size="lg"
-                  onClick= {() => this.openAddFavoritePlace(city)}
+                  onClick= {() => this.addBookmark(place)}
                   className={classes.addPlaceButton}>
-                  <i className="fas fa-plus" />{t('addYourFavorite')}
+                 <Bookmark /> {t('addYourFavorite')}
               </Button>
           </div>
         </Parallax>
+        {this.renderOtherPlaceDetails()}
       </React.Fragment>
     )
   }
+
+  renderOtherPlaceDetails = () => {
+    const { classes , place , t}  = this.props;
+    const { name , 
+            rating , 
+            opening_hours , 
+            formatted_address , 
+            international_phone_number ,
+            permanently_closed ,
+            icon,
+            geometry ,
+            googleUrl,
+            website,
+            reviews
+            } = place;
+      return(        
+        <GridContainer className = {classes.mainContent}>
+            <GridItem xs={6}>
+               <Typography variant="headline" gutterBottom>
+                  {name}
+               </Typography>
+               {
+                    rating && (
+                      <StarRatings rating = {rating} 
+                                  starRatedColor={classes.dangerColor}
+                                  numberOfStars={5}
+                                  starDimension="20px"
+                                  name='rating'/>
+                    )
+                }
+                {
+                  permanently_closed && 
+                  <Typography variant="title">
+                    Permenantly closed!!!
+                  </Typography>
+                }
+                {
+                  opening_hours && (
+                    <Typography variant="title">
+                        {opening_hours.open_now? "OPEN" : "CLOSED"  }
+                    </Typography>
+                  )
+                }
+                {
+                  formatted_address && 
+                      <Card>
+                        <CardHeader>
+                          <Typography variant="headline" gutterBottom>
+                            Address
+                          </Typography>
+                        </CardHeader>
+                        <CardBody>
+                          {formatted_address}
+                        </CardBody>
+                    </Card>
+                }
+                {
+                  (international_phone_number || website) &&
+                  <Card>
+                      <CardHeader>
+                        <Typography variant="headline" gutterBottom>
+                          Contact
+                        </Typography>
+                      </CardHeader>
+                      <CardBody>
+                        {
+                          international_phone_number && 
+                          <Typography variant="body2">
+                            {international_phone_number}
+                          </Typography>
+                        }
+                          
+                        { website &&
+                          <Typography variant="body2">
+                            {website}
+                          </Typography>
+                        }
+                      </CardBody>
+                  </Card>
+                }
+
+                {
+                  opening_hours && opening_hours.weekday_text && 
+                  <Card>
+                    <CardHeader>
+                      <Typography variant="headline" gutterBottom>
+                        Opening hours
+                      </Typography>
+                    </CardHeader>
+                    <CardBody>
+                      {opening_hours.weekday_text}
+                    </CardBody>
+                  </Card>
+                }
+
+                {
+                  reviews && 
+                    reviews.map(review => {
+                      console.log("reviews ",review);
+                     return <Typography variant="body1">
+                                {review.text}
+                            </Typography>
+                   })
+                }
+            </GridItem>
+            <GridItem xs = {3}>
+              {
+                icon && <Avatar src = {icon}/>
+              }
+            </GridItem>
+            <GridItem xs={3}>
+                GOOGLE MAP
+            </GridItem>
+
+        </GridContainer>);
+  }
+
+  addBookmark = (place) => {
+
+  }
+
+  
 }
 const mapStateToProps = (state,props)  => {
   return {
