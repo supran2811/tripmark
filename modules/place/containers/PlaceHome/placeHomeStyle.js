@@ -23,11 +23,35 @@ const placeHomeStyle = {
     color:"#000"
   },
   mainContent: {
-    margin: "10px 20px"
+    margin: "10px 120px",
   },
   avatar: {
     width:"60px",
     height:"60px"
+  },
+  nameContainer:{
+    display:'flex'
+  },
+  addressCard : {
+    minHeight: 400
+  },
+  addressContent:{
+    transform:"translateY(230px)"
+  },
+  addressActionArea:{
+    transform:"translateY(200px)"
+  },
+  review:{
+    padding:"20px 0",
+    borderBottom: "1px solid "+primaryColor,
+    display:"flex"
+  },
+  profileReview:{
+    height:"100%",
+    flexShrink:"0",
+    marginRight:"10px"
+  },
+  reviewText: {
   }
 }
 

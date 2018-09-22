@@ -1,6 +1,7 @@
 import React , { Component } from 'react';
 import { connect } from 'react-redux';
 import  { Router } from '../../../../routes';
+import Add from '@material-ui/icons/Add'
 
 import { getSelectedCityDetails } from '../../store/selector';
 import { fetchCityDetails } from '../../store/action';
@@ -69,7 +70,13 @@ class CityHome extends Component {
                   size="lg"
                   onClick= {() => this.openAddFavoritePlace(city)}
                   className={classes.addPlaceButton}>
-                  <i className="fas fa-plus" />{t('addYourFavorite')}
+                  <Add /> {t('addYourFavorite')}
+              </Button>
+              <Button
+                  size="lg"
+                  onClick= {() => this.openAddFavoritePlace(city)}
+                  className={classes.addPlaceButton}>
+                   {t('viewPhotos')}
               </Button>
           </div>
         </Parallax>

@@ -17,8 +17,17 @@ import placeHomeStyle from './placeHomeStyle';
 import GridContainer from '../../../../components/GridContainer';
 import GridItem from '../../../../components/GridItem';
 import Card, { CardHeader, CardFooter, CardBody } from '../../../../components/Card';
+import Paper from '@material-ui/core/Paper';
+import {Map, InfoWindow, Marker} from 'google-maps-react';
+import { CardContent, CardActions } from '@material-ui/core';
+import PhotoView from '../../components/PhotoView';
 
 class PlaceHome extends Component {
+
+  state = {
+    expandOpeningHours:false,
+    showPhotoViewer : false
+  }
 
   componentDidMount() {
     console.log("PlaceHome componentDidMount");
@@ -41,9 +50,9 @@ class PlaceHome extends Component {
 
   render() {
 
-    const { place , t } = this.props;
+    const { place , t , classes} = this.props;
 
-    console.log("PlaceHome:::::",place);
+    console.log("PlaceHome:::::",place,this.state);
 
     return <div>
                 {
@@ -57,6 +66,10 @@ class PlaceHome extends Component {
                           t = {t}
                         />
                       {this.renderPlaceDetails()}
+                      {
+                        this.state.showPhotoViewer &&
+                            <PhotoView />
+                      }
                     </React.Fragment>) : this.renderDefault()
                 }
                 <div ref="place"></div>
@@ -78,7 +91,13 @@ class PlaceHome extends Component {
                   size="lg"
                   onClick= {() => this.addBookmark(place)}
                   className={classes.addPlaceButton}>
-                 <Bookmark /> {t('addYourFavorite')}
+                 <Bookmark /> {t('markAsFavourtie')}
+              </Button>
+              <Button
+                  size="lg"
+                  onClick= {() => this.viewPhoto()}
+                  className={classes.addPlaceButton}>
+                  {t('viewPhotos')}
               </Button>
           </div>
         </Parallax>
@@ -101,13 +120,19 @@ class PlaceHome extends Component {
             website,
             reviews
             } = place;
+      console.log("Inside geometry",geometry);      
       return(        
         <GridContainer className = {classes.mainContent}>
-            <GridItem xs={6}>
-               <Typography variant="headline" gutterBottom>
+            <GridItem xs={12}>
+              <div className = {classes.nameContainer}>
+                <Avatar
+                  src={icon}
+                />
+                <Typography variant="display1" gutterBottom>
                   {name}
-               </Typography>
-               {
+                </Typography> 
+              </div>
+              {
                     rating && (
                       <StarRatings rating = {rating} 
                                   starRatedColor={classes.dangerColor}
@@ -117,94 +142,152 @@ class PlaceHome extends Component {
                     )
                 }
                 {
-                  permanently_closed && 
-                  <Typography variant="title">
-                    Permenantly closed!!!
+                    opening_hours && 
+                    (opening_hours.open_now === false ?
+                      <Typography variant="subheading" component="h4" color="error">
+                        CLOSED
+                      </Typography>:
+                      <Typography variant="subheading" component="h4" color="textPrimary">
+                        OPEN
+                      </Typography>)
+                  }
+             </GridItem>
+             <GridItem xs={6}>
+             {
+               opening_hours && 
+               ( opening_hours.weekday_text ?
+                <Card>
+                  <CardContent>
+                  <Typography variant="headline" component="h3" gutterBottom>
+                    Opening Hours
                   </Typography>
-                }
-                {
-                  opening_hours && (
-                    <Typography variant="title">
-                        {opening_hours.open_now? "OPEN" : "CLOSED"  }
-                    </Typography>
-                  )
-                }
-                {
-                  formatted_address && 
-                      <Card>
-                        <CardHeader>
-                          <Typography variant="headline" gutterBottom>
-                            Address
-                          </Typography>
-                        </CardHeader>
-                        <CardBody>
-                          {formatted_address}
-                        </CardBody>
-                    </Card>
-                }
-                {
-                  (international_phone_number || website) &&
-                  <Card>
-                      <CardHeader>
-                        <Typography variant="headline" gutterBottom>
-                          Contact
-                        </Typography>
-                      </CardHeader>
-                      <CardBody>
-                        {
-                          international_phone_number && 
-                          <Typography variant="body2">
-                            {international_phone_number}
-                          </Typography>
-                        }
-                          
-                        { website &&
-                          <Typography variant="body2">
-                            {website}
-                          </Typography>
-                        }
-                      </CardBody>
-                  </Card>
-                }
-
-                {
-                  opening_hours && opening_hours.weekday_text && 
-                  <Card>
-                    <CardHeader>
-                      <Typography variant="headline" gutterBottom>
-                        Opening hours
+                  {
+                    opening_hours.weekday_text.map( text => {
+                      return <div key = {text}> 
+                                <Typography component="p"  noWrap>
+                                  {text}
+                                </Typography>
+                             </div>
+                        
+                    })
+                  }
+                  </CardContent>
+               </Card> :null)
+             }
+             </GridItem>
+             <GridItem xs={6}>
+              <Card className = {classes.addressCard}>
+                  <CardContent>
+                      <Typography variant="headline" component="h3" gutterBottom>
+                        Contact
                       </Typography>
-                    </CardHeader>
-                    <CardBody>
-                      {opening_hours.weekday_text}
-                    </CardBody>
+                      {this.renderMap(geometry)}
+                      <div className = {classes.addressContent}>
+                      {
+                        formatted_address && 
+                          ( <Typography component="p" gutterBottom>
+                                { formatted_address }
+                            </Typography>)
+                      }
+                       {
+                         international_phone_number && (
+                              <Typography component="p" gutterBottom>
+                                  { international_phone_number }
+                              </Typography>
+                         )
+                       }
+                        {
+                          website && (
+                              <Typography component="p" gutterBottom>
+                                { website }
+                              </Typography>
+                          )
+                        }
+                        
+                      </div>
+                  </CardContent>
+                  <CardActions className={classes.addressActionArea}>
+                    <Button size="lg" color="primary" simple>Get Directions</Button>
+                  </CardActions>
+                </Card>
+             </GridItem>
+             {
+               reviews && (
+                <GridItem xs ={12}>
+                  <Card>
+                    <CardContent>
+                        <Typography variant="headline" component="h3" gutterBottom>
+                          User Reviews
+                        </Typography>
+                        
+                          <GridContainer>
+                            {
+                              reviews.map(review => {
+                                return (
+                                  <GridItem xs = {6} key={review['author_name']}> 
+                                      { this.renderReview(review)}
+                                  </GridItem>
+                                )
+                              }) 
+                            }
+                          </GridContainer>
+                    </CardContent>
                   </Card>
-                }
-
-                {
-                  reviews && 
-                    reviews.map(review => {
-                      console.log("reviews ",review);
-                     return <Typography variant="body1">
-                                {review.text}
-                            </Typography>
-                   })
-                }
-            </GridItem>
-            <GridItem xs = {3}>
-              {
-                icon && <Avatar src = {icon}/>
-              }
-            </GridItem>
-            <GridItem xs={3}>
-                GOOGLE MAP
-            </GridItem>
-
+                </GridItem>
+               )
+             }
+            
         </GridContainer>);
+  }
+
+
+  renderMap = (geometry) => {
+    return (<Map 
+            google={this.props.google} 
+            zoom={14}
+            style = {{ width:"90%" , height:"200px" , marginTop:"20px"}}
+            initialCenter={{
+              lat: geometry.location.lat(),
+              lng: geometry.location.lng()
+            }}>
+              <Marker name={name} 
+                      position={{lat: geometry.location.lat(), lng: geometry.location.lng()}}/>
+            </Map>);
+  }
+
+  renderReview = ( review ) => {
+    const { classes } = this.props;
+    return (
+      <div className = {classes.review}>
+        <div className = {classes.profileReview}>
+          <Avatar src={review.profile_photo_url} />
+          <Typography variant="body2" component="p">
+            { review.author_name }
+          </Typography>
+          <StarRatings 
+            rating = {review.rating} 
+            starRatedColor={classes.dangerColor}
+            numberOfStars={5}
+            starDimension="10px"
+            name='rating'
+          />
+        </div>
+        <div className = {classes.reviewText}>
+          <Typography variant="body2" component="p" gutterBottom>
+            {review.text}
+          </Typography>
+        </div>
+        
+      </div>
+    )
   }
 
   addBookmark = (place) => {
 
+  }
+
+  viewPhoto = () => {
+    this.setState({showPhotoViewer:true});
   }
 
   

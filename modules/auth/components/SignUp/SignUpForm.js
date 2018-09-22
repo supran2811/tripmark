@@ -133,12 +133,12 @@ class SignUpForm extends Component {
         <Card className={classes[this.state.cardAnimaton]}>
           <form className={classes.form}>
             <CardHeader className = {classes.cardHeader}>
-            <Button className= {this.props.isLogin ? classes.googleLogin : classes.googleSignUp }
-                  onClick={this.props.googleSignUp}>
-               <span></span>
-           </Button>
-          </CardHeader>
-          <CardBody>
+              <Button className= {this.props.isLogin ? classes.googleLogin : classes.googleSignUp }
+                    onClick={this.props.googleSignUp}>
+                <span></span>
+              </Button>
+            </CardHeader>
+            <CardBody>
             {
               !this.props.isLogin ? 
                   <CustomInput
