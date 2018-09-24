@@ -12,8 +12,14 @@ import { withGoogleApiLibs } from '../../../../lib/withLibs';
 import cityHomeStyle from './cityHomeStyle';
 import AppHeader from '../../../app/components/AppHeader';
 import PageLoader from '../../../app/components/PageLoader';
+import PhotoView from '../../components/PhotoView';
 
 class CityHome extends Component {
+
+
+  state = {
+    showPhotoViewer : false
+  }
 
   componentDidMount() {
     console.log("CityHome componentDidMount");
@@ -39,7 +45,10 @@ class CityHome extends Component {
 
   render() {
     const { city , t , google , classes } = this.props;
-        
+    if(city){
+      console.log("render() city ",city.get('photos'));
+    }
+    
     return ( 
     <div>
         {city ? 
@@ -53,6 +62,11 @@ class CityHome extends Component {
                 selectedCityName = {city ? city.get('name') :''}
               /> 
              { this.renderCityDetails(city , classes , t) }
+             {
+                this.state.showPhotoViewer &&
+                    <PhotoView  photos = {city.get('photos').toJSON()}
+                                onCloseClicked = {this.closePhotoViewer} />
+             }
            </React.Fragment>
           )
            : this.renderDefault()}
@@ -74,7 +88,7 @@ class CityHome extends Component {
               </Button>
               <Button
                   size="lg"
-                  onClick= {() => this.openAddFavoritePlace(city)}
+                  onClick= {this.viewPhoto}
                   className={classes.addPlaceButton}>
                    {t('viewPhotos')}
               </Button>
@@ -87,6 +101,14 @@ class CityHome extends Component {
 
   renderDefault() {
     return <PageLoader />
+  }
+
+  viewPhoto = () => {
+    this.setState({showPhotoViewer:true});
+  }
+
+  closePhotoViewer = () => {
+    this.setState({showPhotoViewer:false});
   }
 
 }

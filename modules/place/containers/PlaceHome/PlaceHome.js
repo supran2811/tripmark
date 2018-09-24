@@ -68,7 +68,8 @@ class PlaceHome extends Component {
                       {this.renderPlaceDetails()}
                       {
                         this.state.showPhotoViewer &&
-                            <PhotoView />
+                            <PhotoView  photos = {place['photos']}
+                                        onCloseClicked = {this.closePhotoViewer} />
                       }
                     </React.Fragment>) : this.renderDefault()
                 }
@@ -290,6 +291,9 @@ class PlaceHome extends Component {
     this.setState({showPhotoViewer:true});
   }
 
+  closePhotoViewer = () => {
+    this.setState({showPhotoViewer:false});
+  }
   
 }
 const mapStateToProps = (state,props)  => {
