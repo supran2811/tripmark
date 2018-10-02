@@ -15,6 +15,8 @@ export const getUserName = () => auth.currentUser ? auth.currentUser.displayName
 
 export const getProfilePhotoUrl = () => auth.currentUser ? auth.currentUser.photoURL : '';
 
+export const getUserId = () => auth.currentUser ? auth.currentUser.uid : '';
+
 export const doGoogleSignIn = (isMobile) => {
   const provider = new Auth.GoogleAuthProvider();
   console.log("doGoogleSignIn",provider);

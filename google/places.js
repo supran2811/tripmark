@@ -1,5 +1,7 @@
 import { List } from 'immutable';
+import _ from 'lodash';
 
+import categories from './category.json';
 
 export const getPlaceDetails = (google , mapRef , placeId) => {
   return new Promise( (resolve , reject) => {
@@ -51,4 +53,28 @@ export const getOptimalBGImageUrl = (photos = [] , maxWidth) => {
 
 export function getPhotoUrl (photoReference , maxHeight) {
   return `https://maps.googleapis.com/maps/api/place/photo?maxheight=${maxHeight}&photoreference=${photoReference}&key=${process.env._GOOGLE_API_KEY}`
+}
+
+export const filterCategory = _.memoize(filter);
+
+ function filter(query) {
+
+  const term = query ? query.get ? query.get('term'): query : ''; 
+
+  if(term.length == 0 ){
+    return categories.slice(0,5);
+  }
+  else {
+    console.log("Inside filter",categories);
+    let count = 0;
+    return categories.filter(category => {
+      const keep =
+          count < 5 && category.label.slice(0, term.length).toLowerCase() === term;
+
+      if (keep) {
+        count += 1;
+      }
+      return keep;
+    });
+  }
 }

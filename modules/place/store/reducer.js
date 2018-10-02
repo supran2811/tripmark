@@ -5,15 +5,17 @@ import {  FETCH_CITY_DETAILS,
           TEXT_SEARCH, 
           AUTOCOMPLETE_SEARCH, 
           CLEAR_SUGGESTIONS ,
-         FETCH_PLACE_DETAILS } from "./actionTypes";
-import { filterCategory } from "../../../google/placesApi";
+         FETCH_PLACE_DETAILS, 
+         ADD_BOOKMARK} from "./actionTypes";
+import { filterCategory } from "../../../google/places";
 
 const myRecord = Record({
   predictions:undefined,
   selectedCity:undefined,
   selectedPlaces:undefined,
   places:undefined,
-  query:undefined
+  query:undefined,
+  bookmarks:undefined
 });
 
 const initialState = new myRecord({
@@ -24,7 +26,8 @@ const initialState = new myRecord({
   query:Map({
     term : '',
     type:'text'
-  })
+  }),
+  bookmarks:Map()
 });
 
 export default function placeReducer( state=initialState , action ) {
@@ -66,6 +69,13 @@ export default function placeReducer( state=initialState , action ) {
         }
       }
       return query['term'] ? state.merge({places,query}) : state.merge({places});
+    }
+    case ADD_BOOKMARK.SUCCESS : {
+      const { city , place } = action;
+      const cityMapObj = Map(city);
+      const newBookmarks = Map({[city.id] : cityMapObj.set('places' , Map({[place.id] : place}))});
+      const updatedBookmarks = state.bookmarks.mergeDeep(newBookmarks);
+      return state.merge({bookmarks:updatedBookmarks});
     }
     case RESET_CITY_DETAILS.ACTION: {
       return state.merge({

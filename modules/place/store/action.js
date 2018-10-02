@@ -5,7 +5,11 @@ import { FETCH_CITY_DETAILS,
          AUTOCOMPLETE_SEARCH, 
          CANCEL_AUTOCOMPLETE_SEARCH, 
          CLEAR_SUGGESTIONS,
-         FETCH_PLACE_DETAILS } from "./actionTypes";
+         FETCH_PLACE_DETAILS,
+         ADD_BOOKMARK,
+         DELETE_BOOKMARK,
+         GET_BOOKMARK_PLACES,
+         GET_BOOKMARKS } from "./actionTypes";
 
 export function fetchCityDetails(google , mapRef , placeId) {
   return {
@@ -63,5 +67,34 @@ export function clearSuggestion() {
 export function cancelAutoCompleteSearch() {
   return {
     type:CANCEL_AUTOCOMPLETE_SEARCH.ACTION
+  }
+}
+
+export function addBookmark(city,place) {
+  return {
+    type:ADD_BOOKMARK.ACTION,
+    city,
+    place
+  }
+}
+
+export function deleteBookmark(cityid,placeid) {
+  return {
+    type : DELETE_BOOKMARK.ACTION,
+    cityid,
+    placeid
+  }
+}
+
+export function getBookmarkPlaces(cityid) {
+  return {
+    type: GET_BOOKMARK_PLACES.ACTION,
+    cityid
+  }
+}
+
+export function getBookmarks() {
+  return {
+    type:GET_BOOKMARKS
   }
 }

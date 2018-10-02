@@ -28,8 +28,19 @@ class PlaceThumbnailView extends Component {
     const photos        = place['photos'];
     const opening_hours = place['opening_hours'];
     const rating        = place['rating']; 
-    const place_id      = place['place_id'];
-    const photoUrl = photos ? getPhotoUrl(photos[0]['photo_reference'] , 280) : null ;
+    const place_id      = place['id'] || place['place_id'];
+    const location      = place['geometry']['location'];
+    const photoUrl      = place['photoUrl'] 
+                                || photos ? getPhotoUrl(photos[0]['photo_reference'] , 280):null;
+
+    const placeToSave = {
+      id:place_id,
+      name,
+      rating,
+      opening_hours,
+      photoUrl,
+      location
+    }
 
     return <Card className = {classes.card}>
               <CardActionArea onClick = {() => onMainClick(place_id)}>
@@ -64,7 +75,7 @@ class PlaceThumbnailView extends Component {
                 </CardContent>
               </CardActionArea>
               <CardActions className={classes.actions} disableActionSpacing>
-                <IconButton aria-label="Add to favorites" onClick = {() => onBookmarkClick(place_id)}>
+                <IconButton aria-label="Add to favorites" onClick = {() => onBookmarkClick(placeToSave)}>
                   <Bookmark  />
                 </IconButton>
                 <IconButton aria-label="Open in google map">

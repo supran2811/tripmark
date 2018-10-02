@@ -17,8 +17,8 @@ class PlaceResultGrid extends Component {
       console.log("placesToRender",place);
       return <GridItem xs = {3} key={place['id']}>
                <PlaceThumbnailView 
-                 onMainClick = { placeId => this.openPlaceDetails(placeId) }
-                 onBookmarkClick = { placeId => this.bookmarkPlace(placeId)}
+                 onMainClick = {this.openPlaceDetails}
+                 onBookmarkClick = {this.bookmarkPlace}
                  place={place} />
              </GridItem>
              
@@ -31,8 +31,9 @@ class PlaceResultGrid extends Component {
     window.open(`${window.location.origin}/place/${placeId}`,"_blank");
   }
   
-  bookmarkPlace = placeId => {
-    console.log("Inside bookmarkPlace ",placeId);
+  bookmarkPlace = place => {
+    console.log("Inside bookmarkPlace ",place);
+    this.props.onBookmarkClick(place);
   }
 }
 

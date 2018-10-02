@@ -21,6 +21,26 @@ const devProxy = {
     target: 'https://us-central1-triporg-1508486982436.cloudfunctions.net/autoCompleteSearch',
     pathRewrite: {'^/autoCompleteSearch': '/'},
     changeOrigin: true
+  },
+  '/addBookmarkPlace': {
+    target: 'https://us-central1-triporg-1508486982436.cloudfunctions.net/addBookmarkPlace',
+    pathRewrite: {'^/addBookmarkPlace': '/'},
+    changeOrigin: true
+  },
+  '/removeBookmarkPlace': {
+    target: 'https://us-central1-triporg-1508486982436.cloudfunctions.net/removeBookmarkPlace',
+    pathRewrite: {'^/removeBookmarkPlace': '/'},
+    changeOrigin: true
+  },
+  '/getBookmarks': {
+    target: 'https://us-central1-triporg-1508486982436.cloudfunctions.net/getBookmarks',
+    pathRewrite: {'^/getBookmarks': '/'},
+    changeOrigin: true
+  },
+  '/getBookmarkPlaces': {
+    target: 'https://us-central1-triporg-1508486982436.cloudfunctions.net/getBookmarkPlaces',
+    pathRewrite: {'^/getBookmarkPlaces': '/'},
+    changeOrigin: true
   }
 }
 

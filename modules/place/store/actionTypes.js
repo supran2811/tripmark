@@ -10,3 +10,8 @@ export const TEXT_SEARCH                = defineAction('TEXT_SEARCH' , [ ERROR ,
 export const AUTOCOMPLETE_SEARCH        = defineAction('AUTOCOMPLETE_SEARCH' , [ ERROR , PENDING , SUCCESS , CANCEL] , NAME);
 export const CLEAR_SUGGESTIONS          = defineAction('CLEAR_SUGGESTIONS' , [] , NAME);
 export const CANCEL_AUTOCOMPLETE_SEARCH = defineAction('CANCEL_AUTOCOMPLETE_SEARCH' , [] , NAME);
+
+export const ADD_BOOKMARK               = defineAction('ADD_BOOKMARK' , [ERROR,PENDING,SUCCESS] , NAME);
+export const DELETE_BOOKMARK            = defineAction('DELETE_BOOKMARK',[ERROR,PENDING,SUCCESS],NAME);
+export const GET_BOOKMARK_PLACES        = defineAction('GET_BOOKMARK_PLACES' , [ERROR,PENDING,SUCCESS],NAME);
+export const GET_BOOKMARKS              = defineAction('GET_BOOKMARKS' , [ERROR,PENDING,SUCCESS],NAME);

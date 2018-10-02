@@ -9,3 +9,9 @@
  4- Marked cities
  
  5- Get location
+ 
+ Featrure for add new places
+ 
+ 1- Add ability to search for places
+ 
+ 2- 

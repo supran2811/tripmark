@@ -14,7 +14,7 @@ import { TextField} from '@material-ui/core';
 import Search from '@material-ui/icons/Search';
 
 import autoCompleteStyle from './autoCompleteStyle';
-import { filterCategory } from '../../../../google/placesApi';
+import { filterCategory } from '../../../../google/places';
 import Button from '../../../../components/CustomButtons';
 
 

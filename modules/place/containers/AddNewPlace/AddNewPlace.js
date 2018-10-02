@@ -9,12 +9,15 @@ import addNewPlaceStyle from './addNewPlaceStyle';
 import AppHeader from '../../../app/components/AppHeader';
 import { getSelectedCityDetails, getPredictions, getPlaces, getNextToken } from '../../store/selector';
 import Close from '@material-ui/icons/Close'
-import { fetchCityDetails, autoCompleteSearch, clearSuggestion ,textSearch } from '../../store/action';
+import { fetchCityDetails, autoCompleteSearch, clearSuggestion ,textSearch, addBookmark } from '../../store/action';
 import AutoComplete from '../../components/AutoComplete';
 import PlaceResultGrid from '../../components/PlaceResultGrid';
 import { isLoading } from '../../../app/store/selector'
 import PageLoader from '../../../app/components/PageLoader';
 import PaginationComponent from '../../../../hoc/PaginationComponent';
+import { getUserId } from '../../../../firebase/auth';
+import { Map } from 'immutable';
+import { getPhotoUrl } from '../../../../google/places';
 
 
 class AddNewPlace extends Component {
@@ -89,7 +92,8 @@ class AddNewPlace extends Component {
              <PaginationComponent
                     onPagination = {this.searchTextNext} 
                     loading = {loading}>
-              <PlaceResultGrid places = {places} />
+              <PlaceResultGrid places = {places} 
+                               onBookmarkClick = {this.bookmarkPlace}/>
              </PaginationComponent>
           </GridContainer>);
   }
@@ -121,13 +125,29 @@ class AddNewPlace extends Component {
   }
 
   searchTextNext = () => {
-   
     const { dispatch , nextToken} = this.props;
     console.log("searchTextNext::::::::::::",nextToken);
     if(nextToken){
       const query = {pagetoken:nextToken}
       dispatch(textSearch(query, {}));
     }
+  }
+
+  bookmarkPlace = (place)  => {
+    const { city , dispatch } = this.props;
+    console.log("Inside bookmark place ",place , city.toJSON());
+
+    const { name , place_id , photos , geometry } = city.toJSON();
+
+    const cityToSave = {
+      id:place_id,
+      name,
+      photoUrl:photos ? getPhotoUrl(photos[0]['photo_reference'] , 280):null,
+      location:{...geometry.location}
+    }
+
+    dispatch(addBookmark(cityToSave,place));
+
   }
 }
 

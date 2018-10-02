@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 
 import { NAME } from "./constants";
-import { filterCategory } from "../../../google/placesApi";
+import { filterCategory } from "../../../google/places";
 
 export const getSelectedCityDetails = state => state.get(NAME).get('selectedCity');
 

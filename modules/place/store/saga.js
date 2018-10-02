@@ -4,8 +4,10 @@ import {  FETCH_CITY_DETAILS,
           TEXT_SEARCH, 
           AUTOCOMPLETE_SEARCH, 
           CANCEL_AUTOCOMPLETE_SEARCH ,
-          FETCH_PLACE_DETAILS} from './actionTypes';
-import { googlePlace , googlePlacesApi } from '../../../google';
+          FETCH_PLACE_DETAILS,
+          ADD_BOOKMARK} from './actionTypes';
+import { googlePlace } from '../../../google';
+import * as serviceApi from '../../../service/networkService';
 
 
 export function* dofetchCityDetails( { google , mapRef , placeId } ) {
@@ -35,7 +37,7 @@ export function* doTextSearch( {query , params }) {
   yield put({ type: TEXT_SEARCH.PENDING});
   yield put({ type : CANCEL_AUTOCOMPLETE_SEARCH.ACTION });
   try {
-   const response = yield call(googlePlacesApi.textSearch,query,params);
+   const response = yield call(serviceApi.textSearch,query,params);
    console.log("Inside doTextSearch ",response);
    yield put({ type: TEXT_SEARCH.SUCCESS , response , query});
   }
@@ -49,7 +51,7 @@ export function* doAutoCompleteSearchCancellable({query , params }) {
   console.log("Inside doAutoCompleteSearch ",query,params);
   yield put({ type: AUTOCOMPLETE_SEARCH.PENDING});
   try {
-   const response = yield call(googlePlacesApi.autoCompleteSearch,query,params);
+   const response = yield call(serviceApi.autoCompleteSearch,query,params);
    console.log("doAutoCompleteSearchCancellable:::response ",response);
    yield put({ type: AUTOCOMPLETE_SEARCH.SUCCESS , response , query});
    console.log("Coming ere 11111111111111111111111");
@@ -76,8 +78,21 @@ export function* doAutoCompleteSearch( { query , params }) {
     yield put({type:AUTOCOMPLETE_SEARCH.CANCEL});
   }
  }
-  
 }
+
+export function* doAddBookmark( { city , place } ) {
+  try {
+    console.log("Inside doAddBookmark",city,place);   
+    yield put({ type : ADD_BOOKMARK.PENDING} );
+    const response = yield call(serviceApi.addBookmark , city , place); 
+    console.log("Response::::::::::::::::",response);
+    yield put({type:ADD_BOOKMARK.SUCCESS , city , place});
+  } catch(error) {
+    console.log("Inside doAddBookmark:::::",error);
+    yield put({ type : ADD_BOOKMARK.ERROR ,error});
+  }
+}
+
 
 export function* cancelTask(task) {
    yield cancel(task);
@@ -87,5 +102,6 @@ export default function* saga() {
   yield all ( [ fork(takeEvery,FETCH_CITY_DETAILS.ACTION , dofetchCityDetails),
                 fork(takeEvery,FETCH_PLACE_DETAILS.ACTION , dofetchPlaceDetails),
                 fork(takeEvery,TEXT_SEARCH.ACTION , doTextSearch),
-                fork(takeLatest,AUTOCOMPLETE_SEARCH.ACTION , doAutoCompleteSearch)  ]);
+                fork(takeLatest,AUTOCOMPLETE_SEARCH.ACTION , doAutoCompleteSearch),
+                fork(takeEvery , ADD_BOOKMARK.ACTION , doAddBookmark) ]);
 }
