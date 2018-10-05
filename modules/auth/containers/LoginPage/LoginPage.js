@@ -54,7 +54,6 @@ class LoginPage extends Component {
                             errorData = {this.props.errorData} /> </NoSSR>
         </div>
       </div>
-
     );
   }
 }

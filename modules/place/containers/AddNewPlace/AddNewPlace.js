@@ -1,22 +1,30 @@
 import React , { Component } from 'react';
 import {connect} from 'react-redux';
 import Router from 'next/router';
+import Close from '@material-ui/icons/Close'
 
 import GridContainer from '../../../../components/GridContainer';
 import GridItem from '../../../../components/GridItem';
 import { withGoogleApiLibs } from '../../../../lib/withLibs'
 import addNewPlaceStyle from './addNewPlaceStyle';
 import AppHeader from '../../../app/components/AppHeader';
-import { getSelectedCityDetails, getPredictions, getPlaces, getNextToken } from '../../store/selector';
-import Close from '@material-ui/icons/Close'
-import { fetchCityDetails, autoCompleteSearch, clearSuggestion ,textSearch, addBookmark } from '../../store/action';
+import { getSelectedCityDetails, 
+          getPredictions, 
+          getPlaces, 
+          getNextToken
+          ,checkIfBookmarked } from '../../store/selector';
+import { fetchCityDetails, 
+          autoCompleteSearch, 
+          clearSuggestion ,
+          textSearch, 
+          addBookmark, 
+          fetchBookmarkPlaces,
+          deleteBookmarkAction} from '../../store/action';
 import AutoComplete from '../../components/AutoComplete';
 import PlaceResultGrid from '../../components/PlaceResultGrid';
 import { isLoading } from '../../../app/store/selector'
 import PageLoader from '../../../app/components/PageLoader';
 import PaginationComponent from '../../../../hoc/PaginationComponent';
-import { getUserId } from '../../../../firebase/auth';
-import { Map } from 'immutable';
 import { getPhotoUrl } from '../../../../google/places';
 
 
@@ -27,7 +35,8 @@ class AddNewPlace extends Component {
     const { city  , dispatch , id , google } = this.props;
    
     if( (!city  && id && id !== '') ||  (city && id && city.get('place_id') !== id)) {
-      dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
+      dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ))
+            && dispatch(fetchBookmarkPlaces(id));
     }
   }
 
@@ -36,7 +45,9 @@ class AddNewPlace extends Component {
     const { city  , dispatch , id } = this.props;
     
     if( (!city  && id && id !== '') ||  (city &&  id && city.get('place_id') !== id)) {
-      dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
+      dispatch 
+        && dispatch(fetchCityDetails(google ,this.refs.place , id ))
+        && dispatch(fetchBookmarkPlaces(id));
     }
   }
 
@@ -79,21 +90,23 @@ class AddNewPlace extends Component {
 
   renderMainContent = () => {
 
-      const { classes , t , suggestions , places , loading} = this.props;
+      const { classes , t , suggestions , places , loading , isBookmarked , id} = this.props;
+      console.log("AddNewPlace ::::: render ::: ",isBookmarked);
       return (<GridContainer className={classes.container}>
-             <GridItem xs = {12}>
-               <AutoComplete 
-                    translation={t}
-                    fetchSuggestions = {this.fetchSuggestions}
-                    performSearch = {this.searchText}
-                    suggestions={suggestions} 
-                    isLoading={loading}/>
-             </GridItem>
+                <GridItem xs = {12}>
+                  <AutoComplete 
+                        translation={t}
+                        fetchSuggestions = {this.fetchSuggestions}
+                        performSearch = {this.searchText}
+                        suggestions={suggestions} 
+                        isLoading={loading}/>
+                </GridItem>
              <PaginationComponent
                     onPagination = {this.searchTextNext} 
                     loading = {loading}>
-              <PlaceResultGrid places = {places} 
-                               onBookmarkClick = {this.bookmarkPlace}/>
+              <PlaceResultGrid places = {places}
+                               onBookmarkClick = {this.bookmarkPlace}
+                               onRemoveBookmarkClick =  { this.removeBookmark }/>
              </PaginationComponent>
           </GridContainer>);
   }
@@ -140,7 +153,7 @@ class AddNewPlace extends Component {
     const { name , place_id , photos , geometry } = city.toJSON();
 
     const cityToSave = {
-      id:place_id,
+      place_id,
       name,
       photoUrl:photos ? getPhotoUrl(photos[0]['photo_reference'] , 280):null,
       location:{...geometry.location}
@@ -148,6 +161,12 @@ class AddNewPlace extends Component {
 
     dispatch(addBookmark(cityToSave,place));
 
+  }
+
+  removeBookmark = placeId => {
+    const { city , dispatch } = this.props;
+    const { place_id : cityId } = city.toJSON();
+    dispatch(deleteBookmarkAction(cityId , placeId));
   }
 }
 

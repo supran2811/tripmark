@@ -26,15 +26,20 @@ class PlaceThumbnailView extends Component {
 
     const name          = place['name'];
     const photos        = place['photos'];
+    
     const opening_hours = place['opening_hours'];
     const rating        = place['rating']; 
-    const place_id      = place['id'] || place['place_id'];
-    const location      = place['geometry']['location'];
-    const photoUrl      = place['photoUrl'] 
-                                || photos ? getPhotoUrl(photos[0]['photo_reference'] , 280):null;
+    const place_id      = place['place_id'];
+    const location      = place['location'] || place['geometry']['location'];
+    const photoUrl      = place['photoUrl'] || (photos !== undefined ? getPhotoUrl(photos[0]['photo_reference'] , 280):null);
+
+    const isBookmarked  = place['isBookmarked'];
+
+
+    console.log("PlaceThumbnailView ::::: ",isBookmarked);
 
     const placeToSave = {
-      id:place_id,
+      place_id,
       name,
       rating,
       opening_hours,
@@ -75,7 +80,9 @@ class PlaceThumbnailView extends Component {
                 </CardContent>
               </CardActionArea>
               <CardActions className={classes.actions} disableActionSpacing>
-                <IconButton aria-label="Add to favorites" onClick = {() => onBookmarkClick(placeToSave)}>
+                <IconButton aria-label="Add to favorites" 
+                              onClick = {() => onBookmarkClick(placeToSave,isBookmarked)}
+                              color= {isBookmarked ?"primary" : "default" }>
                   <Bookmark  />
                 </IconButton>
                 <IconButton aria-label="Open in google map">

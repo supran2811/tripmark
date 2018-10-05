@@ -13,12 +13,14 @@ class PlaceResultGrid extends Component {
   render() {
     const { places } = this.props;
 
+    console.log("PlaceResultList:::: render::::",places);
+
     const placesToRender = places ? places.map( place => {
       console.log("placesToRender",place);
-      return <GridItem xs = {3} key={place['id']}>
+      return <GridItem xs = {3} key={place['place_id']}>
                <PlaceThumbnailView 
                  onMainClick = {this.openPlaceDetails}
-                 onBookmarkClick = {this.bookmarkPlace}
+                 onBookmarkClick = {this.toggleBookmark}
                  place={place} />
              </GridItem>
              
@@ -31,9 +33,11 @@ class PlaceResultGrid extends Component {
     window.open(`${window.location.origin}/place/${placeId}`,"_blank");
   }
   
-  bookmarkPlace = place => {
+  toggleBookmark = (place , remove) => {
     console.log("Inside bookmarkPlace ",place);
-    this.props.onBookmarkClick(place);
+    remove ? 
+          this.props.onRemoveBookmarkClick(place['place_id']) : 
+                                  this.props.onBookmarkClick(place);
   }
 }
 

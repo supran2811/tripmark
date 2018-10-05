@@ -78,7 +78,7 @@ export function addBookmark(city,place) {
   }
 }
 
-export function deleteBookmark(cityid,placeid) {
+export function deleteBookmarkAction(cityid,placeid) {
   return {
     type : DELETE_BOOKMARK.ACTION,
     cityid,
@@ -86,14 +86,14 @@ export function deleteBookmark(cityid,placeid) {
   }
 }
 
-export function getBookmarkPlaces(cityid) {
+export function fetchBookmarkPlaces(cityid) {
   return {
     type: GET_BOOKMARK_PLACES.ACTION,
     cityid
   }
 }
 
-export function getBookmarks() {
+export function fetchBookmarks() {
   return {
     type:GET_BOOKMARKS
   }

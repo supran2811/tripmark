@@ -6,7 +6,9 @@ import {  FETCH_CITY_DETAILS,
           AUTOCOMPLETE_SEARCH, 
           CLEAR_SUGGESTIONS ,
          FETCH_PLACE_DETAILS, 
-         ADD_BOOKMARK} from "./actionTypes";
+         ADD_BOOKMARK,
+         GET_BOOKMARK_PLACES,
+         DELETE_BOOKMARK} from "./actionTypes";
 import { filterCategory } from "../../../google/places";
 
 const myRecord = Record({
@@ -73,9 +75,38 @@ export default function placeReducer( state=initialState , action ) {
     case ADD_BOOKMARK.SUCCESS : {
       const { city , place } = action;
       const cityMapObj = Map(city);
-      const newBookmarks = Map({[city.id] : cityMapObj.set('places' , Map({[place.id] : place}))});
+      const newBookmarks = Map({[city.place_id] : cityMapObj.set('places' , Map({[place.place_id] : place}))});
       const updatedBookmarks = state.bookmarks.mergeDeep(newBookmarks);
       return state.merge({bookmarks:updatedBookmarks});
+    }
+    case GET_BOOKMARK_PLACES.SUCCESS: {
+      const { response , cityid } = action;
+      const places = response.data;
+
+      const cityObj = state.bookmarks.get(cityid) || Map();
+      const newBookmarks  = state.bookmarks.set(cityid , cityObj.set('places' , Map(places)));
+      const updatedBookmarks = state.bookmarks.mergeDeep(newBookmarks);
+      return state.merge({bookmarks:updatedBookmarks});      
+    }
+    case DELETE_BOOKMARK.SUCCESS : {
+      const { cityid , placeid } = action;
+      
+      const cityObj = state.bookmarks.get(cityid);
+      
+      if(cityObj) {
+        const places = cityObj.get('places');
+      
+        if(places){
+          const updatedPlaces = places.delete(placeid);
+        
+          const updatedBookmarks  = state.bookmarks.set(cityid , cityObj.set('places' , updatedPlaces));
+          
+          return state.merge({bookmarks:updatedBookmarks});        
+        }
+        
+      }
+      
+      return state;
     }
     case RESET_CITY_DETAILS.ACTION: {
       return state.merge({

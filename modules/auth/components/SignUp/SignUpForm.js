@@ -223,7 +223,7 @@ class SignUpForm extends Component {
                       />
                      <Button simple color="primary" size="lg">Forgot Password</Button>
                 </FormGroup>  
-                </div>
+              </div>
               }
             </CardBody>
             <CardFooter className={classes.cardFooter}>

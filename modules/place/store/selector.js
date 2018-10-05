@@ -13,6 +13,8 @@ export const getPlacesObject = state => state.get(NAME).get('places');
 
 export const getQueryString = state => state.get(NAME).get('query');
 
+export const getAllBookmarks  = state => state.get(NAME).get('bookmarks');
+
 export const getPredictions = 
   createSelector( getPredictionAsList ,getQueryString , 
     (predictions , query) => {
@@ -29,12 +31,46 @@ export const getPredictions =
       return predictionsArray;
     } );
 
-export const getPlaces = createSelector(getPlacesObject , placesObject => {
-  return placesObject ? placesObject.get('results') : placesObject;
+export const getPlaces = 
+  createSelector(getPlacesObject , getAllBookmarks , getSelectedCityDetails,
+    (placesObject , bookmarks , selectedCity ) => {
+      return placesObject && placesObject.get('results') 
+                    ? placesObject.get('results').map(place => {
+        
+        let isBookmarked = false;
+        const cityObj = bookmarks.get(selectedCity.get('place_id'));
+        console.log("getPlaces:::::cityObj",cityObj);
+        if(cityObj) {
+          const placeObj = cityObj.get('places').get(place['place_id']);
+          console.log("getPlaces:::::",placeObj);
+          if(placeObj) {
+            isBookmarked = true;
+          }
+        }
+
+        return {
+          ...place,
+          isBookmarked: isBookmarked
+        }
+      }) : placesObject;
 });
 
-export const getNextToken = createSelector(getPlacesObject , placesObject => {
-  return placesObject ? placesObject.get('next_page_token'):placesObject;
-});
+export const getNextToken = 
+  createSelector(getPlacesObject , placesObject => {
+    return placesObject ? placesObject.get('next_page_token'):placesObject;
+  });
 
+export const getBookmarkedPlacesForCity = 
+  createSelector(getAllBookmarks , getSelectedCityDetails ,
+   (bookmarks , selectedCity )  => {
+     if(bookmarks && selectedCity) {
+      console.log("Inside getBookmarkedPlacesForCity::::",selectedCity.toJSON());
+      const cityObj = bookmarks.get(selectedCity.get('place_id'));
+      const placesObj =  cityObj ? cityObj.get('places').toJSON() : null;
+      return placesObj ? Object.keys(placesObj).map( placeId => {
+          return { ...placesObj[placeId] , isBookmarked: true } 
+      }) : null;
+     }
+     return null;
+});
 

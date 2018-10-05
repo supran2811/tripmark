@@ -284,7 +284,7 @@ class PlaceHome extends Component {
   }
 
   addBookmark = (place) => {
-
+    
   }
 
   viewPhoto = () => {

@@ -10,6 +10,9 @@ const cityHomeStyle = {
     justifyContent:'flex-end',
     alignItems:'flex-end'
   },
+  content:{
+    margin:"20px 0px"
+  },
   addPlaceButton: {
     backgroundColor:"#fff",
     margin:"20px",

@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import  { Router } from '../../../../routes';
 import Add from '@material-ui/icons/Add'
 
-import { getSelectedCityDetails } from '../../store/selector';
-import { fetchCityDetails } from '../../store/action';
+import PlaceResultGrid from '../../components/PlaceResultGrid';
+import { getSelectedCityDetails,
+           getBookmarkedPlacesForCity } 
+           from '../../store/selector';
+import { fetchCityDetails, fetchBookmarkPlaces, deleteBookmarkAction } from '../../store/action';
 import Parallax from '../../../../components/Parallax';
 import Button from '../../../../components/CustomButtons';
 import { getOptimalBGImageUrl } from '../../../../google/places';
@@ -13,9 +16,9 @@ import cityHomeStyle from './cityHomeStyle';
 import AppHeader from '../../../app/components/AppHeader';
 import PageLoader from '../../../app/components/PageLoader';
 import PhotoView from '../../components/PhotoView';
+import GridContainer from '../../../../components/GridContainer';
 
 class CityHome extends Component {
-
 
   state = {
     showPhotoViewer : false
@@ -26,16 +29,19 @@ class CityHome extends Component {
     const { city  , dispatch ,query , google ,id} = this.props;
   
     if( (!city  && id && id !== '') ||  (city && id &&  city.get('place_id') !== id)) {
-      dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
+      dispatch 
+        && dispatch(fetchCityDetails(google ,this.refs.place , id )) 
+        && dispatch(fetchBookmarkPlaces(id)) ;
     }
   }
 
   componentDidUpdate() {
-    // console.log("CityHome componentDidUpdate");
-    const { city  , dispatch , google , id} = this.props;
-    console.log("CityHome componentDidUpdate ",city);
+    const { city  , dispatch , google , id , places , isBookmarked} = this.props;
+    console.log("CityHome componentDidUpdate::::::",city , places,isBookmarked);
     if( (!city  && id && id !== '') ||  (city &&  id && city.get('place_id') !== id)) {
-      dispatch && dispatch(fetchCityDetails(google ,this.refs.place , id ));
+      dispatch 
+        && dispatch(fetchCityDetails(google ,this.refs.place , id ))
+        && dispatch(fetchBookmarkPlaces(id));
     }
   }
 
@@ -44,7 +50,8 @@ class CityHome extends Component {
   }
 
   render() {
-    const { city , t , google , classes } = this.props;
+    const { city , t , google , classes  , places , id} = this.props;
+
     if(city){
       console.log("render() city ",city.get('photos'));
     }
@@ -67,6 +74,14 @@ class CityHome extends Component {
                     <PhotoView  photos = {city.get('photos').toJSON()}
                                 onCloseClicked = {this.closePhotoViewer} />
              }
+             { 
+               places && 
+                  (<GridContainer className = {classes.content}>
+                      <PlaceResultGrid places = {places}
+                                      onRemoveBookmarkClick= {this.removeBookmark}/>
+                  </GridContainer>) 
+              }
+                    
            </React.Fragment>
           )
            : this.renderDefault()}
@@ -96,7 +111,6 @@ class CityHome extends Component {
         </Parallax>
       </React.Fragment>
       )
-    
   }
 
   renderDefault() {
@@ -111,11 +125,18 @@ class CityHome extends Component {
     this.setState({showPhotoViewer:false});
   }
 
+  removeBookmark = placeId => {
+    const { city , dispatch } = this.props;
+    const { place_id : cityId } = city.toJSON();
+    dispatch(deleteBookmarkAction(cityId , placeId));
+  }
+
 }
 
 const mapStateToProps = state => {
   return {
-     city: getSelectedCityDetails(state)
+     city: getSelectedCityDetails(state),
+     places:getBookmarkedPlacesForCity(state)
   }
 }
 export default  connect(mapStateToProps)

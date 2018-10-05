@@ -96,7 +96,7 @@ export function getAllBookmarks() {
 
 }
 
-export function getAllBookmarksInCity( { cityid }) {
+export function getAllBookmarksInCity(cityid) {
   const userid = getUserId();
   if(userid === ''){
     return null; 

@@ -5,7 +5,9 @@ import {  FETCH_CITY_DETAILS,
           AUTOCOMPLETE_SEARCH, 
           CANCEL_AUTOCOMPLETE_SEARCH ,
           FETCH_PLACE_DETAILS,
-          ADD_BOOKMARK} from './actionTypes';
+          ADD_BOOKMARK,
+          GET_BOOKMARK_PLACES,
+          DELETE_BOOKMARK} from './actionTypes';
 import { googlePlace } from '../../../google';
 import * as serviceApi from '../../../service/networkService';
 
@@ -93,6 +95,27 @@ export function* doAddBookmark( { city , place } ) {
   }
 }
 
+export function* doGetAllBookmarksInCity( { cityid }) {
+  try{
+    yield put({ type : GET_BOOKMARK_PLACES.PENDING });
+    const response = yield call(serviceApi.getAllBookmarksInCity,cityid);
+    console.log("doGetAllBookmarksInCity :::: ",response , cityid);
+    yield put({type:GET_BOOKMARK_PLACES.SUCCESS , cityid , response});
+  }catch(error) {
+    yield put({type:GET_BOOKMARK_PLACES.ERROR});
+  }
+}
+
+export function* doDeleteBookmarks( { cityid , placeid }) {
+  try{
+    yield put({ type : DELETE_BOOKMARK.PENDING });
+    const response = yield call(serviceApi.deleteBookmark,cityid,placeid);
+    console.log("Response from delete bookmark",response);
+    yield put({ type : DELETE_BOOKMARK.SUCCESS  , cityid , placeid} );
+  } catch(error) {
+    yield put({ type : DELETE_BOOKMARK.ERROR , error});
+  }
+}
 
 export function* cancelTask(task) {
    yield cancel(task);
@@ -103,5 +126,7 @@ export default function* saga() {
                 fork(takeEvery,FETCH_PLACE_DETAILS.ACTION , dofetchPlaceDetails),
                 fork(takeEvery,TEXT_SEARCH.ACTION , doTextSearch),
                 fork(takeLatest,AUTOCOMPLETE_SEARCH.ACTION , doAutoCompleteSearch),
-                fork(takeEvery , ADD_BOOKMARK.ACTION , doAddBookmark) ]);
+                fork(takeEvery , ADD_BOOKMARK.ACTION , doAddBookmark),
+                fork( takeEvery , GET_BOOKMARK_PLACES.ACTION , doGetAllBookmarksInCity ) ,
+                fork(takeEvery , DELETE_BOOKMARK.ACTION , doDeleteBookmarks)]);
 }
