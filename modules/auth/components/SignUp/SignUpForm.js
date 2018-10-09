@@ -307,11 +307,11 @@ class SignUpForm extends Component {
 }
 
 SignUpForm.propTypes = {
-  isLogin:PropTypes.bool.isRequired,
+  classes:PropTypes.object.isRequired,
+  isLogin:PropTypes.bool,
   requestLogin:PropTypes.func,
   requestSignUp:PropTypes.func,
   isLoading:PropTypes.bool,
-  classes:PropTypes.object.isRequired,
   t:PropTypes.func.isRequired,
   googleSignUp:PropTypes.func,
   errorData:PropTypes.object

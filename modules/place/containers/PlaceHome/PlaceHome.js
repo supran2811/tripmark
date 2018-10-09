@@ -28,28 +28,26 @@ class PlaceHome extends Component {
     showPhotoViewer: false
   };
 
-  placeRef = React.createRef();
-
   componentDidMount() {
-    const { place, dispatch, google, id } = this.props;
+    const { place, dispatch , id , cityId } = this.props;
 
     if (
       (!place && id && id !== "") ||
       (place && id && place["place_id"] !== id)
     ) {
-      dispatch && dispatch(fetchPlaceDetails(google, this.placeRef, id));
+      dispatch && dispatch(fetchPlaceDetails(cityId, id));
     }
   }
 
   componentDidUpdate() {
     // console.log("CityHome componentDidUpdate");
-    const { place, dispatch, google, id, cityId } = this.props;
+    const { place, dispatch , id , cityId } = this.props;
 
     if (
       (!place && id && id !== "") ||
       (place && id && place["place_id"] !== id)
     ) {
-      dispatch && dispatch(fetchPlaceDetails(google, this.placeRef, id));
+      dispatch && dispatch(fetchPlaceDetails(cityId, id));
     }
   }
 
@@ -60,7 +58,9 @@ class PlaceHome extends Component {
       <div>
         {place ? (
           <React.Fragment>
-            <AppHeader color="transparent" fixed isAuthenticated t={t} />
+            <AppHeader color="transparent" 
+              fixed isAuthenticated t={t} 
+              logOut = {this.doLogOut}/>
             {this.renderPlaceDetails()}
             {this.state.showPhotoViewer && (
               <PhotoView
@@ -72,7 +72,6 @@ class PlaceHome extends Component {
         ) : (
           this.renderDefault()
         )}
-        <div ref={this.placeRef} />
       </div>
     );
   }
@@ -109,6 +108,7 @@ class PlaceHome extends Component {
         {this.renderOtherPlaceDetails()}
       </React.Fragment>
     );
+
   }
 
   renderOtherPlaceDetails = () => {
@@ -244,15 +244,15 @@ class PlaceHome extends Component {
         zoom={14}
         style={{ width: "90%", height: "200px", marginTop: "20px" }}
         initialCenter={{
-          lat: geometry.location.lat(),
-          lng: geometry.location.lng()
+          lat: geometry.location.lat,
+          lng: geometry.location.lng
         }}
       >
         <Marker
           name={name}
           position={{
-            lat: geometry.location.lat(),
-            lng: geometry.location.lng()
+            lat: geometry.location.lat,
+            lng: geometry.location.lng
           }}
         />
       </Map>
@@ -294,6 +294,10 @@ class PlaceHome extends Component {
   closePhotoViewer = () => {
     this.setState({ showPhotoViewer: false });
   };
+
+  doLogOut = () => {
+    this.props.dispatch(logoutRequest());
+  };
 }
 const mapStateToProps = (state, props) => {
   return {
@@ -302,13 +306,13 @@ const mapStateToProps = (state, props) => {
 };
 
 PlaceHome.propTypes = {
-  place:PropTypes.object.isRequired,
   dispatch:PropTypes.func.isRequired,
-  google:PropTypes.object,
   cityId:PropTypes.string.isRequired,
+  id:PropTypes.string.isRequired,
   t:PropTypes.func.isRequired,
+  google:PropTypes.object,
+  place:PropTypes.object,
   classes:PropTypes.object,
-  id:PropTypes.string.isRequired
 };
 
 export default connect(mapStateToProps)(

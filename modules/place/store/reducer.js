@@ -29,6 +29,7 @@ const initialState = new myRecord({
   places: Map(),
   query: Map({
     term: "",
+    label:"",
     type: "text"
   }),
   bookmarks: Map()
@@ -37,13 +38,24 @@ const initialState = new myRecord({
 export default function placeReducer(state = initialState, action) {
   switch (action.type) {
   case FETCH_CITY_DETAILS.SUCCESS: {
-    return state.merge({ selectedCity: action.place });
+    const {result : city , places} = action.response.data;
+    const cityid  = city["place_id"];
+
+    const cityObj = state.bookmarks.get(cityid) || Map();
+    const newBookmarks = state.bookmarks.set(
+      cityid,
+      cityObj.set("places", Map(places))
+    );
+    const updatedBookmarks = state.bookmarks.mergeDeep(newBookmarks);
+
+    return state.merge({ selectedCity: city , bookmarks:updatedBookmarks });
   }
   case FETCH_PLACE_DETAILS.SUCCESS: {
     let selectedPlaces = state.get("selectedPlaces");
+    const {result:place} = action.response.data;
     selectedPlaces = selectedPlaces.set(
-      action.place["place_id"],
-      action.place
+      place["place_id"],
+      place
     );
     return state.merge({ selectedPlaces });
   }

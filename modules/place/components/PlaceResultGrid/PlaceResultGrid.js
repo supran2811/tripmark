@@ -5,6 +5,7 @@ import GridItem from "../../../../components/GridItem";
 import PlaceThumbnailView from "../PlaceThumbnailView";
 
 class PlaceResultGrid extends Component {
+
   shouldComponentUpdate(nextProps, nextState) {
     const { places } = nextProps;
     return places != this.props.places;
@@ -44,10 +45,10 @@ class PlaceResultGrid extends Component {
 }
 
 PlaceResultGrid.propTypes = {
-  places:PropTypes.array.isRequired,
   cityId:PropTypes.string.isRequired,
-  onRemoveBookmarkClick:PropTypes.func.isRequired,
-  onBookmarkClick:PropTypes.func.isRequired
+  onRemoveBookmarkClick:PropTypes.func,
+  onBookmarkClick:PropTypes.func,
+  places:PropTypes.array,
 };
 
 export default PlaceResultGrid;

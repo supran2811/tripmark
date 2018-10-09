@@ -70,7 +70,7 @@ class AppHeader extends Component {
             {
               text: t("common:logoutText"),
               isExternal: false,
-              handleClick: () => this.props.dispatch(logoutRequest())
+              handleClick: this.props.logOut
             }
           ],
           href: "",
@@ -105,6 +105,8 @@ class AppHeader extends Component {
     );
   }
 
+  
+
   onSuggestSelect = item => {
     item && Router.pushRoute("city", { cityId: item.placeId });
   };
@@ -121,7 +123,7 @@ AppHeader.propTypes = {
   classes:PropTypes.object.isRequired,
   google:PropTypes.object,
   t:PropTypes.func.isRequired,
-  dispatch:PropTypes.func.isRequired
+  logOut:PropTypes.func
 };
 
 export default withStyles(appHeaderStyle)(AppHeader);

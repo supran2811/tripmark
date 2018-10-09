@@ -6,7 +6,7 @@ import { getUserId } from "../firebase/auth";
 export function textSearch({ term, pagetoken }, { latlngObj, radius }) {
   let location, config;
   if (latlngObj) {
-    location = `${latlngObj.lat()},${latlngObj.lng()}`;
+    location = `${latlngObj.lat},${latlngObj.lng}`;
   }
 
   if (term) {
@@ -41,7 +41,7 @@ export function autoCompleteSearch({ term }, { latlngObj, radius }) {
 
   let location;
   if (latlngObj) {
-    location = `${latlngObj.lat()},${latlngObj.lng()}`;
+    location = `${latlngObj.lat},${latlngObj.lng}`;
   }
   const config = {
     params: {
@@ -107,6 +107,19 @@ export function getAllBookmarksInCity(cityid) {
     }
   };
   return axios.get(`${api.API_GET_BOOKMARK_PLACES}`, config);
+}
+
+export function getCityDetails(cityid) {
+  const userid = getUserId();
+  const config = {
+    params: {
+      userid,
+      cityid,
+      key: process.env._GOOGLE_API_KEY
+    }
+  };
+
+  return axios.get(`${api.API_GET_CITY_DETAILS}`, config);
 }
 
 export function getPlaceDetails(cityid, placeid) {

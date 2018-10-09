@@ -23,37 +23,34 @@ import AppHeader from "../../../app/components/AppHeader";
 import PageLoader from "../../../app/components/PageLoader";
 import PhotoView from "../../components/PhotoView";
 import GridContainer from "../../../../components/GridContainer";
+import { logoutRequest } from "../../../auth/store/action";
 
 class CityHome extends Component {
   state = {
     showPhotoViewer: false
   };
 
-  placeRef = React.createRef();
-
   componentDidMount() {
-    const { city, dispatch, query, google, id } = this.props;
+    const { city, dispatch , id } = this.props;
 
     if (
       (!city && id && id !== "") ||
       (city && id && city.get("place_id") !== id)
     ) {
       dispatch &&
-        dispatch(fetchCityDetails(google, this.placeRef, id)) &&
-        dispatch(fetchBookmarkPlaces(id));
+        dispatch(fetchCityDetails(id));
     }
   }
 
   componentDidUpdate() {
-    const { city, dispatch, google, id, places, isBookmarked } = this.props;
-    
+    const { city, dispatch, google, id, places } = this.props;
+    console.log("componentDidUpdate ::: ",city,places);
     if (
       (!city && id && id !== "") ||
       (city && id && city.get("place_id") !== id)
     ) {
       dispatch &&
-        dispatch(fetchCityDetails(google, this.placeRef, id)) &&
-        dispatch(fetchBookmarkPlaces(id));
+        dispatch(fetchCityDetails(id));
     }
   }
 
@@ -62,7 +59,7 @@ class CityHome extends Component {
   }
 
   render() {
-    const { city, t, google, classes, places, id } = this.props;
+    const { city, t, google, classes, places, id , dispatch} = this.props;
 
     return (
       <div>
@@ -75,6 +72,7 @@ class CityHome extends Component {
               t={t}
               google={google}
               selectedCityName={city ? city.get("name") : ""}
+              logOut = {this.doLogOut}
             />
             {this.renderCityDetails(city, classes, t)}
             {this.state.showPhotoViewer && (
@@ -96,7 +94,6 @@ class CityHome extends Component {
         ) : (
           this.renderDefault()
         )}
-        <div ref={this.placeRef} />
       </div>
     );
   }
@@ -146,6 +143,10 @@ class CityHome extends Component {
     const { place_id: cityId } = city.toJSON();
     dispatch(deleteBookmarkAction(cityId, placeId));
   };
+
+  doLogOut = () => {
+    this.props.dispatch(logoutRequest());
+  }
 }
 
 const mapStateToProps = state => {
@@ -156,15 +157,13 @@ const mapStateToProps = state => {
 };
 
 CityHome.propTypes = {
-  city:PropTypes.object.isRequired,
   dispatch:PropTypes.func.isRequired,
-  query:PropTypes.object,
-  id:PropTypes.string,
-  google:PropTypes.object,
-  places:PropTypes.array,
-  isBookmarked:PropTypes.func.isRequired,
+  google:PropTypes.object.isRequired,
+  classes:PropTypes.object.isRequired,
   t:PropTypes.func.isRequired,
-  classes:PropTypes.object.isRequired
+  city:PropTypes.object,
+  id:PropTypes.string,
+  places:PropTypes.array,
 };
 
 export default connect(mapStateToProps)(

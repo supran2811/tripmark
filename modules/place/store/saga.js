@@ -22,22 +22,24 @@ import {
 import { googlePlace } from "../../../google";
 import * as serviceApi from "../../../service/networkService";
 
-export function* dofetchCityDetails({ google, mapRef, placeId }) {
+export function* dofetchCityDetails({ cityid }) {
   try {
     yield put({ type: FETCH_CITY_DETAILS.PENDING });
-    const place = yield googlePlace.getPlaceDetails(google, mapRef, placeId);
-    yield put({ type: FETCH_CITY_DETAILS.SUCCESS, place });
+    const response = yield call(serviceApi.getCityDetails,cityid);
+    yield put({ type: FETCH_CITY_DETAILS.SUCCESS, response });
   } catch (error) {
+    console.log("FETCH_CITY_DETAILS::Error",error);
     yield put({ type: FETCH_CITY_DETAILS.ERROR, error });
   }
 }
 
-export function* dofetchPlaceDetails({ google, mapRef, placeId }) {
+export function* dofetchPlaceDetails({ cityid, placeId }) {
   try {
     yield put({ type: FETCH_PLACE_DETAILS.PENDING });
-    const place = yield googlePlace.getPlaceDetails(google, mapRef, placeId);
-    yield put({ type: FETCH_PLACE_DETAILS.SUCCESS, place });
+    const response = yield call(serviceApi.getPlaceDetails,cityid,placeId);
+    yield put({ type: FETCH_PLACE_DETAILS.SUCCESS, response });
   } catch (error) {
+    console.log("FETCH_CITY_DETAILS::Error",error);
     yield put({ type: FETCH_PLACE_DETAILS.ERROR, error });
   }
 }
@@ -49,6 +51,7 @@ export function* doTextSearch({ query, params }) {
     const response = yield call(serviceApi.textSearch, query, params);
     yield put({ type: TEXT_SEARCH.SUCCESS, response, query });
   } catch (error) {
+    console.log("Inside doTextSearch::error ",error);
     yield put({ type: TEXT_SEARCH.ERROR, error });
   }
 }
@@ -59,6 +62,7 @@ export function* doAutoCompleteSearchCancellable({ query, params }) {
     const response = yield call(serviceApi.autoCompleteSearch, query, params);
     yield put({ type: AUTOCOMPLETE_SEARCH.SUCCESS, response, query });
   } catch (error) {
+    console.log("doAutoCompleteSearchCancellable:::",error);
     yield put({ type: AUTOCOMPLETE_SEARCH.ERROR, error });
   } finally {
     if (yield cancelled()) {

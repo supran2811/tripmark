@@ -47,6 +47,7 @@ class AutoComplete extends Component {
   };
 
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
+    console.log("renderSuggestion:::",suggestion,query) ;
     const { classes, suggestionClicked } = this.props;
     const suggestionText = this.getSuggestionText(suggestion);
     const type = suggestion["type"];
@@ -61,12 +62,10 @@ class AutoComplete extends Component {
         classes={{ root: classes.menuItem }}
       >
         {suggestion.type !== "category" ? (
-          <a
-            href={`/place/${suggestion.place_id}`}
+          <a href={`/place/${suggestion.place_id}`}
             rel="noopener"
             className={classes.menuItemContent}
-            target="_blank"
-          >
+            target="_blank">
             <LocationOn />
             <div className={classes.menuItemBody}>
               <div className={classes.mainContent}>
@@ -118,6 +117,7 @@ class AutoComplete extends Component {
   };
 
   handleSuggestionsFetchRequested = ({ value, reason }) => {
+    console.log("Inside handleSuggestionsFetchRequested ",value);
     const inputValue = deburr(value.trim()).toLowerCase();
     reason === "input-changed" &&
       _.debounce(this.props.fetchSuggestions, 500, { trailing: true })({
@@ -133,6 +133,7 @@ class AutoComplete extends Component {
   };
 
   handleChange = name => (event, { newValue, method }) => {
+    console.log("handleChange",newValue);
     this.setState({
       [name]: newValue
     });
@@ -143,9 +144,10 @@ class AutoComplete extends Component {
       classes,
       suggestions,
       isLoading,
-      performSearch,
       translation
     } = this.props;
+
+    console.log("suggestions :: ",suggestions);
     const autosuggestProps = {
       renderInputComponent: this.renderInputField,
       suggestions: suggestions,
@@ -166,10 +168,7 @@ class AutoComplete extends Component {
             placeholder: translation("autoCompletePlaceHolder"),
             value: this.state.value,
             onChange: this.handleChange("value"),
-            onKeyPress: e =>
-              e.key === "Enter" &&
-              performSearch({ term: e.target.value, type: "text" })
-          }}
+            onKeyPress: this.doSearchText }}
           theme={{
             container: classes.container,
             suggestionsContainerOpen: classes.suggestionsContainerOpen,
@@ -188,9 +187,7 @@ class AutoComplete extends Component {
           size="lg"
           loading={isLoading}
           justIcon
-          onClick={() =>
-            performSearch({ term: this.state.value, type: "text" })
-          }
+          onClick={this.doSearchText}
         >
           <Search classes={{ root: classes.iconStyle }} />
         </Button>
@@ -213,7 +210,8 @@ class AutoComplete extends Component {
           "_blank"
         );
       } else {
-        this.setState({ value: suggestion.label });
+        console.log("Inside on suggestion selected!!");
+        this.setState({value:""});
         this.props.performSearch(suggestion);
       }
     }
@@ -222,16 +220,24 @@ class AutoComplete extends Component {
     suggestion["structured_formatting"]
       ? suggestion["structured_formatting"]["secondary_text"]
       : "";
+  
+  doSearchText = (e) => {
+    console.log("doSearchText" , e , e.type , e.key);
+    if(e.type === "click" || e.key === "Enter"){
+      this.props.performSearch({ term: this.state.value, type: "text" ,label: this.state.value});
+    }
+    
+  }    
 }
 
 AutoComplete.propTypes = {
   translation: PropTypes.func.isRequired,
   fetchSuggestions: PropTypes.func.isRequired,
   performSearch: PropTypes.func.isRequired,
-  suggestions: PropTypes.array,
   classes:PropTypes.object.isRequired,
-  suggestionClicked:PropTypes.func.isRequired,
-  isLoading:PropTypes.bool.isRequired
+  isLoading:PropTypes.bool.isRequired,
+  suggestions: PropTypes.array,
+  suggestionClicked:PropTypes.func,
 };
 
 export default withStyles(autoCompleteStyle)(AutoComplete);

@@ -10,6 +10,7 @@ import { withGoogleApiLibs } from "../../../../lib/withLibs";
 import AppHeader from "../../../app/components/AppHeader";
 import GoogleAutoComplete from "../../../../components/GoogleAutoComplete";
 import { resetCityDetails } from "../../../place/store/action";
+import { logoutRequest } from "../../../auth/store/action";
 
 class HomePage extends Component {
 
@@ -20,11 +21,12 @@ class HomePage extends Component {
   }
 
   render() {
-    const { classes, t } = this.props;
+    const { classes, t , dispatch } = this.props;
 
     return (
       <div>
-        <AppHeader color="primary" fixed isAuthenticated={true} t={t} />
+        <AppHeader color="primary" fixed isAuthenticated={true} t={t} 
+          logOut = {this.doLogOut}/>
         <GridContainer className={classes.container}>
           <GridItem xs={12}>
             <GoogleAutoComplete
@@ -42,6 +44,10 @@ class HomePage extends Component {
   onSuggestSelect = item => {
     item && Router.pushRoute("city", { cityId: item.placeId });
   };
+
+  doLogOut = () => {
+    this.props.dispatch(logoutRequest());
+  }
 }
 
 HomePage.propTypes = {
@@ -49,6 +55,7 @@ HomePage.propTypes = {
   classes:PropTypes.object.isRequired,
   t:PropTypes.func.isRequired
 };
+
 
 export default connect()(
   withGoogleApiLibs(HomePage, ["homedata", "common"], homePageStyle)

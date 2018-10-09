@@ -94,7 +94,7 @@ LandingPage.propTypes = {
   t:PropTypes.func.isRequired,
   loading:PropTypes.bool,
   error:PropTypes.bool.isRequired,
-  errorData:PropTypes.object.isRequired
+  errorData:PropTypes.object
 };
 
 export default connect(mapStateToProps)(

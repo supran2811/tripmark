@@ -27,7 +27,7 @@ export const getPredictions = createSelector(
     let predictionsArray = predictions.toJSON
       ? predictions.toJSON()
       : predictions;
-    const categories = filterCategory(query);
+    const categories = filterCategory(query.toJSON());
     const filterCategoryLength = categories.length;
     if (filterCategoryLength > 0) {
       const difference = 5 - filterCategoryLength;
@@ -62,7 +62,7 @@ export const getPlaces = createSelector(
           isBookmarked: isBookmarked
         };
       })
-      : placesObject;
+      : null;
   }
 );
 

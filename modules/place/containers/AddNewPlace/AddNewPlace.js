@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Router from "next/router";
 import Close from "@material-ui/icons/Close";
 import PropTypes from "prop-types";
+import Typography from "@material-ui/core/Typography";
 
 import GridContainer from "../../../../components/GridContainer";
 import GridItem from "../../../../components/GridItem";
@@ -13,7 +14,8 @@ import {
   getSelectedCityDetails,
   getPredictions,
   getPlaces,
-  getNextToken
+  getNextToken,
+  getQueryString
 } from "../../store/selector";
 import {
   fetchCityDetails,
@@ -21,7 +23,6 @@ import {
   clearSuggestion,
   textSearch,
   addBookmark,
-  fetchBookmarkPlaces,
   deleteBookmarkAction
 } from "../../store/action";
 import AutoComplete from "../../components/AutoComplete";
@@ -34,22 +35,11 @@ import { getPhotoUrl } from "../../../../google/places";
 class AddNewPlace extends Component {
 
 
-  placeRef = React.createRef();
-
-  componentDidMount() {
-    const { city, dispatch, id, google } = this.props;
-
-    if (
-      (!city && id && id !== "") ||
-      (city && id && city.get("place_id") !== id)
-    ) {
-      dispatch &&
-        dispatch(fetchCityDetails(google, this.placeRef, id)) &&
-        dispatch(fetchBookmarkPlaces(id));
-    }
+  state = {
+    label:""
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     const { city, dispatch, id } = this.props;
 
     if (
@@ -57,9 +47,25 @@ class AddNewPlace extends Component {
       (city && id && city.get("place_id") !== id)
     ) {
       dispatch &&
-        dispatch(fetchCityDetails(google, this.placeRef, id)) &&
-        dispatch(fetchBookmarkPlaces(id));
+        dispatch(fetchCityDetails(id));
     }
+  }
+
+  componentDidUpdate() {
+    const { city, dispatch, id  , query} = this.props;
+
+    if (
+      (!city && id && id !== "") ||
+      (city && id && city.get("place_id") !== id)
+    ) {
+      dispatch &&
+        dispatch(fetchCityDetails(id));
+    }
+
+    if(query && query.get("label") && query.get("label") !== "" && this.state.label !== query.get("label")) {
+      this.setState({label:query.get("label")});
+    }
+    
   }
 
   handleClose() {
@@ -85,12 +91,12 @@ class AddNewPlace extends Component {
     return (
       <React.Fragment>
         <AppHeader
+          t = {t}
           color="primary"
           headerTitle={t("addYourFavorite")}
           rightLinks={rightHeaderLinks}
         />
         {city ? this.renderMainContent() : this.renderLoading()}
-        <div ref={this.placeRef} />
       </React.Fragment>
     );
   }
@@ -102,8 +108,10 @@ class AddNewPlace extends Component {
       suggestions,
       places,
       loading,
-      id
+      id,
+      query
     } = this.props;
+    console.log("renderMainContent ::: query term ",query,query.get("label"));
     
     return (
       <GridContainer className={classes.container}>
@@ -116,6 +124,15 @@ class AddNewPlace extends Component {
             isLoading={loading}
           />
         </GridItem>
+        {
+          this.state.label !== "" && 
+          (<GridItem xs={12}>
+            <Typography gutterBottom variant="title" component="h4">
+              {this.state.label}
+            </Typography>
+          </GridItem>)
+        }
+        
         <PaginationComponent
           onPagination={this.searchTextNext}
           loading={loading}
@@ -137,13 +154,14 @@ class AddNewPlace extends Component {
 
   fetchSuggestions = query => {
     const { dispatch, city } = this.props;
-
+    console.log("fetchSuggestions:::::",city);
     const latlngObj = city.get("geometry")
-      ? city.get("geometry").get("location")
+      ? city.get("geometry").get("location").toJSON()
       : undefined;
+    console.log("fetchSuggestions::::: latlngObj  ",latlngObj);  
     const radius = "100000";
 
-    const params = { latlngObj, radius };
+    const params = { latlngObj , radius };
 
     dispatch(autoCompleteSearch(query, params));
   };
@@ -151,7 +169,7 @@ class AddNewPlace extends Component {
   searchText = query => {
     const { dispatch, city } = this.props;
     const latlngObj = city.get("geometry")
-      ? city.get("geometry").get("location")
+      ? city.get("geometry").get("location").toJSON()
       : undefined;
     const radius = "100000";
 
@@ -195,20 +213,22 @@ const mapStateToProps = state => ({
   suggestions: getPredictions(state),
   places: getPlaces(state),
   loading: isLoading(state),
-  nextToken: getNextToken(state)
+  nextToken: getNextToken(state),
+  query:getQueryString(state)
 });
 
 AddNewPlace.propTypes = {
-  city:PropTypes.object.isRequired,
   dispatch:PropTypes.func.isRequired,
-  id:PropTypes.string,
-  google:PropTypes.object,
-  classes:PropTypes.object.isRequired,
   t:PropTypes.func.isRequired,
+  id:PropTypes.string.isRequired,
+  classes:PropTypes.object.isRequired,
+  city:PropTypes.object,
+  google:PropTypes.object,
   suggestions:PropTypes.array,
   places:PropTypes.array,
   loading:PropTypes.bool,
-  nextToken:PropTypes.string
+  nextToken:PropTypes.string,
+  query:PropTypes.object
 };
 
 export default connect(mapStateToProps)(

@@ -13,20 +13,17 @@ import {
   GET_BOOKMARKS
 } from "./actionTypes";
 
-export function fetchCityDetails(google, mapRef, placeId) {
+export function fetchCityDetails(cityid) {
   return {
     type: FETCH_CITY_DETAILS.ACTION,
-    google,
-    mapRef,
-    placeId
+    cityid
   };
 }
 
-export function fetchPlaceDetails(google, mapRef, placeId) {
+export function fetchPlaceDetails(cityid, placeId) {
   return {
     type: FETCH_PLACE_DETAILS.ACTION,
-    google,
-    mapRef,
+    cityid,
     placeId
   };
 }

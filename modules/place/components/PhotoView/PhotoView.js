@@ -7,6 +7,7 @@ import Close from "@material-ui/icons/Close";
 import PropTypes from "prop-types";
 
 import photoViewStyle from "./photoViewStyle";
+import { getPhotoUrl } from "../../../../google/places";
 
 class PhotoView extends Component {
   state = {
@@ -32,7 +33,7 @@ class PhotoView extends Component {
           <li className={classes.image}>
             <img
               className={classes.photoContainer}
-              src={photo.getUrl({ maxHeight: 920 })}
+              src=  {getPhotoUrl(photo["photo_reference"] , 920)}
             />
           </li>
           <li>

@@ -1,24 +1,29 @@
+import { auth, Auth } from "./firebase";
 
-import { auth, Auth } from './firebase';
+export const doCreateUser = (email, password) =>
+  auth.createUserWithEmailAndPassword(email, password);
 
-export const doCreateUser = ( email , password) => auth.createUserWithEmailAndPassword(email,password);
+export const doSignInUser = (email, password) =>
+  auth.signInWithEmailAndPassword(email, password);
 
-export const doSignInUser = ( email , password ) => auth.signInWithEmailAndPassword(email,password);
-
-export const doUpdateProfile = (name,photoUrl) => auth.currentUser.updateProfile({displayName:name , photoURL:photoUrl});
+export const doUpdateProfile = (name, photoUrl) =>
+  auth.currentUser.updateProfile({ displayName: name, photoURL: photoUrl });
 
 export const getToken = () => auth.currentUser.getIdToken();
 
 export const doSignOut = () => auth.signOut();
 
-export const getUserName = () => auth.currentUser ? auth.currentUser.displayName : '';
+export const getUserName = () =>
+  auth.currentUser ? auth.currentUser.displayName : "";
 
-export const getProfilePhotoUrl = () => auth.currentUser ? auth.currentUser.photoURL : '';
+export const getProfilePhotoUrl = () =>
+  auth.currentUser ? auth.currentUser.photoURL : "";
 
-export const getUserId = () => auth.currentUser ? auth.currentUser.uid : '';
+export const getUserId = () => (auth.currentUser ? auth.currentUser.uid : "");
 
-export const doGoogleSignIn = (isMobile) => {
+export const doGoogleSignIn = isMobile => {
   const provider = new Auth.GoogleAuthProvider();
-  console.log("doGoogleSignIn",provider);
-  return !isMobile ? auth.signInWithPopup(provider) : auth.signInWithRedirect(provider);
-}
+  return !isMobile
+    ? auth.signInWithPopup(provider)
+    : auth.signInWithRedirect(provider);
+};
