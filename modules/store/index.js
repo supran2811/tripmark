@@ -1,30 +1,29 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import { createStore, applyMiddleware, compose } from "redux";
+import createSagaMiddleware from "redux-saga";
 
-import rootReducer from './rootReducer';
-import rootSaga from './rootSaga';
-import { Map } from 'immutable';
+import rootReducer from "./rootReducer";
+import rootSaga from "./rootSaga";
+import { Map } from "immutable";
 
 const sagaMiddleware = createSagaMiddleware();
 
 export default function configureStore(initialState = Map()) {
-  console.log("configureStore",initialState);
   // The DEVTOOLS stuff will enable the redux devtools in Chrome
   const composeEnhancers =
-    typeof window === 'object' &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
+    typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+      : compose;
 
-    const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware));
+  const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware));
 
-    const store = createStore(rootReducer, initialState, enhancer);
-  
-    store.runSagaTask = () => {
-      store.sagaTask = sagaMiddleware.run(rootSaga)
-    }
+  const store = createStore(rootReducer, initialState, enhancer);
 
-    // run the rootSaga initially
-    store.runSagaTask();
-  
-    return store;
+  store.runSagaTask = () => {
+    store.sagaTask = sagaMiddleware.run(rootSaga);
+  };
+
+  // run the rootSaga initially
+  store.runSagaTask();
+
+  return store;
 }

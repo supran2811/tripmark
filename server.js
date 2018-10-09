@@ -41,6 +41,11 @@ const devProxy = {
     target: 'https://us-central1-triporg-1508486982436.cloudfunctions.net/getBookmarkPlaces',
     pathRewrite: {'^/getBookmarkPlaces': '/'},
     changeOrigin: true
+  },
+  '/getPlaceDetails': {
+    target: 'https://us-central1-triporg-1508486982436.cloudfunctions.net/getPlaceDetails',
+    pathRewrite: {'^/getPlaceDetails': '/'},
+    changeOrigin: true
   }
 }
 

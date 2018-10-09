@@ -1,18 +1,14 @@
+import { Component } from "react";
 
-import { Component } from 'react';
-import { connect } from 'react-redux';
-
-import LoginPage from '../modules/auth/containers/LoginPage';
+import LoginPage from "../modules/auth/containers/LoginPage";
 import "../assets/scss/material-kit-react.scss";
-import { withI18next } from '../lib/withI18next';
-import withoutAuth from '../lib/withoutAuth';
+import { withI18next } from "../lib/withI18next";
+import withoutAuth from "../lib/withoutAuth";
 
 class Login extends Component {
-
   render() {
-    return <LoginPage />
+    return <LoginPage />;
   }
 }
 
-
-export default withoutAuth(withI18next(['common','authdata'])(Login));
+export default withoutAuth(withI18next(["common", "authdata"])(Login));

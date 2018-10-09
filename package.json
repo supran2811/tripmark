@@ -77,5 +77,8 @@
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
     "validator": "^10.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.1"
   }
 }

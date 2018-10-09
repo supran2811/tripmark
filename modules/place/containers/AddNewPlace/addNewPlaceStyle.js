@@ -10,6 +10,6 @@ const addNewPlaceStyle = {
     height: "20px",
     marginRight: "3px"
   }
-}
+};
 
 export default addNewPlaceStyle;

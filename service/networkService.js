@@ -1,115 +1,124 @@
-import axios from 'axios'
-import _ from 'lodash';
-import * as api from './constants';
-import { getUserId } from '../firebase/auth';
+import axios from "axios";
+import _ from "lodash";
+import * as api from "./constants";
+import { getUserId } from "../firebase/auth";
 
-export function textSearch({term , pagetoken} , {latlngObj,radius}) {
-  let location , config;
-  if( latlngObj ) {
+export function textSearch({ term, pagetoken }, { latlngObj, radius }) {
+  let location, config;
+  if (latlngObj) {
     location = `${latlngObj.lat()},${latlngObj.lng()}`;
   }
 
-  if(term) {
-    config = { 
-      params : {
-        query:term,
+  if (term) {
+    config = {
+      params: {
+        query: term,
         location,
         radius,
-        key:process.env._GOOGLE_API_KEY
+        key: process.env._GOOGLE_API_KEY
       }
-    }
-  }
-  else if(pagetoken){
-    config = { 
-      params : {
+    };
+  } else if (pagetoken) {
+    config = {
+      params: {
         pagetoken,
-        key:process.env._GOOGLE_API_KEY
+        key: process.env._GOOGLE_API_KEY
       }
-    }
+    };
   }
 
-  return axios.get(`${api.API_TEXT_SEARCH}`,config);
+  return axios.get(`${api.API_TEXT_SEARCH}`, config);
 }
 
-export function autoCompleteSearch( { term } , { latlngObj , radius }) {
-  if(term === ""){
+export function autoCompleteSearch({ term }, { latlngObj, radius }) {
+  if (term === "") {
     return {
-        data:{
-          predictions:[]
-        }
-    }
+      data: {
+        predictions: []
+      }
+    };
   }
 
   let location;
-  if( latlngObj ) {
+  if (latlngObj) {
     location = `${latlngObj.lat()},${latlngObj.lng()}`;
   }
-  const config = { 
-    params : {
-      text:term,
+  const config = {
+    params: {
+      text: term,
       location,
       radius,
-      key:process.env._GOOGLE_API_KEY
+      key: process.env._GOOGLE_API_KEY
     }
-  }
+  };
 
-  return axios.get(`${api.API_AUTOCOMPLETE_SEARCH}`,config);
+  return axios.get(`${api.API_AUTOCOMPLETE_SEARCH}`, config);
 }
 
-export function addBookmark(city,place) {
+export function addBookmark(city, place) {
   const userid = getUserId();
-  if(userid === ''){
-    return null; 
+  if (userid === "") {
+    return null;
   }
 
-  return axios.post(`${api.API_ADD_BOOKMARK}`,{userid , city , place});
+  return axios.post(`${api.API_ADD_BOOKMARK}`, { userid, city, place });
 }
 
-export function deleteBookmark(cityid , placeid) {
+export function deleteBookmark(cityid, placeid) {
   const userid = getUserId();
-  if(userid === ''){
-    return null; 
+  if (userid === "") {
+    return null;
   }
-  const config = { 
-    params : {
-     cityid,
-     placeid,
-     userid
+  const config = {
+    params: {
+      cityid,
+      placeid,
+      userid
     }
-  }
-  return axios.delete(`${api.API_DELETE_BOOKMARK}` , config);
+  };
+  return axios.delete(`${api.API_DELETE_BOOKMARK}`, config);
 }
 
 export function getAllBookmarks() {
   const userid = getUserId();
-  if(userid === ''){
-    return null; 
+  if (userid === "") {
+    return null;
   }
-  
-  const config = { 
-    params : {
+
+  const config = {
+    params: {
       userid
     }
-  }
-  
-  return axios.get(`${api.API_GET_ALL_BOOKMARK}` , config);
+  };
 
+  return axios.get(`${api.API_GET_ALL_BOOKMARK}`, config);
 }
 
 export function getAllBookmarksInCity(cityid) {
   const userid = getUserId();
-  if(userid === ''){
-    return null; 
+  if (userid === "") {
+    return null;
   }
-  
-  const config = { 
-    params : {
+
+  const config = {
+    params: {
       userid,
       cityid
     }
-  }
-  return axios.get(`${api.API_GET_BOOKMARK_PLACES}` , config);
+  };
+  return axios.get(`${api.API_GET_BOOKMARK_PLACES}`, config);
 }
 
+export function getPlaceDetails(cityid, placeid) {
+  const userid = getUserId();
+  const config = {
+    params: {
+      userid,
+      cityid,
+      placeid,
+      key: process.env._GOOGLE_API_KEY
+    }
+  };
 
-
+  return axios.get(`${api.API_GET_PLACE_DETAILS}`, config);
+}

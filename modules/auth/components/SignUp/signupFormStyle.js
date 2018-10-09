@@ -1,23 +1,23 @@
 import { container } from "../../../../assets/jss/material-kit-react";
-import  checkboxStyle  from '../../../../assets/jss/material-kit-react/customCheckboxRadioSwitch';
-import signupBg from '../../../../assets/img/google_signup.jpg';
-import signinBg from '../../../../assets/img/google_signin.jpg';
+import checkboxStyle from "../../../../assets/jss/material-kit-react/customCheckboxRadioSwitch";
+import signupBg from "../../../../assets/img/google_signup.jpg";
+import signinBg from "../../../../assets/img/google_signin.jpg";
 
 const loginButtonStyle = {
-     width:"80%",
-    color:"#ffffff",
-    fontWeight:"bold",
-    borderRadius:"2px",
-    border:"1px solid transparent",
-    display:"inline-block",
-    marginRight:"10px",
-    padding:'15px',
-    cursor:"pointer",
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize:'cover',
-    backgroundOrigin:'border-box'
-}
+  width: "80%",
+  color: "#ffffff",
+  fontWeight: "bold",
+  borderRadius: "2px",
+  border: "1px solid transparent",
+  display: "inline-block",
+  marginRight: "10px",
+  padding: "15px",
+  cursor: "pointer",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+  backgroundOrigin: "border-box"
+};
 
 const signupPageStyle = {
   container: {
@@ -52,7 +52,7 @@ const signupPageStyle = {
       display: "block",
       left: "0",
       top: "0",
-      content: '""'
+      content: ""
     },
     "& footer li a,& footer li a:hover,& footer li a:active": {
       color: "#FFFFFF"
@@ -66,7 +66,6 @@ const signupPageStyle = {
     textAlign: "center",
     marginTop: "0px",
     marginBottom: "15px"
-    
   },
   socialIcons: {
     maxWidth: "24px",
@@ -100,18 +99,18 @@ const signupPageStyle = {
   },
   googleSignUp: {
     ...loginButtonStyle,
-    backgroundImage:`url(${signupBg})`
+    backgroundImage: `url(${signupBg})`
   },
   googleLogin: {
     ...loginButtonStyle,
-    backgroundImage:`url(${signinBg})`
+    backgroundImage: `url(${signinBg})`
   },
-  error : {
-    color:'#ff0000',
-    fontFamily: 'inherit',
-    width:'100%',
-    fontWeight:300,
-    textAlign:'center'
+  error: {
+    color: "#ff0000",
+    fontFamily: "inherit",
+    width: "100%",
+    fontWeight: 300,
+    textAlign: "center"
   },
   ...checkboxStyle
 };

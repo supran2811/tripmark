@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Document, { Head, Main, NextScript } from 'next/document';
-import flush from 'styled-jsx/server';
+import React from "react";
+import PropTypes from "prop-types";
+import Document, { Head, Main, NextScript } from "next/document";
+import flush from "styled-jsx/server";
 
-import getPageContext from '../getPageContext';
+import getPageContext from "../getPageContext";
 
 class MyDocument extends Document {
   render() {
     const { pageContext } = this.props;
-    if(!pageContext){
+    if (!pageContext) {
       return null;
     }
 
@@ -21,14 +21,25 @@ class MyDocument extends Document {
           <meta
             name="viewport"
             content={
-              'user-scalable=0, initial-scale=1, ' +
-              'minimum-scale=1, width=device-width, height=device-height'
+              "user-scalable=0, initial-scale=1, " +
+              "minimum-scale=1, width=device-width, height=device-height"
             }
           />
           {/* PWA primary color */}
-          <meta name="theme-color" content={pageContext.theme.palette.primary.main} />
-          <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=latin-ext" rel="stylesheet" />
-          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossOrigin="anonymous" />
+          <meta
+            name="theme-color"
+            content={pageContext.theme.palette.primary.main}
+          />
+          <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;subset=latin-ext"
+            rel="stylesheet"
+          />
+          <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+            integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
+            crossOrigin="anonymous"
+          />
           <link rel="stylesheet" href="/_next/static/style.css" />
         </Head>
         <body>
@@ -71,13 +82,13 @@ MyDocument.getInitialProps = async ctx => {
     };
 
     WrappedComponent.propTypes = {
-      pageContext: PropTypes.object.isRequired,
+      pageContext: PropTypes.object.isRequired
     };
 
     return WrappedComponent;
   });
- 
-  if(!pageContext){
+
+  if (!pageContext) {
     pageContext = getPageContext();
   }
   return {
@@ -89,11 +100,13 @@ MyDocument.getInitialProps = async ctx => {
         <style
           id="jss-server-side"
           // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: pageContext.sheetsRegistry.toString() }}
+          dangerouslySetInnerHTML={{
+            __html: pageContext.sheetsRegistry.toString()
+          }}
         />
         {flush() || null}
       </React.Fragment>
-    ),
+    )
   };
 };
 

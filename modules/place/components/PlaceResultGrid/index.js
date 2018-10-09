@@ -1,3 +1,3 @@
-import PlaceResultGrid from './PlaceResultGrid';
+import PlaceResultGrid from "./PlaceResultGrid";
 
 export default PlaceResultGrid;

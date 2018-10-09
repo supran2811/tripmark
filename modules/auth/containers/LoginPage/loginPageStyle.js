@@ -10,6 +10,6 @@ const loginPageStyle = {
     alignItems:"center",
     justifyContent:"center"
   }
-}
+};
 
 export default loginPageStyle;
