@@ -11,7 +11,6 @@ import {
 } from "../../store/selector";
 import {
   fetchCityDetails,
-  fetchBookmarkPlaces,
   deleteBookmarkAction
 } from "../../store/action";
 import Parallax from "../../../../components/Parallax";
@@ -26,6 +25,7 @@ import GridContainer from "../../../../components/GridContainer";
 import { logoutRequest } from "../../../auth/store/action";
 
 class CityHome extends Component {
+
   state = {
     showPhotoViewer: false
   };
@@ -52,6 +52,7 @@ class CityHome extends Component {
       dispatch &&
         dispatch(fetchCityDetails(id));
     }
+   
   }
 
   openAddFavoritePlace(city) {

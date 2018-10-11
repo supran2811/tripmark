@@ -41,6 +41,18 @@ export const DELETE_BOOKMARK = defineAction(
   [ERROR, PENDING, SUCCESS],
   NAME
 );
+
+export const SET_ADD_BOOKMARK = defineAction(
+  "SET_ADD_BOOKMARK",
+  [],
+  NAME
+);
+export const SET_DELETE_BOOKMARK = defineAction(
+  "SET_DELETE_BOOKMARK",
+  [],
+  NAME
+);
+
 export const GET_BOOKMARK_PLACES = defineAction(
   "GET_BOOKMARK_PLACES",
   [ERROR, PENDING, SUCCESS],

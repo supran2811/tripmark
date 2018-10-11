@@ -9,6 +9,7 @@ import { withReduxSaga } from "../lib/withReduxSaga";
 import getPageContext from "../getPageContext";
 import { auth } from "../firebase/firebase";
 import { setToken, logoutRequest } from "../modules/auth/store/action";
+import { handleAllStorageListener } from "../modules/store/listeners";
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -31,7 +32,10 @@ class MyApp extends App {
         this.props.dispatch(logoutRequest());
       }
     });
-
+    window.addEventListener("storage",e => {
+      console.log("Storage event",e);
+      handleAllStorageListener(e , this.props.dispatch);
+    });
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles && jssStyles.parentNode) {

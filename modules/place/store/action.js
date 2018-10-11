@@ -10,7 +10,9 @@ import {
   ADD_BOOKMARK,
   DELETE_BOOKMARK,
   GET_BOOKMARK_PLACES,
-  GET_BOOKMARKS
+  GET_BOOKMARKS,
+  SET_DELETE_BOOKMARK,
+  SET_ADD_BOOKMARK
 } from "./actionTypes";
 
 export function fetchCityDetails(cityid) {
@@ -69,9 +71,18 @@ export function cancelAutoCompleteSearch() {
   };
 }
 
-export function addBookmark(city, place) {
+export function addBookmark(city, place , cityid) {
   return {
     type: ADD_BOOKMARK.ACTION,
+    city,
+    place,
+    cityid
+  };
+}
+
+export function setAddBookmark(city, place) {
+  return {
+    type: SET_ADD_BOOKMARK.ACTION,
     city,
     place
   };
@@ -80,6 +91,14 @@ export function addBookmark(city, place) {
 export function deleteBookmarkAction(cityid, placeid) {
   return {
     type: DELETE_BOOKMARK.ACTION,
+    cityid,
+    placeid
+  };
+}
+
+export function setDeleteBookmark(cityid, placeid) {
+  return {
+    type: SET_DELETE_BOOKMARK.ACTION,
     cityid,
     placeid
   };

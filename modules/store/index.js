@@ -25,5 +25,6 @@ export default function configureStore(initialState = Map()) {
   // run the rootSaga initially
   store.runSagaTask();
 
+
   return store;
 }

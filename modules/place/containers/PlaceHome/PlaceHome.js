@@ -9,18 +9,19 @@ import { Map, Marker } from "google-maps-react";
 import { CardContent, CardActions } from "@material-ui/core";
 
 import { withGoogleApiLibs } from "../../../../lib/withLibs";
-import { fetchPlaceDetails } from "../../store/action";
+import { fetchPlaceDetails, deleteBookmarkAction, addBookmark } from "../../store/action";
 import { getSelectedPlace } from "../../store/selector";
 import AppHeader from "../../../app/components/AppHeader";
 import PageLoader from "../../../app/components/PageLoader";
 import Parallax from "../../../../components/Parallax";
 import Button from "../../../../components/CustomButtons";
-import { getOptimalBGImageUrl } from "../../../../google/places";
+import { getOptimalBGImageUrl, getPhotoUrl } from "../../../../google/places";
 import placeHomeStyle from "./placeHomeStyle";
 import GridContainer from "../../../../components/GridContainer";
 import GridItem from "../../../../components/GridItem";
 import Card from "../../../../components/Card";
 import PhotoView from "../../components/PhotoView";
+import { addBookmarkedPlaces } from "../../store/localStorage";
 
 class PlaceHome extends Component {
   state = {
@@ -53,7 +54,6 @@ class PlaceHome extends Component {
 
   render() {
     const { place, t } = this.props;
-
     return (
       <div>
         {place ? (
@@ -91,10 +91,14 @@ class PlaceHome extends Component {
           <div className={classes.container}>
             <Button
               size="lg"
-              onClick={() => this.addBookmark(place)}
+              onClick={this.addRemoveBookmark}
               className={classes.addPlaceButton}
             >
-              <Bookmark /> {t("markAsFavourtie")}
+              {
+                place.bookmarked ?
+                  <React.Fragment><Bookmark color="primary"/> { t("unmarkAsFavourite") }</React.Fragment>  
+                  : <React.Fragment><Bookmark color="default"/> { t("markAsFavourtie") }</React.Fragment>
+              } 
             </Button>
             <Button
               size="lg"
@@ -285,7 +289,33 @@ class PlaceHome extends Component {
     );
   };
 
-  addBookmark = place => {};
+  addRemoveBookmark = () => {
+    const { place , dispatch ,cityId } = this.props;
+
+    if(place.bookmarked) {
+      dispatch(deleteBookmarkAction(cityId,place["place_id"]));
+    }
+    else {
+     
+      const {  place_id,
+        name,
+        rating,
+        opening_hours,
+        photos,
+        geometry } = place;
+
+      const placeToSave = {
+        place_id,
+        name,
+        rating,
+        opening_hours,
+        photoUrl: photos ? getPhotoUrl(photos[0]["photo_reference"], 280) : null,
+        location:{...geometry.location}
+      };
+      
+      dispatch(addBookmark(undefined , placeToSave , cityId ));
+    }
+  };
 
   viewPhoto = () => {
     this.setState({ showPhotoViewer: true });

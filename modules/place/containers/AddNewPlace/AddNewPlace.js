@@ -49,6 +49,7 @@ class AddNewPlace extends Component {
       dispatch &&
         dispatch(fetchCityDetails(id));
     }
+
   }
 
   componentDidUpdate() {
@@ -62,10 +63,11 @@ class AddNewPlace extends Component {
         dispatch(fetchCityDetails(id));
     }
 
-    if(query && query.get("label") && query.get("label") !== "" && this.state.label !== query.get("label")) {
+    if(query && query.get("label") && 
+                query.get("label") !== "" && 
+                this.state.label !== query.get("label")) {
       this.setState({label:query.get("label")});
     }
-    
   }
 
   handleClose() {
@@ -108,10 +110,8 @@ class AddNewPlace extends Component {
       suggestions,
       places,
       loading,
-      id,
-      query
+      id
     } = this.props;
-    console.log("renderMainContent ::: query term ",query,query.get("label"));
     
     return (
       <GridContainer className={classes.container}>
@@ -154,11 +154,9 @@ class AddNewPlace extends Component {
 
   fetchSuggestions = query => {
     const { dispatch, city } = this.props;
-    console.log("fetchSuggestions:::::",city);
     const latlngObj = city.get("geometry")
       ? city.get("geometry").get("location").toJSON()
       : undefined;
-    console.log("fetchSuggestions::::: latlngObj  ",latlngObj);  
     const radius = "100000";
 
     const params = { latlngObj , radius };

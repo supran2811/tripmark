@@ -1,27 +1,30 @@
 /* eslint-disable no-underscore-dangle */
 
-import { SheetsRegistry } from 'jss';
-import { createMuiTheme, createGenerateClassName } from '@material-ui/core/styles';
+import { SheetsRegistry } from "jss";
+import {
+  createMuiTheme,
+  createGenerateClassName
+} from "@material-ui/core/styles";
 
 // A theme with custom primary and secondary color.
 // It's optional.
 const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#0276aa',
-      main: '#03a9f4',
-      dark: '#35baf6',
+      light: "#0276aa",
+      main: "#03a9f4",
+      dark: "#35baf6"
     },
     secondary: {
-      light: '#f73378',
-      main: '#f50057',
-      dark: '#ab003c',
-    },
+      light: "#f73378",
+      main: "#f50057",
+      dark: "#ab003c"
+    }
   },
-  transitions:{
-    duration:{
-      enteringScreen:1000,
-      leavingScreen:1000
+  transitions: {
+    duration: {
+      enteringScreen: 1000,
+      leavingScreen: 1000
     }
   }
 });
@@ -34,7 +37,7 @@ function createPageContext() {
     // This is needed in order to inject the critical CSS.
     sheetsRegistry: new SheetsRegistry(),
     // The standard class name generator.
-    generateClassName: createGenerateClassName(),
+    generateClassName: createGenerateClassName()
   };
 }
 

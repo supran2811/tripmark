@@ -55,13 +55,21 @@ export function autoCompleteSearch({ term }, { latlngObj, radius }) {
   return axios.get(`${api.API_AUTOCOMPLETE_SEARCH}`, config);
 }
 
-export function addBookmark(city, place) {
+export function addBookmark(city, place, cityid) {
   const userid = getUserId();
   if (userid === "") {
     return null;
   }
 
-  return axios.post(`${api.API_ADD_BOOKMARK}`, { userid, city, place });
+  const data = {
+    userid, 
+    city, 
+    place, 
+    cityid,  
+    key: process.env._GOOGLE_API_KEY 
+  };
+
+  return axios.post(`${api.API_ADD_BOOKMARK}`, data);
 }
 
 export function deleteBookmark(cityid, placeid) {

@@ -19,8 +19,8 @@ import {
   GET_BOOKMARK_PLACES,
   DELETE_BOOKMARK
 } from "./actionTypes";
-import { googlePlace } from "../../../google";
 import * as serviceApi from "../../../service/networkService";
+import { addBookmarkedPlaces, addRemovedPlaces } from "./localStorage";
 
 export function* dofetchCityDetails({ cityid }) {
   try {
@@ -89,11 +89,12 @@ export function* doAutoCompleteSearch({ query, params }) {
   }
 }
 
-export function* doAddBookmark({ city, place }) {
+export function* doAddBookmark({ city, place  , cityid }) {
   try {
     yield put({ type: ADD_BOOKMARK.PENDING });
-    const response = yield call(serviceApi.addBookmark, city, place);
-    yield put({ type: ADD_BOOKMARK.SUCCESS, city, place });
+    const response = yield call(serviceApi.addBookmark, city, place , cityid);
+    addBookmarkedPlaces(city,place);
+    yield put({ type: ADD_BOOKMARK.SUCCESS, city, place ,cityid });
   } catch (error) {
     yield put({ type: ADD_BOOKMARK.ERROR, error });
   }
@@ -113,8 +114,10 @@ export function* doDeleteBookmarks({ cityid, placeid }) {
   try {
     yield put({ type: DELETE_BOOKMARK.PENDING });
     const response = yield call(serviceApi.deleteBookmark, cityid, placeid);
-    yield put({ type: DELETE_BOOKMARK.SUCCESS, cityid, placeid });
+    addRemovedPlaces(cityid,placeid);
+    yield put({ type: DELETE_BOOKMARK.SUCCESS, cityid,placeid });
   } catch (error) {
+    console.log("Comign herer...",error);
     yield put({ type: DELETE_BOOKMARK.ERROR, error });
   }
 }
