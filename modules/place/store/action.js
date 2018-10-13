@@ -75,8 +75,7 @@ export function addBookmark(city, place , cityid) {
   return {
     type: ADD_BOOKMARK.ACTION,
     city,
-    place,
-    cityid
+    place
   };
 }
 
@@ -113,6 +112,6 @@ export function fetchBookmarkPlaces(cityid) {
 
 export function fetchBookmarks() {
   return {
-    type: GET_BOOKMARKS
+    type: GET_BOOKMARKS.ACTION
   };
 }

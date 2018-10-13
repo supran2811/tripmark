@@ -313,7 +313,11 @@ class PlaceHome extends Component {
         location:{...geometry.location}
       };
       
-      dispatch(addBookmark(undefined , placeToSave , cityId ));
+      const cityToSave = {
+        place_id:cityId
+      };
+      
+      dispatch(addBookmark(cityToSave , placeToSave));
     }
   };
 

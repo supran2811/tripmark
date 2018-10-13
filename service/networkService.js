@@ -65,7 +65,6 @@ export function addBookmark(city, place, cityid) {
     userid, 
     city, 
     place, 
-    cityid,  
     key: process.env._GOOGLE_API_KEY 
   };
 

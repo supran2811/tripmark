@@ -17,7 +17,8 @@ import {
   FETCH_PLACE_DETAILS,
   ADD_BOOKMARK,
   GET_BOOKMARK_PLACES,
-  DELETE_BOOKMARK
+  DELETE_BOOKMARK,
+  GET_BOOKMARKS
 } from "./actionTypes";
 import * as serviceApi from "../../../service/networkService";
 import { addBookmarkedPlaces, addRemovedPlaces } from "./localStorage";
@@ -89,12 +90,12 @@ export function* doAutoCompleteSearch({ query, params }) {
   }
 }
 
-export function* doAddBookmark({ city, place  , cityid }) {
+export function* doAddBookmark({ city, place }) {
   try {
     yield put({ type: ADD_BOOKMARK.PENDING });
-    const response = yield call(serviceApi.addBookmark, city, place , cityid);
+    const response = yield call(serviceApi.addBookmark, city, place);
     addBookmarkedPlaces(city,place);
-    yield put({ type: ADD_BOOKMARK.SUCCESS, city, place ,cityid });
+    yield put({ type: ADD_BOOKMARK.SUCCESS, city, place });
   } catch (error) {
     yield put({ type: ADD_BOOKMARK.ERROR, error });
   }
@@ -117,8 +118,18 @@ export function* doDeleteBookmarks({ cityid, placeid }) {
     addRemovedPlaces(cityid,placeid);
     yield put({ type: DELETE_BOOKMARK.SUCCESS, cityid,placeid });
   } catch (error) {
-    console.log("Comign herer...",error);
     yield put({ type: DELETE_BOOKMARK.ERROR, error });
+  }
+}
+
+export function* doGetAllBookmarks() {
+  try {
+    yield put({type:GET_BOOKMARKS.PENDING});
+    const response = yield call(serviceApi.getAllBookmarks);
+    yield put({type:GET_BOOKMARKS.SUCCESS , response});
+  } catch(error) {
+    console.log("doGetAllBookmarks:: Comign here...",error);
+    yield put({type:GET_BOOKMARKS.ERROR , error});
   }
 }
 
@@ -134,6 +145,7 @@ export default function* saga() {
     fork(takeLatest, AUTOCOMPLETE_SEARCH.ACTION, doAutoCompleteSearch),
     fork(takeEvery, ADD_BOOKMARK.ACTION, doAddBookmark),
     fork(takeEvery, GET_BOOKMARK_PLACES.ACTION, doGetAllBookmarksInCity),
-    fork(takeEvery, DELETE_BOOKMARK.ACTION, doDeleteBookmarks)
+    fork(takeEvery, DELETE_BOOKMARK.ACTION, doDeleteBookmarks),
+    fork(takeEvery , GET_BOOKMARKS.ACTION , doGetAllBookmarks)
   ]);
 }

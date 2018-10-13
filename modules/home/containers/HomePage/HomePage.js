@@ -9,20 +9,28 @@ import GridItem from "../../../../components/GridItem";
 import { withGoogleApiLibs } from "../../../../lib/withLibs";
 import AppHeader from "../../../app/components/AppHeader";
 import GoogleAutoComplete from "../../../../components/GoogleAutoComplete";
-import { resetCityDetails } from "../../../place/store/action";
+import { resetCityDetails, fetchBookmarks } from "../../../place/store/action";
+import PageLoader from "../../../app/components/PageLoader";
 import { logoutRequest } from "../../../auth/store/action";
+import { selectors as placeSelectors } from "../../../place/store";
+import CityResultGrid from "../../components/CityResultGrid/CityResultGrid";
+import { isLoading } from "../../../app/store/selector";
 
 class HomePage extends Component {
 
-  mapRef = React.createRef();
-
+  
   componentDidMount() {
-    this.props.dispatch(resetCityDetails());
+    console.log("Inside componentDidMount");
+    const { dispatch , cities } = this.props;
+    dispatch(resetCityDetails());
+    if(!cities) {
+      dispatch(fetchBookmarks());
+    }
   }
 
   render() {
-    const { classes, t , dispatch } = this.props;
-
+    const { classes, t , cities  , loading } = this.props;
+    console.log("Inside HomePAge render ",cities);
     return (
       <div>
         <AppHeader color="primary" fixed isAuthenticated={true} t={t} 
@@ -35,7 +43,12 @@ class HomePage extends Component {
               t={t}
             />
           </GridItem>
-          <div ref={this.mapRef} />
+          {
+            cities && <CityResultGrid cities = {cities}/>
+          }
+          {
+            loading && <PageLoader />
+          }
         </GridContainer>
       </div>
     );
@@ -50,13 +63,22 @@ class HomePage extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    cities : placeSelectors.getBookmarkedCities(state),
+    loading: isLoading(state)
+  };
+};
+
 HomePage.propTypes = {
   dispatch:PropTypes.func.isRequired,
   classes:PropTypes.object.isRequired,
-  t:PropTypes.func.isRequired
+  t:PropTypes.func.isRequired,
+  cities:PropTypes.array,
+  loading: PropTypes.bool
 };
 
 
-export default connect()(
+export default connect(mapStateToProps)(
   withGoogleApiLibs(HomePage, ["homedata", "common"], homePageStyle)
 );

@@ -48,7 +48,7 @@ class AutoComplete extends Component {
 
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
     console.log("renderSuggestion:::",suggestion,query) ;
-    const { classes, suggestionClicked } = this.props;
+    const { classes, suggestionClicked , cityid } = this.props;
     const suggestionText = this.getSuggestionText(suggestion);
     const type = suggestion["type"];
     const matches = match(suggestionText, query);
@@ -62,7 +62,7 @@ class AutoComplete extends Component {
         classes={{ root: classes.menuItem }}
       >
         {suggestion.type !== "category" ? (
-          <a href={`/place/${suggestion.place_id}`}
+          <a href={`/city/${cityid}/place/${suggestion.place_id}`}
             rel="noopener"
             className={classes.menuItemContent}
             target="_blank">
@@ -235,9 +235,10 @@ AutoComplete.propTypes = {
   fetchSuggestions: PropTypes.func.isRequired,
   performSearch: PropTypes.func.isRequired,
   classes:PropTypes.object.isRequired,
+  cityid:PropTypes.string.isRequired,
   isLoading:PropTypes.bool.isRequired,
   suggestions: PropTypes.array,
-  suggestionClicked:PropTypes.func,
+  suggestionClicked:PropTypes.func
 };
 
 export default withStyles(autoCompleteStyle)(AutoComplete);

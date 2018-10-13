@@ -10,6 +10,7 @@ import getPageContext from "../getPageContext";
 import { auth } from "../firebase/firebase";
 import { setToken, logoutRequest } from "../modules/auth/store/action";
 import { handleAllStorageListener } from "../modules/store/listeners";
+import { checkAndClearAppData } from "../lib/localStore";
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -32,6 +33,7 @@ class MyApp extends App {
         this.props.dispatch(logoutRequest());
       }
     });
+    checkAndClearAppData();
     window.addEventListener("storage",e => {
       console.log("Storage event",e);
       handleAllStorageListener(e , this.props.dispatch);

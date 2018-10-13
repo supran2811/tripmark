@@ -6,7 +6,7 @@ import { filterCategory } from "../../../google/places";
 export const getSelectedCityDetails = state =>
   state.get(NAME).get("selectedCity");
 
-export const getSelectedPlace = (state, placeId) =>
+export const getSelectedPlaceObject = (state, placeId) =>
   state
     .get(NAME)
     .get("selectedPlaces")
@@ -70,6 +70,16 @@ export const getNextToken = createSelector(getPlacesObject, placesObject => {
   return placesObject ? placesObject.get("next_page_token") : placesObject;
 });
 
+export const getBookmarkedCities = createSelector(getAllBookmarks,bookmarksObj => {
+  if(bookmarksObj){
+    const bookmarksJS = bookmarksObj.toJSON();
+    return Object.keys(bookmarksJS).map(cityid => {
+      return { ...bookmarksJS[cityid] };
+    } );
+  }
+  return null;
+});
+
 export const getBookmarkedPlacesForCity = createSelector(
   getAllBookmarks,
   getSelectedCityDetails,
@@ -86,3 +96,6 @@ export const getBookmarkedPlacesForCity = createSelector(
     return null;
   }
 );
+
+export const getSelectedPlace = createSelector( getSelectedPlaceObject , 
+  placeObject =>  placeObject ? placeObject.toJSON() : placeObject);

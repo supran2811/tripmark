@@ -10,21 +10,26 @@ export function addRemovedPlaces( cityid , placeid) {
 }
 
 export function addBookmarkedPlaces ( city , place ) {
-  storageApi.addItem( PREFIX_ADDBOOKMARK_IDS+city["place_id"]+place["place_id"] , {city,place} );
+  if(city) {
+    storageApi.addItem( PREFIX_ADDBOOKMARK_IDS+city["place_id"]+place["place_id"] , {city,place} );
+  }
 }
 
 export function handleStorageListener(e,dispatch) {
-  if(e.newValue !== null) {
-    if(e.key.startsWith(PREFIX_REMOVE_IDS)) {
-      const {cityid , placeid } = storageApi.getItem(e.key);
-      dispatch(setDeleteBookmark(cityid,placeid));
-      storageApi.removeItem(e.key);
-    }
-    else if(e.key.startsWith(PREFIX_ADDBOOKMARK_IDS)) {
-      const {city,place} = storageApi.getItem(e.key);
-      dispatch(setAddBookmark(city,place));
-      storageApi.removeItem(e.key);
-    }
+  if(e.key == storageApi._APP_LOCAL_DATA && e.newValue) {
+    const obj = JSON.parse(e.newValue);
+    Object.keys(obj).forEach(key => {
+      if(key.startsWith(PREFIX_ADDBOOKMARK_IDS)){
+        const {city,place} = obj[key];
+        dispatch(setAddBookmark(city,place));
+      }
+      else {
+        const {cityid , placeid} = obj[key];
+        dispatch(setDeleteBookmark(cityid,placeid));
+      }
+    });
+    storageApi.clearData();
+
   }
 }
 

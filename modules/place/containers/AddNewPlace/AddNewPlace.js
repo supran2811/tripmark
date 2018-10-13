@@ -122,6 +122,7 @@ class AddNewPlace extends Component {
             performSearch={this.searchText}
             suggestions={suggestions}
             isLoading={loading}
+            cityid = {id}
           />
         </GridItem>
         {
