@@ -165,7 +165,8 @@ export default function placeReducer(state = initialState, action) {
   }
   case GET_BOOKMARKS.SUCCESS :{
     const result = action.response.data;
-    const bookmarks = Map(result);
+    let bookmarks = Map();
+    bookmarks = bookmarks.mergeDeep(result);
     return state.merge({bookmarks});
   }
   case RESET_CITY_DETAILS.ACTION: {

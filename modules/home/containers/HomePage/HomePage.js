@@ -17,10 +17,8 @@ import CityResultGrid from "../../components/CityResultGrid/CityResultGrid";
 import { isLoading } from "../../../app/store/selector";
 
 class HomePage extends Component {
-
   
   componentDidMount() {
-    console.log("Inside componentDidMount");
     const { dispatch , cities } = this.props;
     dispatch(resetCityDetails());
     if(!cities) {
@@ -30,19 +28,21 @@ class HomePage extends Component {
 
   render() {
     const { classes, t , cities  , loading } = this.props;
-    console.log("Inside HomePAge render ",cities);
     return (
-      <div>
+      <React.Fragment>
         <AppHeader color="primary" fixed isAuthenticated={true} t={t} 
           logOut = {this.doLogOut}/>
+
+        <div className = {classes.autoComplete}>
+          <GoogleAutoComplete
+            searchTypes={["(cities)"]}
+            onSuggestSelect={this.onSuggestSelect}
+            t={t}
+          />
+        </div>
+        
+
         <GridContainer className={classes.container}>
-          <GridItem xs={12}>
-            <GoogleAutoComplete
-              searchTypes={["(cities)"]}
-              onSuggestSelect={this.onSuggestSelect}
-              t={t}
-            />
-          </GridItem>
           {
             cities && <CityResultGrid cities = {cities}/>
           }
@@ -50,7 +50,7 @@ class HomePage extends Component {
             loading && <PageLoader />
           }
         </GridContainer>
-      </div>
+      </React.Fragment>
     );
   }
 
