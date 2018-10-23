@@ -3,17 +3,24 @@ import { container } from "../../../../assets/jss/material-kit-react";
 const homePageStyle = theme => ({
   container:{
     ...container,
-    position:"absolute",
-    top:280,
-    left:0,
-    zIndex:100
+    transform:"translateY(60px)",
+    [theme.breakpoints.down("sm")]:{
+      transform:"translateY(40px)",
+    },
+    display:"flex",
+    justifyContent:"center"
+  },
+  parrallexClass:{
+    height:"80vh",
+    [theme.breakpoints.down("sm")]:{
+      height:"40vh"
+    }
   },
   autoComplete:{
-    position:"absolute",
-    width:"100%",
-    zIndex:200,
-    top:180,
-    left:0
+    [theme.breakpoints.down("sm")] :{
+      width:"90%"
+    },
+    width:"50%",
   }
 
 });

@@ -15,6 +15,8 @@ import { logoutRequest } from "../../../auth/store/action";
 import { selectors as placeSelectors } from "../../../place/store";
 import CityResultGrid from "../../components/CityResultGrid/CityResultGrid";
 import { isLoading } from "../../../app/store/selector";
+import homeBg from "../../../../assets/img/home-bg.jpg";
+import Parallax from "../../../../components/Parallax";
 
 class HomePage extends Component {
   
@@ -33,23 +35,26 @@ class HomePage extends Component {
         <AppHeader color="primary" fixed isAuthenticated={true} t={t} 
           logOut = {this.doLogOut}/>
 
-        <div className = {classes.autoComplete}>
-          <GoogleAutoComplete
-            searchTypes={["(cities)"]}
-            onSuggestSelect={this.onSuggestSelect}
-            t={t}
-          />
-        </div>
-        
+        <Parallax image={homeBg} className={classes.parrallexClass}>
+          <div className={classes.container}>
+            <div className={classes.autoComplete}>
+              <GoogleAutoComplete
+                searchTypes={["(cities)"]}
+                onSuggestSelect={this.onSuggestSelect}
+                t={t}
+              />
+            </div>
+          </div>
+        </Parallax>
 
-        <GridContainer className={classes.container}>
+        {/* <GridContainer>
           {
             cities && <CityResultGrid cities = {cities}/>
           }
           {
             loading && <PageLoader />
           }
-        </GridContainer>
+        </GridContainer> */}
       </React.Fragment>
     );
   }

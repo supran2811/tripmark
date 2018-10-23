@@ -1,6 +1,7 @@
 const googleAutoCompleteStyle = {
   main: {
-    position:'relative'
+    position:'relative',
+    width:'100%'
   },
   searchIcon:{
     position:'absolute',
@@ -15,7 +16,10 @@ const googleAutoCompleteStyle = {
     padding: '10px 20px',
     font:'inherit',
     zIndex:200,
-    paddingLeft:'50px'
+    paddingLeft:'50px',
+    "&:focus": {
+      outline:"none"
+    }
   },
   suggestList: {
     listStyle:'none',
