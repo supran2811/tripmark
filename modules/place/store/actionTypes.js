@@ -63,3 +63,9 @@ export const GET_BOOKMARKS = defineAction(
   [ERROR, PENDING, SUCCESS],
   NAME
 );
+
+export const CLEAR_BOOKMARKS = defineAction(
+  "CLEAR_BOOKMARKS",
+  [],
+  NAME
+);

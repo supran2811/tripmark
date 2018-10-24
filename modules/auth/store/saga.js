@@ -8,6 +8,7 @@ import {
   ACTION_GOOGLE_SIGNUP,
   ACTION_LOGOUT
 } from "./actionTypes";
+import { CLEAR_BOOKMARKS, RESET_CITY_DETAILS } from "../../place/store/actionTypes";
 
 export function* doSignUp(action) {
   try {
@@ -65,7 +66,10 @@ export function* doLogOut() {
   try {
     yield put({ type: ACTION_LOGOUT.PENDING });
     yield auth.doSignOut();
+    yield put({type:CLEAR_BOOKMARKS.ACTION});
+    yield put({type:RESET_CITY_DETAILS.ACTION});
     yield put({ type: ACTION_LOGOUT.SUCCESS });
+    
   } catch (error) {
     yield put({ type: ACTION_LOGOUT.ERROR, error });
   }

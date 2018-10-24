@@ -39,7 +39,8 @@ export default function appReducer(state = initialState, action) {
         ? action.error
         : { status: "Unable to connect to server" }
     });
-  } else if (action.type === RESET_ERROR.ACTION) {
+  } 
+  else if (action.type === RESET_ERROR.ACTION) {
     return state.merge({
       errorData: undefined
     });

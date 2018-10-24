@@ -1,7 +1,8 @@
 const googleAutoCompleteStyle = {
   main: {
     position:'relative',
-    width:'100%'
+    width:'100%',
+    zIndex:700
   },
   searchIcon:{
     position:'absolute',
@@ -33,7 +34,8 @@ const googleAutoCompleteStyle = {
     marginTop:'-1px',
     borderTopWidth:0,
     overflowX:'hidden',
-    overflowY:'auto'
+    overflowY:'visible',
+    position:"absolute"
   },
   suggestItemClassName:{
     padding:'10px 0px',

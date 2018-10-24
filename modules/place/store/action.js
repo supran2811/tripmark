@@ -12,7 +12,8 @@ import {
   GET_BOOKMARK_PLACES,
   GET_BOOKMARKS,
   SET_DELETE_BOOKMARK,
-  SET_ADD_BOOKMARK
+  SET_ADD_BOOKMARK,
+  CLEAR_BOOKMARKS
 } from "./actionTypes";
 
 export function fetchCityDetails(cityid) {
@@ -114,4 +115,10 @@ export function fetchBookmarks() {
   return {
     type: GET_BOOKMARKS.ACTION
   };
+}
+
+export function clearBookmarks() {
+  return {
+    type:CLEAR_BOOKMARKS.ACTION
+  }
 }

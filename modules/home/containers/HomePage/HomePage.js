@@ -17,6 +17,8 @@ import CityResultGrid from "../../components/CityResultGrid/CityResultGrid";
 import { isLoading } from "../../../app/store/selector";
 import homeBg from "../../../../assets/img/home-bg.jpg";
 import Parallax from "../../../../components/Parallax";
+import { Typography } from "@material-ui/core";
+import cityThumbnailViewStyle from "../../components/CityThumbnailView/cityThumbnailViewStyle";
 
 class HomePage extends Component {
   
@@ -36,25 +38,35 @@ class HomePage extends Component {
           logOut = {this.doLogOut}/>
 
         <Parallax image={homeBg} className={classes.parrallexClass}>
-          <div className={classes.container}>
-            <div className={classes.autoComplete}>
-              <GoogleAutoComplete
-                searchTypes={["(cities)"]}
-                onSuggestSelect={this.onSuggestSelect}
-                t={t}
-              />
-            </div>
-          </div>
         </Parallax>
-
-        {/* <GridContainer>
+        <div className={classes.container}>
+          <div className={classes.autoComplete}>
+            <GoogleAutoComplete
+              searchTypes={["(cities)"]}
+              onSuggestSelect={this.onSuggestSelect}
+              t={t}
+            />
+          </div>
+        </div>
+        <GridContainer className = {classes.cityGrids}>
           {
-            cities && <CityResultGrid cities = {cities}/>
+            cities &&
+              cities.length > 0 &&
+              <React.Fragment>
+                <GridItem xs={12}>
+                  <Typography gutterBottom variant="title" component="h4" noWrap>
+                    Your Marked Places
+                  </Typography>
+                </GridItem>
+                
+                <CityResultGrid cities = {cities}/>
+              </React.Fragment>
+              
           }
           {
             loading && <PageLoader />
           }
-        </GridContainer> */}
+        </GridContainer>
       </React.Fragment>
     );
   }

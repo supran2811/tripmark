@@ -12,7 +12,8 @@ import {
   DELETE_BOOKMARK,
   SET_DELETE_BOOKMARK,
   SET_ADD_BOOKMARK,
-  GET_BOOKMARKS
+  GET_BOOKMARKS,
+  CLEAR_BOOKMARKS
 } from "./actionTypes";
 import { filterCategory } from "../../../google/places";
 
@@ -177,8 +178,14 @@ export default function placeReducer(state = initialState, action) {
       predictions: filterCategory(),
       query: Map({
         term: "",
+        label:"",
         type: "text"
       })
+    });
+  }
+  case CLEAR_BOOKMARKS.ACTION: {
+    return state.merge({
+      bookmarks:undefined
     });
   }
   }
