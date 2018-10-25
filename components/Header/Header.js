@@ -98,11 +98,15 @@ class Header extends React.Component {
                    </Hidden>
                    <Hidden smDown implementation="css">
                         {brandComponent}
+                       
                    </Hidden>
                 </div>
             ) : (
-                brandComponent
+                
+              brandComponent
+
             )}
+            {this.props.children}
           </div>
           <Hidden smDown implementation="css">
             <NoSSR>
@@ -150,6 +154,7 @@ Header.propTypes = {
   ]),
   rightLinks: PropTypes.node,
   leftLinks: PropTypes.node,
+  children:PropTypes.object,
   brand: PropTypes.string,
   fixed: PropTypes.bool,
   absolute: PropTypes.bool,

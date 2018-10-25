@@ -27,6 +27,12 @@ const homePageStyle = theme => ({
       width:"90%"
     },
     width:"50%",
+  },
+  loadingBar : {
+    width:"100%",
+    marginTop:"20px",
+    display:"flex",
+    justifyContent:"center"
   }
 
 });

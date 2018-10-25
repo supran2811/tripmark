@@ -44,13 +44,13 @@ export default function placeReducer(state = initialState, action) {
   case FETCH_CITY_DETAILS.SUCCESS: {
     const {result : city , places} = action.response.data;
     const cityid  = city["place_id"];
-
-    const cityObj = state.bookmarks.get(cityid) || Map();
-    const newBookmarks = state.bookmarks.set(
+    const bookmarks = state.bookmarks || Map();
+    const cityObj = bookmarks.get(cityid) || Map();
+    const newBookmarks = bookmarks.set(
       cityid,
       cityObj.set("places", Map(places))
     );
-    const updatedBookmarks = state.bookmarks.mergeDeep(newBookmarks);
+    const updatedBookmarks = bookmarks.mergeDeep(newBookmarks);
 
     return state.merge({ selectedCity: city , bookmarks:updatedBookmarks });
   }
@@ -122,13 +122,13 @@ export default function placeReducer(state = initialState, action) {
   case GET_BOOKMARK_PLACES.SUCCESS: {
     const { response, cityid } = action;
     const places = response.data;
-
-    const cityObj = state.bookmarks.get(cityid) || Map();
-    const newBookmarks = state.bookmarks.set(
+    const bookmarks = state.bookmarks || Map();
+    const cityObj = bookmarks.get(cityid) || Map();
+    const newBookmarks = bookmarks.set(
       cityid,
       cityObj.set("places", Map(places))
     );
-    const updatedBookmarks = state.bookmarks.mergeDeep(newBookmarks);
+    const updatedBookmarks = bookmarks.mergeDeep(newBookmarks);
     return state.merge({ bookmarks: updatedBookmarks });
   }
   case SET_DELETE_BOOKMARK.ACTION:

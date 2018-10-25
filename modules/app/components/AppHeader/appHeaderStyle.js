@@ -1,21 +1,19 @@
-import zIndex from "@material-ui/core/styles/zIndex";
+import { container, transition } from "../../../../assets/jss/material-kit-react";
 
 const appHeaderStyle = {
   appHeader: {
-    position: "relative"
+    position: "fixed",
+    top:0,
+    left:0,
+    zIndex: 9000
   },
   avatar: {
     margin: "0 10px",
     width: "30px",
     height: "30px"
   },
-  googleAutoComplete: {
-    position: "absolute",
-    display: "flex",
-    top: "30px",
-    left: "200px",
-    width: "300px",
-    zIndex: 3000
+  autocomplete: {
+    width:"60px"
   }
 };
 

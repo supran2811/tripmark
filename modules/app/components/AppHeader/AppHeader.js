@@ -13,6 +13,7 @@ import appHeaderStyle from "./appHeaderStyle";
 import GoogleAutoComplete from "../../../../components/GoogleAutoComplete";
 
 class AppHeader extends Component {
+
   render() {
     const { classes, t, google, selectedCityName } = this.props;
 
@@ -84,23 +85,25 @@ class AppHeader extends Component {
 
     return (
       <div className={classes.appHeader}>
-        {google && (
-          <div className={classes.googleAutoComplete}>
-            <GoogleAutoComplete
-              searchTypes={["(cities)"]}
-              onSuggestSelect={this.onSuggestSelect}
-              t={t}
-              initialValue={selectedCityName}
-            />
-          </div>
-        )}
+       
         <Header
           color={this.props.color}
           brand={this.props.headerTitle || t("common:appName")}
           fixed={this.props.fixed}
           changeColorOnScroll={this.props.changeColorOnScroll}
-          rightLinks={<HeaderLinks {...headerElementConfig} />}
-        />
+          rightLinks={<HeaderLinks {...headerElementConfig} />}>
+          { google && (
+            <div className = {classes.autocomplete}>
+              <GoogleAutoComplete
+                searchTypes={["(cities)"]}
+                onSuggestSelect={this.onSuggestSelect}
+                t={t}
+                initialValue={selectedCityName}
+              />
+            </div>
+            
+          ) }
+        </Header>
       </div>
     );
   }

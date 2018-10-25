@@ -18,7 +18,7 @@ import { isLoading } from "../../../app/store/selector";
 import homeBg from "../../../../assets/img/home-bg.jpg";
 import Parallax from "../../../../components/Parallax";
 import { Typography } from "@material-ui/core";
-import cityThumbnailViewStyle from "../../components/CityThumbnailView/cityThumbnailViewStyle";
+
 
 class HomePage extends Component {
   
@@ -48,25 +48,29 @@ class HomePage extends Component {
             />
           </div>
         </div>
-        <GridContainer className = {classes.cityGrids}>
-          {
-            cities &&
-              cities.length > 0 &&
-              <React.Fragment>
-                <GridItem xs={12}>
-                  <Typography gutterBottom variant="title" component="h4" noWrap>
-                    Your Marked Places
-                  </Typography>
-                </GridItem>
-                
-                <CityResultGrid cities = {cities}/>
-              </React.Fragment>
-              
-          }
-          {
-            loading && <PageLoader />
-          }
-        </GridContainer>
+
+        {
+          cities &&
+            cities.length > 0  &&
+                <GridContainer className = {classes.cityGrids}>
+                  <React.Fragment>
+                    <GridItem xs={12}>
+                      <Typography gutterBottom variant="title" component="h4" noWrap>
+                        {t("markedCities")}
+                      </Typography>
+                    </GridItem>
+                    
+                    <CityResultGrid cities = {cities}/>
+                  </React.Fragment>
+                </GridContainer>
+        }
+        {
+          loading &&
+          <div className = {classes.loadingBar}>
+            <PageLoader type = "circular" />
+          </div>
+        }
+        
       </React.Fragment>
     );
   }
