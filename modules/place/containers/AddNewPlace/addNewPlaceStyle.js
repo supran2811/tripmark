@@ -3,7 +3,7 @@ import { container } from "../../../../assets/jss/material-kit-react";
 const addNewPlaceStyle = {
   container:{
     ...container,
-    marginTop:"60px"
+    marginTop:"120px"
   },
   icons: {
     width: "20px",

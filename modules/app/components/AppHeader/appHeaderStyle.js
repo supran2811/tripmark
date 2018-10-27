@@ -5,7 +5,8 @@ const appHeaderStyle = {
     position: "fixed",
     top:0,
     left:0,
-    zIndex: 9000
+    zIndex: 9000,
+    width:"100%"
   },
   avatar: {
     margin: "0 10px",
@@ -13,7 +14,7 @@ const appHeaderStyle = {
     height: "30px"
   },
   autocomplete: {
-    width:"60px"
+    width:"100%"
   }
 };
 

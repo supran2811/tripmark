@@ -5,7 +5,6 @@ import { withStyles } from "@material-ui/core";
 import { Router } from "../../../../routes";
 
 import { auth } from "../../../../firebase";
-import { logoutRequest } from "../../../auth/store/action";
 import { getNameInitials } from "../../../../lib/utils";
 import Header from "../../../../components/Header";
 import HeaderLinks from "../../../../components/HeaderLinks";

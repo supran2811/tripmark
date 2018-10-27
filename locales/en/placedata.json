@@ -3,6 +3,7 @@
   "markAsFavourtie":"Mark",
   "unmarkAsFavourite":"Unmark",
   "viewPhotos":"View Photos",
-  "autoCompletePlaceHolder":"Where do you want to go?"
+  "autoCompletePlaceHolder":"Where do you want to go?",
+  "markedPlaces" : "Places Marked"
  
 }

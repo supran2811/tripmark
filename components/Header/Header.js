@@ -1,5 +1,5 @@
 import React from "react";
-import Link from 'next/link'
+import Link from "next/link";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // nodejs library to set properties for components
@@ -16,7 +16,8 @@ import Drawer from "@material-ui/core/Drawer";
 import Menu from "@material-ui/icons/Menu";
 // core components
 import headerStyle from "./headerStyle";
-import NoSSR from 'react-no-ssr';
+import NoSSR from "react-no-ssr";
+
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -66,7 +67,8 @@ class Header extends React.Component {
       leftLinks,
       brand,
       fixed,
-      absolute
+      absolute,
+      children
     } = this.props;
     const appBarClasses = classNames({
       [classes.appBar]: true,
@@ -81,32 +83,39 @@ class Header extends React.Component {
         </Button>
       </Link>
     );
+    const childrenComponent = children ? (
+      <div className = {classes.childrens}>{children}</div>
+    ) : null;
     return (
       <AppBar className={appBarClasses}>
         <Toolbar className={classes.container}>
           <div className={classes.flex}>
             {leftLinks !== undefined ? (
-                <div>
-                  <Hidden smUp implementation="css">
+              <div>
+                <Hidden smUp implementation="css">
                   <IconButton
-                      color="inherit"
-                      aria-label="open drawer"
-                      onClick={this.handleDrawerToggle}
-                    >
-                      <Menu />
-                   </IconButton>
-                   </Hidden>
-                   <Hidden smDown implementation="css">
-                        {brandComponent}
-                       
-                   </Hidden>
-                </div>
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={this.handleDrawerToggle}
+                  >
+                    <Menu />
+                  </IconButton>
+                </Hidden>
+                <Hidden smDown implementation="css">
+                  <React.Fragment>
+                    {brandComponent}
+                    {childrenComponent}
+                  </React.Fragment>
+                  
+                </Hidden>
+              </div>
             ) : (
-                
-              brandComponent
-
+              <React.Fragment>
+                {brandComponent}
+                {childrenComponent}
+              </React.Fragment>
             )}
-            {this.props.children}
+
           </div>
           <Hidden smDown implementation="css">
             <NoSSR>
@@ -116,20 +125,20 @@ class Header extends React.Component {
         </Toolbar>
         <Hidden smUp implementation="css">
           <Drawer
-            variant = "temporary"
-            anchor = {"left"}
-            open = { this.state.mobileOpen }
+            variant="temporary"
+            anchor={"left"}
+            open={this.state.mobileOpen}
             classes={{
               paper: classes.drawerPaper
             }}
             onClose={this.handleDrawerToggle}
           >
             <div className={classes.appResponsive}>
-              { leftLinks }
+              {leftLinks}
             </div>
           </Drawer>
         </Hidden>
-        
+
       </AppBar>
     );
   }
@@ -154,7 +163,7 @@ Header.propTypes = {
   ]),
   rightLinks: PropTypes.node,
   leftLinks: PropTypes.node,
-  children:PropTypes.object,
+  children: PropTypes.object,
   brand: PropTypes.string,
   fixed: PropTypes.bool,
   absolute: PropTypes.bool,

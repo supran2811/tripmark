@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 import { Router } from "../../../../routes";
 import Add from "@material-ui/icons/Add";
 import PropTypes from "prop-types";
+import { Typography, Zoom } from "@material-ui/core";
+import { Hidden } from "@material-ui/core";
+import RegularButton from "@material-ui/core/Button";
 
+import GridItem from "../../../../components/GridItem";
 import PlaceResultGrid from "../../components/PlaceResultGrid";
 import {
   getSelectedCityDetails,
@@ -31,7 +35,7 @@ class CityHome extends Component {
   };
 
   componentDidMount() {
-    const { city, dispatch , id } = this.props;
+    const { city, dispatch, id } = this.props;
 
     if (
       (!city && id && id !== "") ||
@@ -44,7 +48,7 @@ class CityHome extends Component {
 
   componentDidUpdate() {
     const { city, dispatch, google, id, places } = this.props;
-    console.log("componentDidUpdate ::: ",city,places);
+    console.log("componentDidUpdate ::: ", city, places);
     if (
       (!city && id && id !== "") ||
       (city && id && city.get("place_id") !== id)
@@ -52,7 +56,7 @@ class CityHome extends Component {
       dispatch &&
         dispatch(fetchCityDetails(id));
     }
-   
+
   }
 
   openAddFavoritePlace(city) {
@@ -60,7 +64,11 @@ class CityHome extends Component {
   }
 
   render() {
-    const { city, t, google, classes, places, id , dispatch} = this.props;
+    const { city, t, google, classes, places, id, theme } = this.props;
+    const transitionDuration = {
+      enter: theme.transitions.duration.enteringScreen,
+      exit: theme.transitions.duration.leavingScreen,
+    };
 
     return (
       <div>
@@ -77,7 +85,7 @@ class CityHome extends Component {
               t={t}
               google={google}
               selectedCityName={city ? city.get("name") : ""}
-              logOut = {this.doLogOut}
+              logOut={this.doLogOut}
             />
             {this.renderCityDetails(city, classes, t)}
             {this.state.showPhotoViewer && (
@@ -88,13 +96,36 @@ class CityHome extends Component {
             )}
             {places && (
               <GridContainer className={classes.content}>
-                <PlaceResultGrid
-                  places={places}
-                  cityId={id}
-                  onRemoveBookmarkClick={this.removeBookmark}
-                />
+                <React.Fragment>
+                  <GridItem xs={12}>
+                    <Typography gutterBottom variant="title" component="h4" noWrap>
+                      {t("markedPlaces")}
+                    </Typography>
+                  </GridItem>
+                  <PlaceResultGrid
+                    places={places}
+                    cityId={id}
+                    onRemoveBookmarkClick={this.removeBookmark}
+                  />
+                </React.Fragment>
+
               </GridContainer>
             )}
+            <Zoom
+              in={true}
+              timeout={transitionDuration}
+              style={{
+                transitionDelay: `${transitionDuration.exit}ms`,
+              }}
+              unmountOnExit
+            >
+              <RegularButton variant="fab" 
+                className={classes.myAddFavAction} 
+                color="secondary"
+                onClick={this.openAddFavoritePlace.bind(this,city)}>
+                <Add />
+              </RegularButton>
+            </Zoom>
           </React.Fragment>
         ) : (
           this.renderDefault()
@@ -109,17 +140,18 @@ class CityHome extends Component {
         <Parallax
           small
           image={getOptimalBGImageUrl(city.get("photos"), window.innerWidth)}
+          className={classes.parrallexClass}
         >
           <div className={classes.container}>
+            <Hidden smDown implementation="css">
+              <Button
+                onClick={this.openAddFavoritePlace.bind(this,city)}
+                className={classes.addPlaceButton}
+              >
+                <Add /> {t("addYourFavorite")}
+              </Button>
+            </Hidden>
             <Button
-              size="lg"
-              onClick={() => this.openAddFavoritePlace(city)}
-              className={classes.addPlaceButton}
-            >
-              <Add /> {t("addYourFavorite")}
-            </Button>
-            <Button
-              size="lg"
               onClick={this.viewPhoto}
               className={classes.addPlaceButton}
             >
@@ -162,13 +194,14 @@ const mapStateToProps = state => {
 };
 
 CityHome.propTypes = {
-  dispatch:PropTypes.func.isRequired,
-  google:PropTypes.object.isRequired,
-  classes:PropTypes.object.isRequired,
-  t:PropTypes.func.isRequired,
-  city:PropTypes.object,
-  id:PropTypes.string,
-  places:PropTypes.array,
+  dispatch: PropTypes.func.isRequired,
+  google: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
+  t: PropTypes.func.isRequired,
+  theme: PropTypes.object.isRequired,
+  city: PropTypes.object,
+  id: PropTypes.string,
+  places: PropTypes.array
 };
 
 export default connect(mapStateToProps)(

@@ -53,7 +53,7 @@ class AddNewPlace extends Component {
   }
 
   componentDidUpdate() {
-    const { city, dispatch, id  , query} = this.props;
+    const { city, dispatch, id } = this.props;
 
     if (
       (!city && id && id !== "") ||
@@ -63,11 +63,11 @@ class AddNewPlace extends Component {
         dispatch(fetchCityDetails(id));
     }
 
-    if(query && query.get("label") && 
-                query.get("label") !== "" && 
-                this.state.label !== query.get("label")) {
-      this.setState({label:query.get("label")});
-    }
+    // if(query && query.get("label") && 
+    //             query.get("label") !== "" && 
+    //             this.state.label !== query.get("label")) {
+    //   this.setState({label:query.get("label")});
+    // }
   }
 
   handleClose() {

@@ -1,6 +1,6 @@
 import { container } from "../../../../assets/jss/material-kit-react";
 
-const cityHomeStyle = {
+const cityHomeStyle = theme => ({
   container: {
     ...container,
     position: "relative",
@@ -18,7 +18,15 @@ const cityHomeStyle = {
     margin: "20px",
     zIndex: 3500,
     color: "#000"
+  },
+  parrallexClass:{
+    height:"50vh",
+  },
+  myAddFavAction: {
+    position: "fixed",
+    bottom: theme.spacing.unit * 4,
+    right: theme.spacing.unit * 4
   }
-};
+});
 
 export default cityHomeStyle;

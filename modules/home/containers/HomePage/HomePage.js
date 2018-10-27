@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Router } from "../../../../routes";
 import PropTypes from "prop-types";
+import { Typography } from "@material-ui/core";
 
 import GridContainer from "../../../../components/GridContainer";
 import homePageStyle from "./homePageStyle";
@@ -17,7 +18,6 @@ import CityResultGrid from "../../components/CityResultGrid/CityResultGrid";
 import { isLoading } from "../../../app/store/selector";
 import homeBg from "../../../../assets/img/home-bg.jpg";
 import Parallax from "../../../../components/Parallax";
-import { Typography } from "@material-ui/core";
 
 
 class HomePage extends Component {
