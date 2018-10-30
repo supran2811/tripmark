@@ -47,7 +47,6 @@ class AutoComplete extends Component {
   };
 
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
-    console.log("renderSuggestion:::",suggestion,query) ;
     const { classes, suggestionClicked , cityid } = this.props;
     const suggestionText = this.getSuggestionText(suggestion);
     const type = suggestion["type"];
@@ -117,7 +116,6 @@ class AutoComplete extends Component {
   };
 
   handleSuggestionsFetchRequested = ({ value, reason }) => {
-    console.log("Inside handleSuggestionsFetchRequested ",value);
     const inputValue = deburr(value.trim()).toLowerCase();
     reason === "input-changed" &&
       _.debounce(this.props.fetchSuggestions, 500, { trailing: true })({
@@ -133,7 +131,6 @@ class AutoComplete extends Component {
   };
 
   handleChange = name => (event, { newValue, method }) => {
-    console.log("handleChange",newValue);
     this.setState({
       [name]: newValue
     });
@@ -147,7 +144,6 @@ class AutoComplete extends Component {
       translation
     } = this.props;
 
-    console.log("suggestions :: ",suggestions);
     const autosuggestProps = {
       renderInputComponent: this.renderInputField,
       suggestions: suggestions,
@@ -203,14 +199,14 @@ class AutoComplete extends Component {
     event,
     { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }
   ) => {
+    const { cityid } = this.props;
     if (method === "enter" || method === "click") {
       if (suggestion.type !== "category") {
         window.open(
-          `${window.location.origin}/place/${suggestion.place_id}`,
+          `${window.location.origin}/city/${cityid}/place/${suggestion.place_id}`,
           "_blank"
         );
       } else {
-        console.log("Inside on suggestion selected!!");
         this.setState({value:""});
         this.props.performSearch(suggestion);
       }
@@ -222,7 +218,6 @@ class AutoComplete extends Component {
       : "";
   
   doSearchText = (e) => {
-    console.log("doSearchText" , e , e.type , e.key);
     if(e.type === "click" || e.key === "Enter"){
       this.props.performSearch({ term: this.state.value, type: "text" ,label: this.state.value});
     }

@@ -4,6 +4,7 @@
   "unmarkAsFavourite":"Unmark",
   "viewPhotos":"View Photos",
   "autoCompletePlaceHolder":"Where do you want to go?",
-  "markedPlaces" : "Places Marked"
+  "markedPlaces" : "Places Marked",
+  "searchResultText":"Search results matching "
  
 }

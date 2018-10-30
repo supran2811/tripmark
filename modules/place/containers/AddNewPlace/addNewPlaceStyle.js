@@ -9,6 +9,9 @@ const addNewPlaceStyle = {
     width: "20px",
     height: "20px",
     marginRight: "3px"
+  },
+  labelStyle : {
+    marginTop : "30px"
   }
 };
 

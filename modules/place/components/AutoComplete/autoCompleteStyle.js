@@ -8,7 +8,8 @@ const autoCompleteStyle = theme => ({
   },
   container: {
     position: "relative",
-    width: "80%",
+    // width: "80%",
+    width:"90%",
     marginTop: "5px"
   },
   suggestionsContainerOpen: {
@@ -35,8 +36,8 @@ const autoCompleteStyle = theme => ({
     borderRadius: 4,
     backgroundColor: theme.palette.common.white,
     border: "1px solid #ced4da",
-    fontSize: 16,
-    padding: "10px 12px",
+    fontSize: "inherit",
+    padding: "10px 10px",
     width: "100%",
     height: "34px",
     transition: theme.transitions.create(["border-color", "box-shadow"]),

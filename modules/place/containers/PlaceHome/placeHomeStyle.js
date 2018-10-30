@@ -34,14 +34,15 @@ const placeHomeStyle = {
   nameContainer: {
     display: "flex"
   },
-  addressCard: {
-    minHeight: 400
+  mapPlaceHolder: {
+    height: "200px"
   },
   addressContent: {
-    transform: "translateY(230px)"
+    marginTop:"40px"
+    // transform: "translateY(230px)"
   },
   addressActionArea: {
-    transform: "translateY(200px)"
+    // transform: "translateY(200px)"
   },
   review: {
     padding: "20px 0",

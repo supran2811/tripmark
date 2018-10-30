@@ -7,6 +7,7 @@ import Avatar from "@material-ui/core/Avatar";
 import StarRatings from "react-star-ratings";
 import { Map, Marker } from "google-maps-react";
 import { CardContent, CardActions } from "@material-ui/core";
+import RegularButton from "@material-ui/core/Button";
 
 import { withGoogleApiLibs } from "../../../../lib/withLibs";
 import { fetchPlaceDetails, deleteBookmarkAction, addBookmark } from "../../store/action";
@@ -60,7 +61,11 @@ class PlaceHome extends Component {
           <React.Fragment>
             <AppHeader color="transparent" 
               fixed isAuthenticated t={t} 
-              logOut = {this.doLogOut}/>
+              logOut = {this.doLogOut}
+              changeColorOnScroll={{
+                height: 100,
+                color: "primary"
+              }}/>
             {this.renderPlaceDetails()}
             {this.state.showPhotoViewer && (
               <PhotoView
@@ -163,7 +168,7 @@ class PlaceHome extends Component {
               </Typography>
             ))}
         </GridItem>
-        <GridItem xs={6}>
+        <GridItem xs={6} sm={12} md={12} lg={6} >
           {opening_hours &&
             (opening_hours.weekday_text ? (
               <Card>
@@ -184,13 +189,16 @@ class PlaceHome extends Component {
               </Card>
             ) : null)}
         </GridItem>
-        <GridItem xs={6}>
-          <Card className={classes.addressCard}>
+        <GridItem  xs={6} sm={12} md={12} lg={6}>
+          <Card>
             <CardContent>
               <Typography variant="headline" component="h3" gutterBottom>
                 Contact
               </Typography>
-              {this.renderMap(geometry)}
+              <div className = {classes.mapPlaceHolder}>
+                {this.renderMap(geometry)}
+              </div>
+              
               <div className={classes.addressContent}>
                 {formatted_address && (
                   <Typography component="p" gutterBottom>
@@ -198,7 +206,7 @@ class PlaceHome extends Component {
                   </Typography>
                 )}
                 {international_phone_number && (
-                  <Typography component="p" gutterBottom>
+                  <Typography variant="button" component="h3" gutterBottom>
                     {international_phone_number}
                   </Typography>
                 )}
@@ -210,9 +218,9 @@ class PlaceHome extends Component {
               </div>
             </CardContent>
             <CardActions className={classes.addressActionArea}>
-              <Button size="lg" color="primary" simple>
+              <RegularButton size="small" color="primary">
                 Get Directions
-              </Button>
+              </RegularButton>
             </CardActions>
           </Card>
         </GridItem>
@@ -227,7 +235,7 @@ class PlaceHome extends Component {
                 <GridContainer>
                   {reviews.map(review => {
                     return (
-                      <GridItem xs={6} key={review["author_name"]}>
+                      <GridItem  xs={6} sm={12} md={12} lg={6} key={review["author_name"]}>
                         {this.renderReview(review)}
                       </GridItem>
                     );

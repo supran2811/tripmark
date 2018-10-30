@@ -63,11 +63,13 @@ class AddNewPlace extends Component {
         dispatch(fetchCityDetails(id));
     }
 
-    // if(query && query.get("label") && 
-    //             query.get("label") !== "" && 
-    //             this.state.label !== query.get("label")) {
-    //   this.setState({label:query.get("label")});
-    // }
+  }
+
+  static getDerivedStateFromProps(nextProps, state) {
+    const { query } = nextProps;
+    const label = query.get("label");
+
+    return label ? {label:query.get("label") } : null;
   }
 
   handleClose() {
@@ -128,8 +130,8 @@ class AddNewPlace extends Component {
         {
           this.state.label !== "" && 
           (<GridItem xs={12}>
-            <Typography gutterBottom variant="title" component="h4">
-              {this.state.label}
+            <Typography className = {classes.labelStyle} gutterBottom variant="title" component="h4">
+              {t("searchResultText") + " \""+this.state.label+"\" "}
             </Typography>
           </GridItem>)
         }
