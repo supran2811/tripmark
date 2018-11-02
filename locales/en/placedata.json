@@ -5,6 +5,12 @@
   "viewPhotos":"View Photos",
   "autoCompletePlaceHolder":"Where do you want to go?",
   "markedPlaces" : "Places Marked",
-  "searchResultText":"Search results matching "
+  "searchResultText":"Search results matching",
+  "open_text":"OPEN",
+  "close_text":"CLOSED",
+  "user_reviews" :"User Reviews",
+  "get_direction":"Get Directions",
+  "contact":"Contact",
+  "opening_hours":"Opening Hours"
  
 }

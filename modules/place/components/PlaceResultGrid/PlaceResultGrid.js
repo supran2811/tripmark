@@ -12,7 +12,7 @@ class PlaceResultGrid extends Component {
   }
 
   render() {
-    const { places } = this.props;
+    const { places , translations } = this.props;
 
     const placesToRender = places
       ? places.map(place => {
@@ -22,6 +22,7 @@ class PlaceResultGrid extends Component {
               onMainClick={this.openPlaceDetails}
               onBookmarkClick={this.toggleBookmark}
               place={place}
+              translations = {translations}
             />
           </GridItem>
         );
@@ -49,6 +50,7 @@ PlaceResultGrid.propTypes = {
   onRemoveBookmarkClick:PropTypes.func,
   onBookmarkClick:PropTypes.func,
   places:PropTypes.array,
+  translations:PropTypes.func
 };
 
 export default PlaceResultGrid;

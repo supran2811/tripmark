@@ -7,7 +7,7 @@ import {
   roseColor
 } from "../../../../assets/jss/material-kit-react";
 
-const photoViewStyle = {
+const photoViewStyle = theme => ({
   container: {
     width: "100%",
     height: "100%",
@@ -31,6 +31,9 @@ const photoViewStyle = {
     width: "100%"
   },
   image: {
+    [theme.breakpoints.down("sm")]:{
+      width:"100%"
+    },
     width: "50%",
     height: "70%"
   },
@@ -43,6 +46,6 @@ const photoViewStyle = {
     top: 10,
     right: 10
   }
-};
+});
 
 export default photoViewStyle;

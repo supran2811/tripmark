@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 
 import photoViewStyle from "./photoViewStyle";
 import { getPhotoUrl } from "../../../../google/places";
+import { Hidden } from "@material-ui/core";
 
 class PhotoView extends Component {
   state = {

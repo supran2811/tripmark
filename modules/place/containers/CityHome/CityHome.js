@@ -48,7 +48,6 @@ class CityHome extends Component {
 
   componentDidUpdate() {
     const { city, dispatch, google, id, places } = this.props;
-    console.log("componentDidUpdate ::: ", city, places);
     if (
       (!city && id && id !== "") ||
       (city && id && city.get("place_id") !== id)
@@ -106,6 +105,7 @@ class CityHome extends Component {
                     places={places}
                     cityId={id}
                     onRemoveBookmarkClick={this.removeBookmark}
+                    translations={t}
                   />
                 </React.Fragment>
 

@@ -7,9 +7,9 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import StarRatings from "react-star-ratings";
 import Bookmark from "@material-ui/icons/Bookmark";
-import Map from "@material-ui/icons/Map";
 import IconButton from "@material-ui/core/IconButton";
 import PropTypes from "prop-types";
+import RegularButton from "@material-ui/core/Button";
 
 import placeThumbnailStyle from "./placeThumbnailViewStyle";
 import Card from "../../../../components/Card";
@@ -17,7 +17,7 @@ import { getPhotoUrl } from "../../../../google/places";
 
 class PlaceThumbnailView extends Component {
   render() {
-    const { place, classes, onMainClick, onBookmarkClick } = this.props;
+    const { place, classes, onMainClick, onBookmarkClick , translations } = this.props;
 
     const name = place["name"];
     const photos = place["photos"];
@@ -47,49 +47,72 @@ class PlaceThumbnailView extends Component {
       <Card className={classes.card}>
         <CardActionArea onClick={() => onMainClick(place_id)}>
           <CardMedia className={classes.media} image={photoUrl} title={name} />
-          <CardContent>
-            <Typography gutterBottom variant="title" component="h4" noWrap>
+          <div className={classes.mediaContent}>
+            <Typography variant="title" component="h4" noWrap color="inherit">
               {name}
             </Typography>
-            {rating && (
-              <StarRatings
-                rating={rating}
-                starRatedColor={classes.dangerColor}
-                numberOfStars={5}
-                starDimension="20px"
-                name="rating"
-              />
-            )}
-            {opening_hours &&
-              (opening_hours.open_now === false ? (
-                <Typography variant="subheading" component="h4" color="error">
-                  CLOSED
-                </Typography>
-              ) : (
-                <Typography
-                  variant="subheading"
-                  component="h4"
-                  color="textPrimary"
-                >
-                  OPEN
-                </Typography>
-              ))}
-          </CardContent>
+          </div>
         </CardActionArea>
-        <CardActions className={classes.actions} disableActionSpacing>
+        <CardContent className={classes.cardContent}>
+          {rating ?  (
+            this.renderRatings(rating)
+          ) : <div className={classes.blankSpace}></div> }
+          {opening_hours ?
+            this.renderOpeningHours(opening_hours) : <div className={classes.blankSpace}> </div>}
           <IconButton
             aria-label="Add to favorites"
             onClick={() => onBookmarkClick(placeToSave, isBookmarked)}
             color={isBookmarked ? "primary" : "default"}
+            className={classes.bookmarkIcon}
           >
             <Bookmark />
-          </IconButton>
-          <IconButton aria-label="Open in google map">
-            <Map />
-          </IconButton>
+          </IconButton>  
+        </CardContent>
+        <CardActions className={classes.actions} disableActionSpacing>
+          {this.renderActions()}    
         </CardActions>
       </Card>
     );
+  }
+
+  renderRatings(rating) {
+    return <StarRatings
+      rating={rating}
+      starRatedColor="#f00"
+      numberOfStars={5}
+      starDimension="20px"
+      name="rating"
+    />;
+  }
+
+  renderOpeningHours(opening_hours) {
+    const { classes , translations } = this.props;
+    return (opening_hours.open_now === false ? (
+      <Typography variant="subheading" 
+        component="h4" 
+        color="error" 
+        className={classes.spacing}>
+        {translations("close_text")}
+      </Typography>
+    ) : (
+      <Typography
+        variant="subheading"
+        component="h4"
+        color="textPrimary"
+        className={classes.spacing}
+      >
+        {translations("open_text")}
+      </Typography>
+    ));
+  }
+
+  renderActions() {
+    const { translations } = this.props;
+    return (
+      <RegularButton size="small" color="primary">
+        {translations("get_direction")}
+      </RegularButton>
+    ); 
   }
 }
 
@@ -97,7 +120,8 @@ PlaceThumbnailView.propTypes = {
   onMainClick: PropTypes.func.isRequired,
   onBookmarkClick: PropTypes.func.isRequired,
   place:PropTypes.object.isRequired,
-  classes:PropTypes.object.isRequired
+  classes:PropTypes.object.isRequired,
+  translations:PropTypes.func.isRequired
 };
 
 export default withStyles(placeThumbnailStyle)(PlaceThumbnailView);
