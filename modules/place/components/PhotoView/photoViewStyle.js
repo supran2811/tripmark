@@ -18,6 +18,7 @@ const photoViewStyle = theme => ({
     left: 0
   },
   photoListContainer: {
+    position:"relative",
     listStyleType: "none",
     width: "100%",
     height: "100%",
@@ -26,6 +27,21 @@ const photoViewStyle = theme => ({
     alignItems: "center",
     justifyContent: "space-between"
   },
+  leftArrow:{
+    [theme.breakpoints.down("sm")]:{
+      position:"absolute",
+      top:"50%" ,
+      left:0
+    }
+  },
+  rightArrow:{
+    [theme.breakpoints.down("sm")]:{
+      position:"absolute",
+      top:"50%" ,
+      right:0
+    }
+  },
+  
   photoContainer: {
     height: "100%",
     width: "100%"

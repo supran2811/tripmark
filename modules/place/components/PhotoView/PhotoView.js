@@ -24,7 +24,7 @@ class PhotoView extends Component {
           <Close className={classes.iconStyle} />
         </IconButton>
         <ul className={classes.photoListContainer}>
-          <li>
+          <li className = {classes.leftArrow}>
             {this.state.currentIndex > 0 && (
               <IconButton onClick={this.goToPreviousPhoto}>
                 <KeyboardArrowLeft className={classes.iconStyle} />
@@ -33,11 +33,11 @@ class PhotoView extends Component {
           </li>
           <li className={classes.image}>
             <img
-              className={classes.photoContainer}
-              src=  {getPhotoUrl(photo["photo_reference"] , 920)}
+              className = {classes.photoContainer}
+              src = {getPhotoUrl(photo["photo_reference"] , 920)}
             />
           </li>
-          <li>
+          <li className={classes.rightArrow}>
             {this.state.currentIndex < photos.length - 1 && (
               <IconButton onClick={this.goToNextPhoto}>
                 <KeyboardArrowRight className={classes.iconStyle} />)

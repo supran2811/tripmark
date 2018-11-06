@@ -9,6 +9,7 @@ import {
   ACTION_LOGOUT
 } from "./actionTypes";
 import { CLEAR_BOOKMARKS, RESET_CITY_DETAILS } from "../../place/store/actionTypes";
+import { sendLoginRequest, sendLogoutRequest } from "../../../service/networkService";
 
 export function* doSignUp(action) {
   try {
@@ -56,6 +57,10 @@ export function* doSetToken() {
 
     const token = yield auth.getToken();
 
+    const response = yield sendLoginRequest(token);
+
+    console.log("Response from sendLogin ",response);
+
     yield put({ type: ACTION_SET_TOKEN.SUCCESS, data: token });
   } catch (error) {
     yield put({ type: ACTION_SET_TOKEN.ERROR });
@@ -66,6 +71,7 @@ export function* doLogOut() {
   try {
     yield put({ type: ACTION_LOGOUT.PENDING });
     yield auth.doSignOut();
+    const response = yield sendLogoutRequest();
     yield put({type:CLEAR_BOOKMARKS.ACTION});
     yield put({type:RESET_CITY_DETAILS.ACTION});
     yield put({ type: ACTION_LOGOUT.SUCCESS });

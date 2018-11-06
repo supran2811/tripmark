@@ -1,4 +1,8 @@
+
+const bodyParser = require("body-parser");
 const express = require("express");
+const session = require("express-session");
+const FileStore = require("connect-loki")(session);
 const path = require("path");
 const next = require("next");
 const compression = require("compression");
@@ -9,6 +13,8 @@ const helmet = require("helmet");
 const dotenv = require("dotenv");
 
 dotenv.config();
+
+
 const router = require("./routes");
 
 const devProxy = {
@@ -146,8 +152,18 @@ i18n
       // loaded translations we can bootstrap our routes
       app.prepare().then(() => {
         const server = express();
-
+        server.use(bodyParser.json());
         server.use(compression({ threshold: 0 }));
+
+        server.use(session({
+          secret: "geheimnis",
+          saveUninitialized: true,
+          store: new FileStore({path: "/tmp/sessions"}),
+          resave: false,
+          rolling: true,
+          httpOnly: true,
+          cookie: { maxAge: 604800000 } // week
+        }));
 
         // Set up the proxy.
         if (dev && devProxy) {
@@ -171,6 +187,28 @@ i18n
           "/locales/add/:lng/:ns",
           i18nextMiddleware.missingKeyHandler(i18n)
         );
+
+        server.post("/api/login", (req, res) => {
+          console.log("Comning to send login request!!!",req.data , req.body , req.token);
+          if (!req.body) return res.sendStatus(400);
+    
+          const token = req.body.token;
+          req.session.decodedToken = token;
+          res.json({ status: true, token });
+          // auth.verifyIdToken(token)
+          //   .then((decodedToken) => {
+          //     req.session.decodedToken = decodedToken;
+          //     return decodedToken;
+          //   })
+          //   .then((decodedToken) => res.json({ status: true, decodedToken }))
+          //   .catch((error) => res.json({ error }));
+        });
+
+        server.post("/api/logout", (req, res) => {
+          console.log("Coming here for logout!!");
+          req.session.decodedToken = "null";
+          res.json({ status: true });
+        });
 
         server.use(routerHandler);
 

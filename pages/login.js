@@ -6,6 +6,7 @@ import { withI18next } from "../lib/withI18next";
 import withoutAuth from "../lib/withoutAuth";
 
 class Login extends Component {
+  
   render() {
     return <LoginPage />;
   }

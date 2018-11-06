@@ -55,20 +55,17 @@ class LandingPage extends Component {
                 <br />
               </GridItem>
               <GridItem xs={12} sm={12} md={6}>
-                <NoSSR>
-                  {" "}
-                  <SignUpForm
-                    requestSignUp={(name, email, password) =>
-                      this.props.dispatch(signUpRequest(name, email, password))
-                    }
-                    googleSignUp={() =>
-                      this.props.dispatch(googleSignUpRequest())
-                    }
-                    isLoading={this.props.loading}
-                    hasError={this.props.error}
-                    errorData={this.props.errorData}
-                  />{" "}
-                </NoSSR>
+                <SignUpForm
+                  requestSignUp={(name, email, password) =>
+                    this.props.dispatch(signUpRequest(name, email, password))
+                  }
+                  googleSignUp={() =>
+                    this.props.dispatch(googleSignUpRequest())
+                  }
+                  isLoading={this.props.loading}
+                  hasError={this.props.error}
+                  errorData={this.props.errorData}
+                />
               </GridItem>
             </GridContainer>
           </div>

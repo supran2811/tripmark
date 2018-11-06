@@ -5,6 +5,7 @@ import { withI18next } from "../../lib/withI18next";
 import withAuth from "../../lib/withAuth";
 
 class Home extends Component {
+
   render() {
     return <HomePage />;
   }

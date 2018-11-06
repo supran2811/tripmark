@@ -5,7 +5,10 @@ import "../assets/scss/material-kit-react.scss";
 import { withI18next } from "../lib/withI18next";
 import withoutAuth from "../lib/withoutAuth";
 
+
+
 class MainPage extends Component {
+
   render() {
     return <LandingPage />;
   }

@@ -142,3 +142,20 @@ export function getPlaceDetails(cityid, placeid) {
 
   return axios.get(`${api.API_GET_PLACE_DETAILS}`, config);
 }
+
+export function sendLoginRequest( token ) {
+ 
+  const options = {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    data: JSON.stringify({ token }),
+    url : "/api/login"
+  };
+
+  return axios(options);
+
+}
+
+export function sendLogoutRequest() {
+  return axios.post("/api/logout" , {});
+}

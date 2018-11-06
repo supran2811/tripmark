@@ -1,7 +1,7 @@
-import React , { Component } from 'react';
+import React, { Component } from 'react';
 
 class PaginationComponent extends Component {
-  
+
   componentDidMount() {
     window.addEventListener('scroll', this.onScroll, false);
   }
@@ -11,11 +11,11 @@ class PaginationComponent extends Component {
   }
 
   onScroll = () => {
-    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 500) 
-                          && this.props.children && !this.props.loading) {
-        console.log("HIT PAGINATION REQUEST!!!");
-        this.props.onPagination();
-      }
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 500)
+      && this.props.children && !this.props.loading) {
+      console.log("HIT PAGINATION REQUEST!!!");
+      this.props.onPagination();
+    }
   }
 
   render() {

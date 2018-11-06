@@ -28,6 +28,7 @@ class MyApp extends App {
   componentDidMount() {
     auth.onAuthStateChanged(user => {
       if (user) {
+        console.log("on auth state changed!!");
         this.props.dispatch(setToken());
       } else {
         this.props.dispatch(logoutRequest());
