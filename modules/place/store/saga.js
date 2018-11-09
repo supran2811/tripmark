@@ -23,10 +23,10 @@ import {
 import * as serviceApi from "../../../service/networkService";
 import { addBookmarkedPlaces, addRemovedPlaces } from "./localStorage";
 
-export function* dofetchCityDetails({ cityid }) {
+export function* dofetchCityDetails({ cityid , uid }) {
   try {
     yield put({ type: FETCH_CITY_DETAILS.PENDING });
-    const response = yield call(serviceApi.getCityDetails,cityid);
+    const response = yield call(serviceApi.getCityDetails,cityid , uid);
     yield put({ type: FETCH_CITY_DETAILS.SUCCESS, response });
   } catch (error) {
     console.log("FETCH_CITY_DETAILS::Error",error);
@@ -122,10 +122,11 @@ export function* doDeleteBookmarks({ cityid, placeid }) {
   }
 }
 
-export function* doGetAllBookmarks() {
+export function* doGetAllBookmarks({ uid }) {
   try {
     yield put({type:GET_BOOKMARKS.PENDING});
-    const response = yield call(serviceApi.getAllBookmarks);
+    const response = yield call(serviceApi.getAllBookmarks,uid);
+    console.log("After sending get bookmarks request ",response,uid);
     yield put({type:GET_BOOKMARKS.SUCCESS , response});
   } catch(error) {
     console.log("doGetAllBookmarks:: Comign here...",error);

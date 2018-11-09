@@ -40,9 +40,14 @@ const initialState = new myRecord({
 });
 
 export default function placeReducer(state = initialState, action) {
+  console.log("Inside placeReducer ",action);
   switch (action.type) {
   case FETCH_CITY_DETAILS.SUCCESS: {
-    const {result : city , places} = action.response.data;
+    
+    console.log("Place reducer fetch results ",action.response);
+
+    const {result : city , places} = action.response;
+
     const cityid  = city["place_id"];
     const bookmarks = state.bookmarks || Map();
     const cityObj = bookmarks.get(cityid) || Map();
@@ -165,6 +170,7 @@ export default function placeReducer(state = initialState, action) {
     return state.merge({ bookmarks,selectedPlaces});
   }
   case GET_BOOKMARKS.SUCCESS :{
+    console.log("INSIDE PLACE REDUCER ",action.response);
     const result = action.response.data;
     let bookmarks = Map();
     bookmarks = bookmarks.mergeDeep(result);

@@ -5,7 +5,8 @@ import {
   ACTION_SET_TOKEN,
   ACTION_GOOGLE_SIGNUP,
   ACTION_SET_PATH_TO_REDIRECT,
-  ACTION_RESET_PATH_TO_REDIRECT
+  ACTION_RESET_PATH_TO_REDIRECT,
+  ACTION_SET_USER_DATA
 } from "./actionTypes";
 
 export function loginRequest(email, password) {
@@ -19,6 +20,14 @@ export function loginRequest(email, password) {
 export function setToken() {
   return {
     type: ACTION_SET_TOKEN.ACTION
+  };
+}
+
+export function setUserData(token,uid) {
+  return {
+    type: ACTION_SET_USER_DATA.ACTION,
+    token,
+    uid
   };
 }
 

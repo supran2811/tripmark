@@ -4,11 +4,13 @@ import {
   ACTION_SET_TOKEN,
   ACTION_LOGOUT,
   ACTION_SET_PATH_TO_REDIRECT,
-  ACTION_RESET_PATH_TO_REDIRECT
+  ACTION_RESET_PATH_TO_REDIRECT,
+  ACTION_SET_USER_DATA
 } from "./actionTypes";
 
 const myRecord = Record({
   token: "",
+  uid: "",
   pathToRedirect: "/mypage",
   firebaseLoaded: false
 });
@@ -36,8 +38,12 @@ export default function authReducer(state = initialState, action) {
   case ACTION_SET_PATH_TO_REDIRECT.ACTION: {
     return state.merge({ pathToRedirect: action.pathToRedirect });
   }
-  case ACTION_RESET_PATH_TO_REDIRECT: {
+  case ACTION_RESET_PATH_TO_REDIRECT.ACTION: {
     return state.merge({ pathToRedirect: "/mypage" });
+  }
+  case ACTION_SET_USER_DATA.ACTION:{
+    const { token , uid } = action;
+    return state.merge({token,uid});
   }
   }
   return state;

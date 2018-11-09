@@ -45,19 +45,16 @@ class LoginPage extends Component {
           rightLinks={<HeaderLinks {...headerElementConfig} />}
         />
         <div className={classes.container}>
-          <NoSSR>
-            {" "}
-            <SignUp
-              isLogin
-              requestLogin={(email, password) =>
-                this.props.dispatch(loginRequest(email, password))
-              }
-              googleSignUp={() => this.props.dispatch(googleSignUpRequest())}
-              isLoading={this.props.loading}
-              hasError={this.props.error}
-              errorData={this.props.errorData}
-            />{" "}
-          </NoSSR>
+          <SignUp
+            isLogin
+            requestLogin={(email, password) =>
+              this.props.dispatch(loginRequest(email, password))
+            }
+            googleSignUp={() => this.props.dispatch(googleSignUpRequest())}
+            isLoading={this.props.loading}
+            hasError={this.props.error}
+            errorData={this.props.errorData}
+          />
         </div>
       </div>
     );
@@ -71,11 +68,11 @@ const mapStateToProps = state => ({
 });
 
 LoginPage.propTypes = {
-  dispatch:PropTypes.func.isRequired,
-  classes:PropTypes.object.isRequired,
-  loading:PropTypes.bool,
-  error:PropTypes.bool.isRequired,
-  errorData:PropTypes.object
+  dispatch: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
+  loading: PropTypes.bool,
+  error: PropTypes.bool.isRequired,
+  errorData: PropTypes.object
 };
 
 export default connect(mapStateToProps)(withStyles(loginPageStyle)(LoginPage));

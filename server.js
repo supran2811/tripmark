@@ -193,7 +193,9 @@ i18n
           if (!req.body) return res.sendStatus(400);
     
           const token = req.body.token;
+          const uid = req.body.uid;
           req.session.decodedToken = token;
+          req.session.uid = uid;
           res.json({ status: true, token });
           // auth.verifyIdToken(token)
           //   .then((decodedToken) => {
@@ -207,13 +209,16 @@ i18n
         server.post("/api/logout", (req, res) => {
           console.log("Coming here for logout!!");
           req.session.decodedToken = "null";
+          req.session.uid = null;
           res.json({ status: true });
         });
 
         server.use(routerHandler);
 
         // use next.js
-        server.get("*", (req, res) => handle(req, res));
+        server.get("*", function(req, res) {
+          handle(req, res);
+        } );
 
         server.listen(port, err => {
           if (err) throw err;

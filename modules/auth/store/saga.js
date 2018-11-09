@@ -57,7 +57,9 @@ export function* doSetToken() {
 
     const token = yield auth.getToken();
 
-    const response = yield sendLoginRequest(token);
+    const uid = yield auth.getUserId();
+
+    const response = yield sendLoginRequest(token,uid);
 
     console.log("Response from sendLogin ",response);
 

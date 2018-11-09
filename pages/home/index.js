@@ -7,8 +7,8 @@ import withAuth from "../../lib/withAuth";
 class Home extends Component {
 
   render() {
-    return <HomePage />;
+    return <HomePage {...this.props}/>;
   }
 }
 
-export default withAuth(withI18next(["common", "homedata"])(Home));
+export default withAuth( (withI18next(["common", "homedata"])(Home)));

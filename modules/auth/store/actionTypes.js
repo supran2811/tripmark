@@ -18,6 +18,11 @@ export const ACTION_SET_TOKEN = defineAction(
   AUTH_NAMESPACE
 );
 
+export const ACTION_SET_USER_DATA = defineAction(
+  "SET_USER_DATA",
+  [],
+  AUTH_NAMESPACE
+);
 export const ACTION_SIGNUP = defineAction(
   "SIGNUP",
   [ERROR, PENDING, SUCCESS],

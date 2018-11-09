@@ -7,7 +7,7 @@ import { Typography } from "@material-ui/core";
 import GridContainer from "../../../../components/GridContainer";
 import homePageStyle from "./homePageStyle";
 import GridItem from "../../../../components/GridItem";
-import { withGoogleApiLibs } from "../../../../lib/withLibs";
+import withLibs from "../../../../lib/withLibs";
 import AppHeader from "../../../app/components/AppHeader";
 import GoogleAutoComplete from "../../../../components/GoogleAutoComplete";
 import { resetCityDetails, fetchBookmarks } from "../../../place/store/action";
@@ -23,10 +23,12 @@ import Parallax from "../../../../components/Parallax";
 class HomePage extends Component {
   
   componentDidMount() {
-    const { dispatch , cities } = this.props;
+    console.log("Homepage ",this.props);
+    const { dispatch , cities , uid } = this.props;
     dispatch(resetCityDetails());
+    console.log("Inside HomePage componentDidMount ",cities,uid);
     if(!cities) {
-      dispatch(fetchBookmarks());
+      dispatch(fetchBookmarks(uid));
     }
   }
 
@@ -96,10 +98,11 @@ HomePage.propTypes = {
   classes:PropTypes.object.isRequired,
   t:PropTypes.func.isRequired,
   cities:PropTypes.array,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  uid: PropTypes.string
 };
 
 
 export default connect(mapStateToProps)(
-  withGoogleApiLibs(HomePage, ["homedata", "common"], homePageStyle)
+  withLibs(HomePage, ["homedata", "common"], homePageStyle)
 );

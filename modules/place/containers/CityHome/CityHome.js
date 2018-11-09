@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Router } from "../../../../routes";
 import Add from "@material-ui/icons/Add";
 import PropTypes from "prop-types";
 import { Typography, Zoom } from "@material-ui/core";
 import { Hidden } from "@material-ui/core";
 import RegularButton from "@material-ui/core/Button";
 
+import { Router } from "../../../../routes";
 import GridItem from "../../../../components/GridItem";
 import PlaceResultGrid from "../../components/PlaceResultGrid";
 import {
@@ -20,7 +20,7 @@ import {
 import Parallax from "../../../../components/Parallax";
 import Button from "../../../../components/CustomButtons";
 import { getOptimalBGImageUrl } from "../../../../google/places";
-import { withGoogleApiLibs } from "../../../../lib/withLibs";
+import withLibs, { withGoogleApiLibs } from "../../../../lib/withLibs";
 import cityHomeStyle from "./cityHomeStyle";
 import AppHeader from "../../../app/components/AppHeader";
 import PageLoader from "../../../app/components/PageLoader";
@@ -37,25 +37,24 @@ class CityHome extends Component {
   componentDidMount() {
     const { city, dispatch, id } = this.props;
 
-    if (
-      (!city && id && id !== "") ||
-      (city && id && city.get("place_id") !== id)
-    ) {
-      dispatch &&
-        dispatch(fetchCityDetails(id));
-    }
+    // if (
+    //   (!city && id && id !== "") ||
+    //   (city && id && city.get("place_id") !== id)
+    // ) {
+    //   dispatch &&
+    //     dispatch(fetchCityDetails(id));
+    // }
   }
 
   componentDidUpdate() {
     const { city, dispatch, google, id, places } = this.props;
-    if (
-      (!city && id && id !== "") ||
-      (city && id && city.get("place_id") !== id)
-    ) {
-      dispatch &&
-        dispatch(fetchCityDetails(id));
-    }
-
+    // if (
+    //   (!city && id && id !== "") ||
+    //   (city && id && city.get("place_id") !== id)
+    // ) {
+    //   dispatch &&
+    //     dispatch(fetchCityDetails(id));
+    // }
   }
 
   openAddFavoritePlace(city) {
@@ -139,7 +138,7 @@ class CityHome extends Component {
       <React.Fragment>
         <Parallax
           small
-          image={getOptimalBGImageUrl(city.get("photos"), window.innerWidth)}
+          image={getOptimalBGImageUrl(city.get("photos"), typeof window !== "undefined" ?  window.innerWidth : 1024 )}
           className={classes.parrallexClass}
         >
           <div className={classes.container}>
@@ -205,5 +204,5 @@ CityHome.propTypes = {
 };
 
 export default connect(mapStateToProps)(
-  withGoogleApiLibs(CityHome, ["placedata", "common"], cityHomeStyle)
+  withLibs(CityHome, ["placedata", "common"], cityHomeStyle)
 );

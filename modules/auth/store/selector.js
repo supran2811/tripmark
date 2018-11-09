@@ -2,6 +2,7 @@ import { createSelector } from "reselect";
 import { NAME } from "./constants";
 
 export const getToken = state => state.get(NAME).get("token");
+export const getUid   = state => state.get(NAME).get("uid");
 export const isFirebaseLoaded = state => state.get(NAME).get("firebaseLoaded");
 export const getPathToRedirect = state => state.get(NAME).get("pathToRedirect");
 

@@ -40,6 +40,7 @@ class MyDocument extends Document {
             integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ"
             crossOrigin="anonymous"
           />
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnQOZTelS4uIEcFjqlOMvQJffdWpgIoCk&libraries=places"></script>
           <link rel="stylesheet" href="/_next/static/style.css" />
         </Head>
         <body>

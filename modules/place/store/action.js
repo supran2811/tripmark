@@ -16,10 +16,11 @@ import {
   CLEAR_BOOKMARKS
 } from "./actionTypes";
 
-export function fetchCityDetails(cityid) {
+export function fetchCityDetails(cityid , uid) {
   return {
     type: FETCH_CITY_DETAILS.ACTION,
-    cityid
+    cityid,
+    uid
   };
 }
 
@@ -111,9 +112,11 @@ export function fetchBookmarkPlaces(cityid) {
   };
 }
 
-export function fetchBookmarks() {
+export function fetchBookmarks(uid) {
+  console.log("Inside fetchBookmarks() ");
   return {
-    type: GET_BOOKMARKS.ACTION
+    type: GET_BOOKMARKS.ACTION,
+    uid
   };
 }
 
