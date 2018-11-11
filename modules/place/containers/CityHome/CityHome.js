@@ -62,7 +62,7 @@ class CityHome extends Component {
   }
 
   render() {
-    const { city, t, google, classes, places, id, theme } = this.props;
+    const { city, t , classes, places, id, theme , user } = this.props;
     const transitionDuration = {
       enter: theme.transitions.duration.enteringScreen,
       exit: theme.transitions.duration.leavingScreen,
@@ -81,7 +81,8 @@ class CityHome extends Component {
               fixed
               isAuthenticated
               t={t}
-              google={google}
+              googleAutoComplete
+              user={user}
               selectedCityName={city ? city.get("name") : ""}
               logOut={this.doLogOut}
             />
@@ -194,13 +195,13 @@ const mapStateToProps = state => {
 
 CityHome.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  google: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
   city: PropTypes.object,
   id: PropTypes.string,
-  places: PropTypes.array
+  places: PropTypes.array,
+  user: PropTypes.object
 };
 
 export default connect(mapStateToProps)(

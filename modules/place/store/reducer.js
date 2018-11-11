@@ -1,4 +1,4 @@
-import { Map, List, Record } from "immutable";
+import { Map, List, Record,fromJS } from "immutable";
 
 import {
   FETCH_CITY_DETAILS,
@@ -40,13 +40,13 @@ const initialState = new myRecord({
 });
 
 export default function placeReducer(state = initialState, action) {
-  console.log("Inside placeReducer ",action);
+  
   switch (action.type) {
   case FETCH_CITY_DETAILS.SUCCESS: {
     
-    console.log("Place reducer fetch results ",action.response);
+    console.log("Place reducer fetch results ",action.response.data);
 
-    const {result : city , places} = action.response;
+    const {result : city , places} = action.response.data;
 
     const cityid  = city["place_id"];
     const bookmarks = state.bookmarks || Map();
@@ -170,7 +170,7 @@ export default function placeReducer(state = initialState, action) {
     return state.merge({ bookmarks,selectedPlaces});
   }
   case GET_BOOKMARKS.SUCCESS :{
-    console.log("INSIDE PLACE REDUCER ",action.response);
+    console.log("INSIDE PLACE REDUCER ");
     const result = action.response.data;
     let bookmarks = Map();
     bookmarks = bookmarks.mergeDeep(result);

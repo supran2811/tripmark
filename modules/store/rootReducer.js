@@ -1,4 +1,5 @@
 import { combineReducers } from "redux-immutable";
+import Immutable from "immutable";
 
 import {
   reducer as authReducer,
@@ -9,7 +10,7 @@ import {
   constants as placeConstants
 } from "../place/store";
 import { reducer as appReducer, constants as appConstants } from "../app/store";
-import Immutable from "immutable";
+
 
 const StateRecord = Immutable.Record({
   [authConstants.NAME]: undefined,
@@ -25,3 +26,4 @@ export default combineReducers(
   },
   StateRecord
 );
+

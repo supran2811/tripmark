@@ -14,11 +14,11 @@ import GoogleAutoComplete from "../../../../components/GoogleAutoComplete";
 class AppHeader extends Component {
 
   render() {
-    const { classes, t, google, selectedCityName } = this.props;
+    const { classes, t, googleAutoComplete, selectedCityName , user } = this.props;
 
-    const displayName = auth.getUserName();
+    const displayName = (user && user.username) ||  auth.getUserName() ;
 
-    const profileImageUrl = auth.getProfilePhotoUrl();
+    const profileImageUrl = (user && user.profilePhotoUrl) || auth.getProfilePhotoUrl();
 
     const avatar =
       profileImageUrl === "" || profileImageUrl == null ? (
@@ -91,7 +91,7 @@ class AppHeader extends Component {
           fixed={this.props.fixed}
           changeColorOnScroll={this.props.changeColorOnScroll}
           rightLinks={<HeaderLinks {...headerElementConfig} />}>
-          { google && (
+          { googleAutoComplete && (
             <div className = {classes.autocomplete}>
               <GoogleAutoComplete
                 searchTypes={["(cities)"]}
@@ -123,9 +123,10 @@ AppHeader.propTypes = {
   headerTitle: PropTypes.string,
   rightLinks: PropTypes.object,
   classes:PropTypes.object.isRequired,
-  google:PropTypes.object,
+  googleAutoComplete:PropTypes.bool,
   t:PropTypes.func.isRequired,
-  logOut:PropTypes.func
+  logOut:PropTypes.func,
+  user : PropTypes.object
 };
 
 export default withStyles(appHeaderStyle)(AppHeader);

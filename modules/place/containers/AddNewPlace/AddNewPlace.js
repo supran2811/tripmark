@@ -42,26 +42,26 @@ class AddNewPlace extends Component {
   componentDidMount() {
     const { city, dispatch, id } = this.props;
 
-    if (
-      (!city && id && id !== "") ||
-      (city && id && city.get("place_id") !== id)
-    ) {
-      dispatch &&
-        dispatch(fetchCityDetails(id));
-    }
+    // if (
+    //   (!city && id && id !== "") ||
+    //   (city && id && city.get("place_id") !== id)
+    // ) {
+    //   dispatch &&
+    //     dispatch(fetchCityDetails(id));
+    // }
 
   }
 
   componentDidUpdate() {
     const { city, dispatch, id } = this.props;
 
-    if (
-      (!city && id && id !== "") ||
-      (city && id && city.get("place_id") !== id)
-    ) {
-      dispatch &&
-        dispatch(fetchCityDetails(id));
-    }
+    // if (
+    //   (!city && id && id !== "") ||
+    //   (city && id && city.get("place_id") !== id)
+    // ) {
+    //   dispatch &&
+    //     dispatch(fetchCityDetails(id));
+    // }
 
   }
 
@@ -145,6 +145,7 @@ class AddNewPlace extends Component {
             cityId={id}
             onBookmarkClick={this.bookmarkPlace}
             onRemoveBookmarkClick={this.removeBookmark}
+            translations = {t}
           />
         </PaginationComponent>
       </GridContainer>

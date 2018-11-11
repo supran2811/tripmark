@@ -9,10 +9,10 @@ class AddPlace extends Component {
   render() {
     const { cityId } = this.props.router.query;
 
-    return <AddNewPlace id={cityId} />;
+    return <AddNewPlace id={cityId}  {...this.props}/>;
   }
 }
 
 export default withRouter(
-  withAuth(withI18next(["placedata", "common"])(AddPlace))
+  withAuth(AddPlace,["placedata", "common"])
 );

@@ -7,7 +7,7 @@ import { Map } from "immutable";
 
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStore(initialState = Map()) {
+export default function configureStore(initialState = Map() , options) {
   // The DEVTOOLS stuff will enable the redux devtools in Chrome
   const composeEnhancers =
     typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

@@ -1,4 +1,4 @@
-import { Map, Record } from "immutable";
+import { Map, Record, fromJS } from "immutable";
 
 import {
   ACTION_SET_TOKEN,
@@ -22,6 +22,7 @@ const initialState = new myRecord({
 });
 
 export default function authReducer(state = initialState, action) {
+  
   switch (action.type) {
   case ACTION_SET_TOKEN.SUCCESS: {
     return state.merge({

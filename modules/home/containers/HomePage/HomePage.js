@@ -24,19 +24,22 @@ class HomePage extends Component {
   
   componentDidMount() {
     console.log("Homepage ",this.props);
-    const { dispatch , cities , uid } = this.props;
-    dispatch(resetCityDetails());
-    console.log("Inside HomePage componentDidMount ",cities,uid);
-    if(!cities) {
-      dispatch(fetchBookmarks(uid));
-    }
+    // const { dispatch , cities , uid } = this.props;
+    // dispatch(resetCityDetails());
+    // console.log("Inside HomePage componentDidMount ",cities,uid);
+    // if(!cities) {
+    //   dispatch(fetchBookmarks(uid));
+    // }
   }
 
   render() {
-    const { classes, t , cities  , loading } = this.props;
+    const { classes, t , cities  , loading , user } = this.props;
     return (
       <React.Fragment>
-        <AppHeader color="primary" fixed isAuthenticated={true} t={t} 
+        <AppHeader color="primary" fixed 
+          isAuthenticated={true} 
+          t={t} 
+          user = {user}
           logOut = {this.doLogOut}/>
 
         <Parallax image={homeBg} className={classes.parrallexClass}>
@@ -99,7 +102,7 @@ HomePage.propTypes = {
   t:PropTypes.func.isRequired,
   cities:PropTypes.array,
   loading: PropTypes.bool,
-  uid: PropTypes.string
+  user : PropTypes.object
 };
 
 

@@ -1,4 +1,4 @@
-import {Record } from "immutable";
+import {Record, fromJS } from "immutable";
 import { RESET_ERROR } from "./actionTypes";
 
 const myRecord = Record({
@@ -11,6 +11,7 @@ const initialState = new myRecord({
 });
 
 export default function appReducer(state = initialState, action) {
+ 
   if (action.type.endsWith("PENDING")) {
     const pendingRequestCount = state.pendingRequestCount + 1;
     return state.merge({

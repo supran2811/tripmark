@@ -192,11 +192,13 @@ i18n
           console.log("Comning to send login request!!!",req.data , req.body , req.token);
           if (!req.body) return res.sendStatus(400);
     
-          const token = req.body.token;
-          const uid = req.body.uid;
-          req.session.decodedToken = token;
-          req.session.uid = uid;
-          res.json({ status: true, token });
+          // const token = req.body.token;
+          // const uid = req.body.uid;
+          const user = req.body;
+
+          req.session.user = user;
+          
+          res.json({ status: true, user });
           // auth.verifyIdToken(token)
           //   .then((decodedToken) => {
           //     req.session.decodedToken = decodedToken;
@@ -208,8 +210,7 @@ i18n
 
         server.post("/api/logout", (req, res) => {
           console.log("Coming here for logout!!");
-          req.session.decodedToken = "null";
-          req.session.uid = null;
+          req.session.user = { token : "null" };
           res.json({ status: true });
         });
 

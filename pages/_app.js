@@ -14,6 +14,7 @@ import { checkAndClearAppData } from "../lib/localStore";
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
+    console.log("INSIDE APP GET INITIAL PROPS!!!");
     const pageProps = Component.getInitialProps
       ? await Component.getInitialProps(ctx)
       : {};
@@ -23,6 +24,15 @@ class MyApp extends App {
   constructor(props) {
     super(props);
     this.pageContext = getPageContext();
+    console.log("INSIDE APP CONSTRUCTOR!!!");
+  }
+
+  componentWillMount(){
+    if(typeof window !== "undefined"){
+      console.log("APP COMPONENT WILL MOUNT !!");
+
+    }
+    
   }
 
   componentDidMount() {

@@ -59,7 +59,13 @@ export function* doSetToken() {
 
     const uid = yield auth.getUserId();
 
-    const response = yield sendLoginRequest(token,uid);
+    const username = yield auth.getUserName();
+
+    const profilePhotoUrl = yield auth.getProfilePhotoUrl();
+
+    const user = { token , uid , username , profilePhotoUrl};
+
+    const response = yield sendLoginRequest(user);
 
     console.log("Response from sendLogin ",response);
 

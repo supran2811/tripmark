@@ -1,7 +1,5 @@
 import axios from "axios";
 import _ from "lodash";
-import fetch from "isomorphic-unfetch";
-import withQuery from "with-query";
 
 import * as api from "./constants";
 import { getUserId } from "../firebase/auth";
@@ -31,7 +29,7 @@ export function textSearch({ term, pagetoken }, { latlngObj, radius }) {
     };
   }
 
-  return axios.get(`${api.API_TEXT_SEARCH}`, config);
+  return axios.get(getUrl(api.API_TEXT_SEARCH), config);
 }
 
 export function autoCompleteSearch({ term }, { latlngObj, radius }) {
@@ -56,7 +54,7 @@ export function autoCompleteSearch({ term }, { latlngObj, radius }) {
     }
   };
 
-  return axios.get(`${api.API_AUTOCOMPLETE_SEARCH}`, config);
+  return axios.get(getUrl(api.API_AUTOCOMPLETE_SEARCH), config);
 }
 
 export function addBookmark(city, place, cityid , uid) {
@@ -72,7 +70,7 @@ export function addBookmark(city, place, cityid , uid) {
     key: process.env._GOOGLE_API_KEY 
   };
 
-  return axios.post(`${api.API_ADD_BOOKMARK}`, data);
+  return axios.post(getUrl(api.API_ADD_BOOKMARK), data);
 }
 
 export function deleteBookmark(cityid, placeid , uid) {
@@ -87,7 +85,7 @@ export function deleteBookmark(cityid, placeid , uid) {
       userid
     }
   };
-  return axios.delete(`${api.API_DELETE_BOOKMARK}`, config);
+  return axios.delete(getUrl(api.API_DELETE_BOOKMARK), config);
 }
 
 export function getAllBookmarks(uid) {
@@ -104,16 +102,7 @@ export function getAllBookmarks(uid) {
     }
   };
   
-  console.log("WINDOW TYPE ::: ",(typeof window === "undefined"));
-
-  if (typeof window !== "undefined") {
-    console.log("WINDOW TYPE IS DEFINED SO CLIENT SIDE");
-    return axios.get(`${api.API_GET_ALL_BOOKMARK}`, config);
-  }  
-  else {
-    console.log("WINDOW TYPE IS UNDEFINED SO SERVER SIDE",(process.env._RESTAPI_BASEURL + api.API_GET_ALL_BOOKMARK));
-    return axios.get( process.env._RESTAPI_BASEURL + api.API_GET_ALL_BOOKMARK , config);
-  }
+  return axios.get(getUrl(api.API_GET_ALL_BOOKMARK), config);
     
 }
 
@@ -129,22 +118,24 @@ export function getAllBookmarksInCity(cityid,uid) {
       cityid
     }
   };
-  return axios.get(`${api.API_GET_BOOKMARK_PLACES}`, config);
+  return axios.get(getUrl(api.API_GET_BOOKMARK_PLACES), config);
 }
 
 export function getCityDetails(cityid,uid) {
   const userid = uid || getUserId();
-  // const config = {
-    const params = {
+  const config = {
+    params : {
       userid,
       cityid,
       key: process.env._GOOGLE_API_KEY
     }
-  // };
+  };
 
-  return fetch(withQuery(api.API_GET_CITY_DETAILS , params) , {
-    mode:"same-origin"
-  }).then( response => response.json());//axios.get(`${api.API_GET_CITY_DETAILS}`, config);
+  // return fetch(withQuery(api.API_GET_CITY_DETAILS , params) , {
+  //   mode:"same-origin"
+  // }).then( response => response.json());
+  
+  return axios.get(getUrl(api.API_GET_CITY_DETAILS), config);
 }
 
 export function getPlaceDetails(cityid, placeid,uid) {
@@ -158,15 +149,15 @@ export function getPlaceDetails(cityid, placeid,uid) {
     }
   };
 
-  return axios.get(`${api.API_GET_PLACE_DETAILS}`, config);
+  return axios.get(getUrl(api.API_GET_PLACE_DETAILS), config);
 }
 
-export function sendLoginRequest( token , uid ) {
+export function sendLoginRequest( user ) {
  
   const options = {
     method: "POST",
     headers: { "content-type": "application/json" },
-    data: JSON.stringify({ token , uid }),
+    data: JSON.stringify(user),
     url : "/api/login"
   };
 
@@ -176,4 +167,15 @@ export function sendLoginRequest( token , uid ) {
 
 export function sendLogoutRequest() {
   return axios.post("/api/logout" , {});
+}
+
+function getUrl(apiUrl) {
+  /// CLIENT SIDE
+  if(typeof window !== "undefined"){
+    return apiUrl;
+  }
+  /// SERVER SIDE SO WE NEED ABSOLUTE URL
+  else {
+    return process.env._RESTAPI_BASEURL+apiUrl;
+  }
 }

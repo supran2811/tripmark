@@ -12,4 +12,4 @@ class Login extends Component {
   }
 }
 
-export default withoutAuth(withI18next(["common", "authdata"])(Login));
+export default withoutAuth(Login,["common", "authdata"]);
