@@ -11,7 +11,7 @@ const photoViewStyle = theme => ({
   container: {
     width: "100%",
     height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
     zIndex: "20000",
     position: "fixed",
     top: 0,
@@ -25,7 +25,10 @@ const photoViewStyle = theme => ({
     display: "flex",
     flex: "0 0 auto",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    [theme.breakpoints.down("sm")]:{
+      justifyContent:"flex-start"
+    }
   },
   leftArrow:{
     [theme.breakpoints.down("sm")]:{
@@ -48,7 +51,9 @@ const photoViewStyle = theme => ({
   },
   image: {
     [theme.breakpoints.down("sm")]:{
-      width:"100%"
+      width:"100%",
+      height:"auto",
+      marginLeft:"-20px"
     },
     width: "50%",
     height: "70%"
@@ -60,7 +65,8 @@ const photoViewStyle = theme => ({
   closeIcon: {
     position: "absolute",
     top: 10,
-    right: 10
+    right: 10,
+    zIndex:"22000"
   }
 });
 

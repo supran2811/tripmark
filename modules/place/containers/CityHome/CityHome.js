@@ -47,7 +47,7 @@ class CityHome extends Component {
   }
 
   componentDidUpdate() {
-    const { city, dispatch, google, id, places } = this.props;
+    const { city, dispatch , id, places } = this.props;
     // if (
     //   (!city && id && id !== "") ||
     //   (city && id && city.get("place_id") !== id)

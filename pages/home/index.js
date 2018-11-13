@@ -7,7 +7,6 @@ import { resetCityDetails, fetchBookmarks } from "../../modules/place/store/acti
 class Home extends Component {
 
   static async getInitialProps({ store , query , uid}) {
-    console.log("[HomePage] COMING INSIDE getInitialProps " , uid);
     await store.dispatch(resetCityDetails());
     await store.dispatch(fetchBookmarks(uid));
   }

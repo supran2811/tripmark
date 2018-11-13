@@ -14,7 +14,7 @@ class CityResultGrid extends Component {
 
   renderCity = city => {
     return (
-      <GridItem lg={3}  md = {4}   sm={12} key={city["place_id"]}>
+      <GridItem xl = {2} lg={3}  md = {4}   sm={12} key={city["place_id"]}>
         <CityThumbnailView city={city} />
       </GridItem>
     );

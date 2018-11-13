@@ -189,7 +189,6 @@ i18n
         );
 
         server.post("/api/login", (req, res) => {
-          console.log("Comning to send login request!!!",req.data , req.body , req.token);
           if (!req.body) return res.sendStatus(400);
     
           // const token = req.body.token;
@@ -209,7 +208,6 @@ i18n
         });
 
         server.post("/api/logout", (req, res) => {
-          console.log("Coming here for logout!!");
           req.session.user = { token : "null" };
           res.json({ status: true });
         });

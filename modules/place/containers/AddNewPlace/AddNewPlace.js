@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 
 import GridContainer from "../../../../components/GridContainer";
 import GridItem from "../../../../components/GridItem";
-import { withGoogleApiLibs } from "../../../../lib/withLibs";
+import withLibs from "../../../../lib/withLibs";
 import addNewPlaceStyle from "./addNewPlaceStyle";
 import AppHeader from "../../../app/components/AppHeader";
 import {
@@ -93,15 +93,17 @@ class AddNewPlace extends Component {
     };
 
     return (
-      <React.Fragment>
-        <AppHeader
-          t = {t}
-          color="primary"
-          headerTitle={t("addYourFavorite")}
-          rightLinks={rightHeaderLinks}
-        />
-        {city ? this.renderMainContent() : this.renderLoading()}
-      </React.Fragment>
+      city ? 
+        <React.Fragment>
+          <AppHeader
+            t = {t}
+            color="primary"
+            headerTitle={t("addYourFavorite")}
+            rightLinks={rightHeaderLinks}
+          />
+          {this.renderMainContent() }
+        </React.Fragment>
+        : this.renderLoading()
     );
   }
 
@@ -225,7 +227,6 @@ AddNewPlace.propTypes = {
   id:PropTypes.string.isRequired,
   classes:PropTypes.object.isRequired,
   city:PropTypes.object,
-  google:PropTypes.object,
   suggestions:PropTypes.array,
   places:PropTypes.array,
   loading:PropTypes.bool,
@@ -234,5 +235,5 @@ AddNewPlace.propTypes = {
 };
 
 export default connect(mapStateToProps)(
-  withGoogleApiLibs(AddNewPlace, ["placedata", "common"], addNewPlaceStyle)
+  withLibs(AddNewPlace, ["placedata", "common"], addNewPlaceStyle)
 );

@@ -17,7 +17,7 @@ class PlaceResultGrid extends Component {
     const placesToRender = places
       ? places.map(place => {
         return (
-          <GridItem lg={3}  md = {4}   sm={12} key={place["place_id"]}>
+          <GridItem xl = {2} lg={3}  md = {4}   sm={12} key={place["place_id"]}>
             <PlaceThumbnailView
               onMainClick={this.openPlaceDetails}
               onBookmarkClick={this.toggleBookmark}
