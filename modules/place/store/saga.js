@@ -27,6 +27,7 @@ export function* dofetchCityDetails({ cityid , uid }) {
   try {
     yield put({ type: FETCH_CITY_DETAILS.PENDING });
     const response = yield call(serviceApi.getCityDetails,cityid , uid);
+    console.log("Do fetch city details ",response);
     yield put({ type: FETCH_CITY_DETAILS.SUCCESS, response });
   } catch (error) {
     console.log("FETCH_CITY_DETAILS::Error",error);
@@ -93,10 +94,13 @@ export function* doAutoCompleteSearch({ query, params }) {
 export function* doAddBookmark({ city, place }) {
   try {
     yield put({ type: ADD_BOOKMARK.PENDING });
+    console.log("Inside doAddBookmark sending request!!",city,place);
     const response = yield call(serviceApi.addBookmark, city, place);
+    console.log("Inside doAddBookmark",response);
     addBookmarkedPlaces(city,place);
     yield put({ type: ADD_BOOKMARK.SUCCESS, city, place });
   } catch (error) {
+    console.log("Inside error in doAddBookmark",error);
     yield put({ type: ADD_BOOKMARK.ERROR, error });
   }
 }
@@ -105,6 +109,7 @@ export function* doGetAllBookmarksInCity({ cityid }) {
   try {
     yield put({ type: GET_BOOKMARK_PLACES.PENDING });
     const response = yield call(serviceApi.getAllBookmarksInCity, cityid);
+    console.log("Response for doGetAllBookmarksInCity ",response);
     yield put({ type: GET_BOOKMARK_PLACES.SUCCESS, cityid, response });
   } catch (error) {
     yield put({ type: GET_BOOKMARK_PLACES.ERROR });
@@ -113,7 +118,7 @@ export function* doGetAllBookmarksInCity({ cityid }) {
 
 export function* doDeleteBookmarks({ cityid, placeid }) {
   try {
-    yield put({ type: DELETE_BOOKMARK.PENDING });
+    yield put({ type: DELETE_BOOKMARK.PENDING , cityid, placeid });
     const response = yield call(serviceApi.deleteBookmark, cityid, placeid);
     addRemovedPlaces(cityid,placeid);
     yield put({ type: DELETE_BOOKMARK.SUCCESS, cityid,placeid });

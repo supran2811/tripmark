@@ -1,7 +1,8 @@
 import { createSelector } from "reselect";
 
-import { NAME } from "./constants";
+import { NAME, DELETE_BOOKMARK_PENDING } from "./constants";
 import { filterCategory } from "../../../google/places";
+import { getValue } from "../../../lib/utils";
 
 export const getSelectedCityDetails = state =>
   state.get(NAME).get("selectedCity");
@@ -49,17 +50,22 @@ export const getPlaces = createSelector(
     return placesObject && placesObject.get("results")
       ? placesObject.get("results").map(place => {
         let isBookmarked = false;
+        let deleteBookmarkPending;
         const cityObj = bookmarks.get(selectedCity.get("place_id"));
         if (cityObj) {
           const placeObj = cityObj.get("places").get(place["place_id"]);
           if (placeObj) {
             isBookmarked = true;
+            if(getValue(DELETE_BOOKMARK_PENDING , placeObj)){
+              deleteBookmarkPending=true;
+            }
           }
         }
 
         return {
           ...place,
-          isBookmarked: isBookmarked
+          isBookmarked,
+          deleteBookmarkPending
         };
       })
       : null;

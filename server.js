@@ -191,20 +191,9 @@ i18n
         server.post("/api/login", (req, res) => {
           if (!req.body) return res.sendStatus(400);
     
-          // const token = req.body.token;
-          // const uid = req.body.uid;
           const user = req.body;
-
           req.session.user = user;
-          
           res.json({ status: true, user });
-          // auth.verifyIdToken(token)
-          //   .then((decodedToken) => {
-          //     req.session.decodedToken = decodedToken;
-          //     return decodedToken;
-          //   })
-          //   .then((decodedToken) => res.json({ status: true, decodedToken }))
-          //   .catch((error) => res.json({ error }));
         });
 
         server.post("/api/logout", (req, res) => {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import _ from "lodash";
+import qs from "qs";
 
 import * as api from "./constants";
 import { getUserId } from "../firebase/auth";
@@ -57,7 +58,7 @@ export function autoCompleteSearch({ term }, { latlngObj, radius }) {
   return axios.get(getUrl(api.API_AUTOCOMPLETE_SEARCH), config);
 }
 
-export function addBookmark(city, place, cityid , uid) {
+export function addBookmark(city, place , uid) {
   const userid = uid || getUserId();
   if (userid === "") {
     return null;
@@ -70,10 +71,12 @@ export function addBookmark(city, place, cityid , uid) {
     key: process.env._GOOGLE_API_KEY 
   };
 
-  return axios.post(getUrl(api.API_ADD_BOOKMARK), data);
+  return axios.post(getUrl(api.API_ADD_BOOKMARK), qs.stringify(data));
+  
 }
 
 export function deleteBookmark(cityid, placeid , uid) {
+  console.log("Inside deleteBookmark ",cityid,placeid);
   const userid = uid || getUserId();
   if (userid === "") {
     return null;

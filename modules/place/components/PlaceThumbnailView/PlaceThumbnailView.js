@@ -14,11 +14,12 @@ import RegularButton from "@material-ui/core/Button";
 import placeThumbnailStyle from "./placeThumbnailViewStyle";
 import Card from "../../../../components/Card";
 import { getPhotoUrl } from "../../../../google/places";
+import PageLoader from "../../../app/components/PageLoader";
 
 class PlaceThumbnailView extends Component {
   render() {
-    const { place, classes, onMainClick, onBookmarkClick , translations } = this.props;
-
+    const { place, classes, onMainClick, onBookmarkClick , translations:t } = this.props;
+    console.log("PlaceThumbnailView place ",place);
     const name = place["name"];
     const photos = place["photos"];
 
@@ -33,6 +34,7 @@ class PlaceThumbnailView extends Component {
         : null);
 
     const isBookmarked = place["isBookmarked"];
+    const deleteBookmarkPending = place["deleteBookmarkPending"];
 
     const placeToSave = {
       place_id,
@@ -40,7 +42,8 @@ class PlaceThumbnailView extends Component {
       rating,
       opening_hours,
       photoUrl,
-      location
+      location,
+      
     };
 
     return (
@@ -60,12 +63,14 @@ class PlaceThumbnailView extends Component {
           {opening_hours ?
             this.renderOpeningHours(opening_hours) : <div className={classes.blankSpace}> </div>}
           <IconButton
-            aria-label="Add to favorites"
+            aria-label={t("addYourFavorite")}
             onClick={() => onBookmarkClick(placeToSave, isBookmarked)}
             color={isBookmarked ? "primary" : "default"}
             className={classes.bookmarkIcon}
           >
-            <Bookmark />
+            {
+              deleteBookmarkPending ? <PageLoader type="circular" size = {20}/> : <Bookmark />
+            }
           </IconButton>  
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
@@ -77,7 +82,7 @@ class PlaceThumbnailView extends Component {
 
   renderRatings(rating) {
     return <StarRatings
-      rating={rating}
+      rating={Number(rating)}
       starRatedColor="#f00"
       numberOfStars={5}
       starDimension="20px"
@@ -121,7 +126,8 @@ PlaceThumbnailView.propTypes = {
   onBookmarkClick: PropTypes.func.isRequired,
   place:PropTypes.object.isRequired,
   classes:PropTypes.object.isRequired,
-  translations:PropTypes.func.isRequired
+  translations:PropTypes.func.isRequired,
+  deleteBookmarkPending:PropTypes.bool
 };
 
 export default withStyles(placeThumbnailStyle)(PlaceThumbnailView);

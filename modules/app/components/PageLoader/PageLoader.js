@@ -7,16 +7,17 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 class PageLoader extends Component {
   render() {
 
-    const { type } = this.props;
+    const { type , size=40 } = this.props;
 
     return (type && type === "circular")
-      ? <CircularProgress color="secondary" />
+      ? <CircularProgress color="secondary" size = {size}/>
       : <LinearProgress color="secondary" />;
   }
 }
 
 PageLoader.propTypes = {
-  type: PropTypes.string
+  type: PropTypes.string,
+  size: PropTypes.number
 };
 
 export default PageLoader;
