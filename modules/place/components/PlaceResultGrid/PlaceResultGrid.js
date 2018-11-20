@@ -39,6 +39,7 @@ class PlaceResultGrid extends Component {
   };
 
   toggleBookmark = (place, remove) => {
+    console.log("Inside toggle bookmark ",place);
     remove
       ? this.props.onRemoveBookmarkClick(place["place_id"])
       : this.props.onBookmarkClick(place);

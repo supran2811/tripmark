@@ -74,6 +74,7 @@ export function cancelAutoCompleteSearch() {
 }
 
 export function addBookmark(city, place , cityid) {
+  console.log("ADD BOOKMARK",place);
   return {
     type: ADD_BOOKMARK.ACTION,
     city,

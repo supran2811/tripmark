@@ -35,6 +35,7 @@ class PlaceThumbnailView extends Component {
 
     const isBookmarked = place["isBookmarked"];
     const deleteBookmarkPending = place["deleteBookmarkPending"];
+    const addBookmarkPending = place["addBookmarkPending"];
 
     const placeToSave = {
       place_id,
@@ -42,8 +43,7 @@ class PlaceThumbnailView extends Component {
       rating,
       opening_hours,
       photoUrl,
-      location,
-      
+      location
     };
 
     return (
@@ -64,12 +64,12 @@ class PlaceThumbnailView extends Component {
             this.renderOpeningHours(opening_hours) : <div className={classes.blankSpace}> </div>}
           <IconButton
             aria-label={t("addYourFavorite")}
-            onClick={() => onBookmarkClick(placeToSave, isBookmarked)}
+            onClick={() =>  onBookmarkClick(placeToSave, isBookmarked)}
             color={isBookmarked ? "primary" : "default"}
             className={classes.bookmarkIcon}
           >
             {
-              deleteBookmarkPending ? <PageLoader type="circular" size = {20}/> : <Bookmark />
+              (deleteBookmarkPending || addBookmarkPending) ? <PageLoader type="circular" size = {20}/> : <Bookmark />
             }
           </IconButton>  
         </CardContent>

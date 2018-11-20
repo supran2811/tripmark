@@ -11,10 +11,8 @@ class CityPage extends Component {
 
   static async getInitialProps( { store , query , uid } ) {
     const { cityId } = query;
-
-    if(!getSelectedCityDetails(store.getState())) {
-      await store.dispatch(fetchCityDetails(cityId , uid));
-    }
+  
+    await store.dispatch(fetchCityDetails(cityId , uid));
     
     return {};
   }

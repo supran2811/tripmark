@@ -202,6 +202,7 @@ class AddNewPlace extends Component {
       location: { ...geometry.location }
     };
 
+    console.log("Inside add bookmark ",place);
     dispatch(addBookmark(cityToSave, place));
   };
 

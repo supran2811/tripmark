@@ -77,7 +77,7 @@ class Header extends React.Component {
       [classes.fixed]: fixed
     });
     const brandComponent = (
-      <Link href="/">
+      <Link href="/mypage">
         <Button className={classes.title}>
           {brand}
         </Button>
@@ -106,7 +106,7 @@ class Header extends React.Component {
                     {brandComponent}
                     {childrenComponent}
                   </React.Fragment>
-                  
+               
                 </Hidden>
               </div>
             ) : (
@@ -114,6 +114,7 @@ class Header extends React.Component {
                 {brandComponent}
                 {childrenComponent}
               </React.Fragment>
+            
             )}
 
           </div>

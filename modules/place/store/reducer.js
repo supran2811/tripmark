@@ -1,4 +1,4 @@
-import { Map, List, Record,fromJS } from "immutable";
+import { Map, List, Record,fromJS, Set } from "immutable";
 
 import {
   FETCH_CITY_DETAILS,
@@ -16,8 +16,8 @@ import {
   CLEAR_BOOKMARKS
 } from "./actionTypes";
 import { filterCategory } from "../../../google/places";
-import { getValue, setValue } from "../../../lib/utils";
-import { DELETE_BOOKMARK_PENDING, BOOKMARKED } from "./constants";
+import { getValue, setValue, deleteKey } from "../../../lib/utils";
+import { DELETE_BOOKMARK_PENDING, BOOKMARKED, ADD_BOOKMARK_PENDING } from "./constants";
 
 const myRecord = Record({
   predictions: undefined,
@@ -103,16 +103,18 @@ export default function placeReducer(state = initialState, action) {
       ? state.merge({ places, query })
       : state.merge({ places });
   }
-  case SET_ADD_BOOKMARK.ACTION:
-  case ADD_BOOKMARK.SUCCESS: {
+  case ADD_BOOKMARK.PENDING:{
     const { city, place } = action;
+    
+    let updatedPlace = { ...place , [ADD_BOOKMARK_PENDING]:true };
+
     const bookmarks = state.get("bookmarks") || Map();
     const cityMapObj = city ? Map(city) : Map();
     const id = city["place_id"];
     const newBookmarks = Map({
       [id]: cityMapObj.set(
         "places",
-        Map({ [place.place_id]: place })
+        Map({ [place.place_id]: updatedPlace })
       )
     });
     const updatedBookmarks = bookmarks.mergeDeep(newBookmarks);
@@ -120,10 +122,72 @@ export default function placeReducer(state = initialState, action) {
     let selectedPlaces = state.get("selectedPlaces");
     const selectedPlace = selectedPlaces.get(place["place_id"]);
     if(selectedPlace) {
-      selectedPlaces = selectedPlaces.set(place["place_id"] , selectedPlace.set(BOOKMARKED,true));
+      selectedPlaces = selectedPlaces.set(place["place_id"] , selectedPlace.set(ADD_BOOKMARK_PENDING,true));
     }
 
     return state.merge({ bookmarks: updatedBookmarks ,selectedPlaces});
+  }
+  case SET_ADD_BOOKMARK.ACTION:
+  case ADD_BOOKMARK.SUCCESS: {
+    const { city, place } = action;
+    let bookmarks = state.get("bookmarks") || Map();
+    const cityid = city["place_id"];
+    const placeid = place["place_id"];
+
+    const cityObj = bookmarks.get(cityid);
+
+    if (cityObj) {
+      const places = cityObj.get("places");
+      if (places) {
+        const place = getValue(placeid , places);
+        const updatedPlace = deleteKey(ADD_BOOKMARK_PENDING,place);
+        const updatedPlaces = places.set(placeid,updatedPlace);
+        bookmarks = bookmarks.set(
+          cityid,
+          cityObj.set("places", updatedPlaces)
+        );
+      }
+    }
+
+    let selectedPlaces = state.get("selectedPlaces");
+    const selectedPlace = selectedPlaces.get(place["place_id"]);
+    if(selectedPlace) {
+      selectedPlaces = selectedPlaces.set(place["place_id"] , selectedPlace.set(BOOKMARKED,true).delete(ADD_BOOKMARK_PENDING));
+    }
+
+    return state.merge({ bookmarks ,selectedPlaces});
+  }
+  case ADD_BOOKMARK.ERROR :{
+    const { city, place } = action;
+    const cityid = city["place_id"];
+    const placeid = place["place_id"];
+    let  bookmarks = state.get("bookmarks");
+    if(bookmarks) {
+      const cityObj = bookmarks.get(cityid);
+      if (cityObj) {
+        const places = cityObj.get("places");
+        if (places) {
+          const updatedPlaces = places.delete(placeid);
+          if(updatedPlaces.isEmpty()){
+            bookmarks = bookmarks.delete(cityid);
+          }
+          else {
+            bookmarks = bookmarks.set(
+              cityid,
+              cityObj.set("places", updatedPlaces)
+            );
+          }
+        }
+      }
+      let selectedPlaces = state.get("selectedPlaces");
+      const selectedPlace = selectedPlaces.get(placeid);
+      if(selectedPlace ) {
+        selectedPlaces = selectedPlace.set(placeid , selectedPlace.delete(ADD_BOOKMARK_PENDING));
+      }
+
+      return state.merge({ bookmarks,selectedPlaces});
+    }
+    return state;
   }
   case GET_BOOKMARK_PLACES.SUCCESS: {
     const { response, cityid } = action;
@@ -165,7 +229,35 @@ export default function placeReducer(state = initialState, action) {
     }
     return state;
   }
+  case DELETE_BOOKMARK.ERROR: {
+    const { cityid, placeid } = action;
+    let  bookmarks = state.get("bookmarks");
+    if(bookmarks) {
+      const cityObj = bookmarks.get(cityid);
+      if (cityObj) {
+        const places = cityObj.get("places");
+        if (places) {
+          const place = getValue(placeid , places);
+          const updatedPlace = deleteKey(DELETE_BOOKMARK_PENDING , place);
+          console.log("Updated place ",updatedPlace);
+          const updatedPlaces = places.set(placeid,updatedPlace);
+          console.log("Updated places ",updatedPlaces);
+          bookmarks = bookmarks.set(
+            cityid,
+            cityObj.set("places", updatedPlaces)
+          );
+        }
+      }
+      let selectedPlaces = state.get("selectedPlaces");
+      const selectedPlace = selectedPlaces.get(placeid);
+      if(selectedPlace ) {
+        selectedPlaces = selectedPlace.set(placeid , selectedPlace.delete(DELETE_BOOKMARK_PENDING));
+      }
 
+      return state.merge({ bookmarks,selectedPlaces});
+    }
+    return state;
+  }
   case SET_DELETE_BOOKMARK.ACTION:
   case DELETE_BOOKMARK.SUCCESS: {
     const { cityid, placeid } = action;
