@@ -39,32 +39,6 @@ class AddNewPlace extends Component {
     label:""
   }
 
-  componentDidMount() {
-    const { city, dispatch, id } = this.props;
-
-    // if (
-    //   (!city && id && id !== "") ||
-    //   (city && id && city.get("place_id") !== id)
-    // ) {
-    //   dispatch &&
-    //     dispatch(fetchCityDetails(id));
-    // }
-
-  }
-
-  componentDidUpdate() {
-    const { city, dispatch, id } = this.props;
-
-    // if (
-    //   (!city && id && id !== "") ||
-    //   (city && id && city.get("place_id") !== id)
-    // ) {
-    //   dispatch &&
-    //     dispatch(fetchCityDetails(id));
-    // }
-
-  }
-
   static getDerivedStateFromProps(nextProps, state) {
     const { query } = nextProps;
     const label = query.get("label");

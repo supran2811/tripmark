@@ -9,8 +9,8 @@ import { Map, Marker } from "google-maps-react";
 import { CardContent, CardActions } from "@material-ui/core";
 import RegularButton from "@material-ui/core/Button";
 
-import { withGoogleApiLibs } from "../../../../lib/withLibs";
-import { fetchPlaceDetails, deleteBookmarkAction, addBookmark } from "../../store/action";
+import withLibs, { withGoogleApiLibs } from "../../../../lib/withLibs";
+import {deleteBookmarkAction, addBookmark } from "../../store/action";
 import { getSelectedPlace } from "../../store/selector";
 import AppHeader from "../../../app/components/AppHeader";
 import PageLoader from "../../../app/components/PageLoader";
@@ -22,36 +22,13 @@ import GridContainer from "../../../../components/GridContainer";
 import GridItem from "../../../../components/GridItem";
 import Card from "../../../../components/Card";
 import PhotoView from "../../components/PhotoView";
-import { addBookmarkedPlaces } from "../../store/localStorage";
+import { ADD_BOOKMARK_PENDING, DELETE_BOOKMARK_PENDING } from "../../store/constants";
 
 class PlaceHome extends Component {
   state = {
     expandOpeningHours: false,
     showPhotoViewer: false
   };
-
-  componentDidMount() {
-    const { place, dispatch , id , cityId } = this.props;
-
-    if (
-      (!place && id && id !== "") ||
-      (place && id && place["place_id"] !== id)
-    ) {
-      dispatch && dispatch(fetchPlaceDetails(cityId, id));
-    }
-  }
-
-  componentDidUpdate() {
-    // console.log("CityHome componentDidUpdate");
-    const { place, dispatch , id , cityId } = this.props;
-
-    if (
-      (!place && id && id !== "") ||
-      (place && id && place["place_id"] !== id)
-    ) {
-      dispatch && dispatch(fetchPlaceDetails(cityId, id));
-    }
-  }
 
   render() {
     const { place, t } = this.props;
@@ -87,11 +64,12 @@ class PlaceHome extends Component {
 
   renderPlaceDetails() {
     const { place, classes, t } = this.props;
+    console.log("Place pending bookmark status ",place[ADD_BOOKMARK_PENDING],place[DELETE_BOOKMARK_PENDING]);
     return (
       <React.Fragment>
         <Parallax
           small
-          image={getOptimalBGImageUrl(place["photos"], window.innerWidth)}
+          image={getOptimalBGImageUrl(place["photos"],typeof window !== "undefined" ?  window.innerWidth : 1024 )}
         >
           <div className={classes.container}>
             <Button
@@ -196,7 +174,7 @@ class PlaceHome extends Component {
                 Contact
               </Typography>
               <div className = {classes.mapPlaceHolder}>
-                {this.renderMap(geometry)}
+                {this.renderMap(geometry,name)}
               </div>
               
               <div className={classes.addressContent}>
@@ -249,7 +227,7 @@ class PlaceHome extends Component {
     );
   };
 
-  renderMap = geometry => {
+  renderMap = (geometry,name) => {
     return (
       <Map
         google={this.props.google}

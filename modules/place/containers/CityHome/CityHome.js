@@ -34,35 +34,13 @@ class CityHome extends Component {
     showPhotoViewer: false
   };
 
-  componentDidMount() {
-    const { city, dispatch, id } = this.props;
-
-    // if (
-    //   (!city && id && id !== "") ||
-    //   (city && id && city.get("place_id") !== id)
-    // ) {
-    //   dispatch &&
-    //     dispatch(fetchCityDetails(id));
-    // }
-  }
-
-  componentDidUpdate() {
-    const { city, dispatch , id, places } = this.props;
-    // if (
-    //   (!city && id && id !== "") ||
-    //   (city && id && city.get("place_id") !== id)
-    // ) {
-    //   dispatch &&
-    //     dispatch(fetchCityDetails(id));
-    // }
-  }
-
+ 
   openAddFavoritePlace(city) {
     Router.pushRoute("city/addfav", { cityId: city.get("place_id") });
   }
 
   render() {
-    const { city, t , classes, places, id, theme , user } = this.props;
+    const { city, t , classes, places , theme , user } = this.props;
     const transitionDuration = {
       enter: theme.transitions.duration.enteringScreen,
       exit: theme.transitions.duration.leavingScreen,
@@ -103,7 +81,7 @@ class CityHome extends Component {
                   </GridItem>
                   <PlaceResultGrid
                     places={places}
-                    cityId={id}
+                    cityId={city.get("place_id")}
                     onRemoveBookmarkClick={this.removeBookmark}
                     translations={t}
                   />

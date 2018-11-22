@@ -179,15 +179,15 @@ export default function placeReducer(state = initialState, action) {
           }
         }
       }
-      let selectedPlaces = state.get("selectedPlaces");
-      const selectedPlace = selectedPlaces.get(placeid);
-      if(selectedPlace ) {
-        selectedPlaces = selectedPlace.set(placeid , selectedPlace.delete(ADD_BOOKMARK_PENDING));
-      }
-
-      return state.merge({ bookmarks,selectedPlaces});
     }
-    return state;
+    let selectedPlaces = state.get("selectedPlaces");
+    const selectedPlace = selectedPlaces.get(placeid);
+    if(selectedPlace ) {
+      selectedPlaces = selectedPlace.set(placeid , selectedPlace.delete(ADD_BOOKMARK_PENDING));
+    }
+
+    return state.merge({ bookmarks,selectedPlaces});
+ 
   }
   case GET_BOOKMARK_PLACES.SUCCESS: {
     const { response, cityid } = action;
@@ -219,15 +219,15 @@ export default function placeReducer(state = initialState, action) {
           );
         }
       }
-      let selectedPlaces = state.get("selectedPlaces");
-      const selectedPlace = selectedPlaces.get(placeid);
-      if(selectedPlace ) {
-        selectedPlaces = selectedPlace.set(placeid , selectedPlace.set(DELETE_BOOKMARK_PENDING,true));
-      }
-
-      return state.merge({ bookmarks,selectedPlaces});
     }
-    return state;
+    let selectedPlaces = state.get("selectedPlaces");
+    const selectedPlace = selectedPlaces.get(placeid);
+    if(selectedPlace ) {
+      selectedPlaces = selectedPlace.set(placeid , selectedPlace.set(DELETE_BOOKMARK_PENDING,true));
+    }
+
+    return state.merge({ bookmarks,selectedPlaces});
+   
   }
   case DELETE_BOOKMARK.ERROR: {
     const { cityid, placeid } = action;
@@ -248,15 +248,15 @@ export default function placeReducer(state = initialState, action) {
           );
         }
       }
-      let selectedPlaces = state.get("selectedPlaces");
-      const selectedPlace = selectedPlaces.get(placeid);
-      if(selectedPlace ) {
-        selectedPlaces = selectedPlace.set(placeid , selectedPlace.delete(DELETE_BOOKMARK_PENDING));
-      }
-
-      return state.merge({ bookmarks,selectedPlaces});
     }
-    return state;
+    let selectedPlaces = state.get("selectedPlaces");
+    const selectedPlace = selectedPlaces.get(placeid);
+    if(selectedPlace ) {
+      selectedPlaces = selectedPlace.set(placeid , selectedPlace.delete(DELETE_BOOKMARK_PENDING));
+    }
+
+    return state.merge({ bookmarks,selectedPlaces});
+    
   }
   case SET_DELETE_BOOKMARK.ACTION:
   case DELETE_BOOKMARK.SUCCESS: {
@@ -279,15 +279,15 @@ export default function placeReducer(state = initialState, action) {
           }
         }
       }
-      let selectedPlaces = state.get("selectedPlaces");
-      const selectedPlace = selectedPlaces.get(placeid);
-      if(selectedPlace ) {
-        selectedPlaces = selectedPlace.set(placeid , selectedPlace.set(BOOKMARKED,false).delete(DELETE_BOOKMARK_PENDING));
-      }
-
-      return state.merge({ bookmarks,selectedPlaces});
     }
-    return state;
+    let selectedPlaces = state.get("selectedPlaces");
+    const selectedPlace = selectedPlaces.get(placeid);
+    if(selectedPlace ) {
+      selectedPlaces = selectedPlace.set(placeid , selectedPlace.set(BOOKMARKED,false).delete(DELETE_BOOKMARK_PENDING));
+    }
+
+    return state.merge({ bookmarks,selectedPlaces});
+  
   }
   case GET_BOOKMARKS.SUCCESS :{
     const result = action.response.data;

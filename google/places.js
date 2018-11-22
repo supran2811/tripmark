@@ -16,6 +16,13 @@ export const getPlaceDetails = (google, mapRef, placeId) => {
   });
 };
 
+export function openInGoogleMap(placeId , address) {
+  window.open(
+    `https://www.google.com/maps/search/?api=1&query=${encodeURI(address)}&query_place_id=${placeId}`,
+    "_blank"
+  );
+}
+
 export const getOptimalBGImageUrl = (photos = [], maxWidth) => {
   let url = "";
   if (List.isList(photos)) {

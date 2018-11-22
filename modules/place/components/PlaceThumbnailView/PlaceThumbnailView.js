@@ -15,6 +15,7 @@ import placeThumbnailStyle from "./placeThumbnailViewStyle";
 import Card from "../../../../components/Card";
 import { getPhotoUrl } from "../../../../google/places";
 import PageLoader from "../../../app/components/PageLoader";
+import { openInGoogleMap } from "../../../../google/places";
 
 class PlaceThumbnailView extends Component {
   render() {
@@ -34,6 +35,7 @@ class PlaceThumbnailView extends Component {
         : null);
 
     const isBookmarked = place["isBookmarked"];
+    const formatted_address = place["formatted_address"];
     const deleteBookmarkPending = place["deleteBookmarkPending"];
     const addBookmarkPending = place["addBookmarkPending"];
 
@@ -43,7 +45,8 @@ class PlaceThumbnailView extends Component {
       rating,
       opening_hours,
       photoUrl,
-      location
+      location,
+      formatted_address
     };
 
     return (
@@ -74,7 +77,7 @@ class PlaceThumbnailView extends Component {
           </IconButton>  
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
-          {this.renderActions()}    
+          {this.renderActions(place_id,formatted_address)}    
         </CardActions>
       </Card>
     );
@@ -111,13 +114,19 @@ class PlaceThumbnailView extends Component {
     ));
   }
 
-  renderActions() {
+  renderActions = (placeId , address) => {
     const { translations } = this.props;
     return (
-      <RegularButton size="small" color="primary">
+      <RegularButton size="small" 
+        color="primary" 
+        onClick = {() => this.openGoogleMapLink(placeId,address)}>
         {translations("get_direction")}
       </RegularButton>
     ); 
+  }
+
+  openGoogleMapLink( placeId  , address  ) {
+    openInGoogleMap(placeId,address);
   }
 }
 

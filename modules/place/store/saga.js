@@ -35,10 +35,11 @@ export function* dofetchCityDetails({ cityid , uid }) {
   }
 }
 
-export function* dofetchPlaceDetails({ cityid, placeId }) {
+export function* dofetchPlaceDetails({ cityid, placeId , uid }) {
   try {
+    console.log("Inside dofetchPlaceDetails");
     yield put({ type: FETCH_PLACE_DETAILS.PENDING });
-    const response = yield call(serviceApi.getPlaceDetails,cityid,placeId);
+    const response = yield call(serviceApi.getPlaceDetails,cityid,placeId, uid);
     yield put({ type: FETCH_PLACE_DETAILS.SUCCESS, response });
   } catch (error) {
     console.log("FETCH_CITY_DETAILS::Error",error);

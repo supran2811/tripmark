@@ -24,11 +24,12 @@ export function fetchCityDetails(cityid , uid) {
   };
 }
 
-export function fetchPlaceDetails(cityid, placeId) {
+export function fetchPlaceDetails(cityid, placeId , uid) {
   return {
     type: FETCH_PLACE_DETAILS.ACTION,
     cityid,
-    placeId
+    placeId,
+    uid
   };
 }
 
