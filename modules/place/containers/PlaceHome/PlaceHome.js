@@ -8,6 +8,8 @@ import StarRatings from "react-star-ratings";
 import { Map, Marker } from "google-maps-react";
 import { CardContent, CardActions } from "@material-ui/core";
 import RegularButton from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import { Hidden } from "@material-ui/core";
 
 import withLibs, { withGoogleApiLibs } from "../../../../lib/withLibs";
 import {deleteBookmarkAction, addBookmark } from "../../store/action";
@@ -65,6 +67,7 @@ class PlaceHome extends Component {
   renderPlaceDetails() {
     const { place, classes, t } = this.props;
     console.log("Place pending bookmark status ",place[ADD_BOOKMARK_PENDING],place[DELETE_BOOKMARK_PENDING]);
+    const { addBookmarkPending , deleteBookmarkPending }  = place;
     return (
       <React.Fragment>
         <Parallax
@@ -72,19 +75,34 @@ class PlaceHome extends Component {
           image={getOptimalBGImageUrl(place["photos"],typeof window !== "undefined" ?  window.innerWidth : 1024 )}
         >
           <div className={classes.container}>
+            <Hidden xsDown implementation="css">
+              <Button
+                onClick={this.addRemoveBookmark}
+                className={classes.addPlaceButton}
+                disabled = {addBookmarkPending || deleteBookmarkPending || false}
+              >
+                {
+                  place.bookmarked ?
+                    <React.Fragment>
+                      {
+                        deleteBookmarkPending ? 
+                          <PageLoader type="circular" size = {20}/> 
+                          : <Bookmark color="primary"/> 
+                      }
+                    
+                      { t("unmarkAsFavourite") }
+                    </React.Fragment>  
+                    : <React.Fragment>
+                      {
+                        addBookmarkPending ? <PageLoader type="circular" size = {20}/> 
+                          : <Bookmark color="default"/> 
+                      }
+                      { t("markAsFavourtie") }
+                    </React.Fragment>
+                } 
+              </Button>
+            </Hidden>
             <Button
-              size="lg"
-              onClick={this.addRemoveBookmark}
-              className={classes.addPlaceButton}
-            >
-              {
-                place.bookmarked ?
-                  <React.Fragment><Bookmark color="primary"/> { t("unmarkAsFavourite") }</React.Fragment>  
-                  : <React.Fragment><Bookmark color="default"/> { t("markAsFavourtie") }</React.Fragment>
-              } 
-            </Button>
-            <Button
-              size="lg"
               onClick={() => this.viewPhoto()}
               className={classes.addPlaceButton}
             >
@@ -111,21 +129,47 @@ class PlaceHome extends Component {
       geometry,
       googleUrl,
       website,
-      reviews
+      reviews,
+      addBookmarkPending,
+      deleteBookmarkPending,
+      bookmarked
     } = place;
     return (
       <GridContainer className={classes.mainContent}>
         <GridItem xs={12}>
           <div className={classes.nameContainer}>
-            <Avatar src={icon} />
-            <Typography variant="display1" gutterBottom>
-              {name}
-            </Typography>
+            <div className = {classes.nameAndAvatar}>
+              <Avatar src={icon} className = {classes.nameAvatar} />
+              <Hidden xsDown implementation="css">
+                <Typography variant="display1" component="h4" noWrap>
+                  {name}
+                </Typography>
+              </Hidden>
+              <Hidden smUp implementation="css">
+                <Typography variant="headline" component="h4" noWrap>
+                  {name}
+                </Typography>
+              </Hidden>
+            </div>
+            <Hidden smUp implementation="css">
+              <IconButton
+                aria-label={t("addYourFavorite")}
+                onClick={this.addRemoveBookmark}
+                color={bookmarked ? "primary" : "default"}
+                disabled={addBookmarkPending || deleteBookmarkPending || false }
+              >
+                {
+                  (addBookmarkPending || deleteBookmarkPending) ? <PageLoader type="circular" size = {24}/>
+                    : <Bookmark />
+                }
+                
+              </IconButton>  
+            </Hidden>
           </div>
           {rating && (
             <StarRatings
               rating={rating}
-              starRatedColor={classes.dangerColor}
+              starRatedColor="#f00"
               numberOfStars={5}
               starDimension="20px"
               name="rating"
@@ -146,7 +190,7 @@ class PlaceHome extends Component {
               </Typography>
             ))}
         </GridItem>
-        <GridItem xs={6} sm={12} md={12} lg={6} >
+        <GridItem sm={12} md={6} >
           {opening_hours &&
             (opening_hours.weekday_text ? (
               <Card>
@@ -167,7 +211,7 @@ class PlaceHome extends Component {
               </Card>
             ) : null)}
         </GridItem>
-        <GridItem  xs={6} sm={12} md={12} lg={6}>
+        <GridItem sm={12} md={6} >
           <Card>
             <CardContent>
               <Typography variant="headline" component="h3" gutterBottom>
@@ -197,7 +241,7 @@ class PlaceHome extends Component {
             </CardContent>
             <CardActions className={classes.addressActionArea}>
               <RegularButton size="small" color="primary">
-                Get Directions
+                {t("get_direction")}
               </RegularButton>
             </CardActions>
           </Card>
@@ -213,7 +257,7 @@ class PlaceHome extends Component {
                 <GridContainer>
                   {reviews.map(review => {
                     return (
-                      <GridItem  xs={6} sm={12} md={12} lg={6} key={review["author_name"]}>
+                      <GridItem sm={12} md={6}  key={review["author_name"]}>
                         {this.renderReview(review)}
                       </GridItem>
                     );

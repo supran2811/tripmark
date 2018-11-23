@@ -8,7 +8,7 @@ import {
   roseColor
 } from "../../../../assets/jss/material-kit-react";
 
-const placeHomeStyle = {
+const placeHomeStyle = theme => ({
   container: {
     ...container,
     position: "relative",
@@ -25,14 +25,23 @@ const placeHomeStyle = {
     color: "#000"
   },
   mainContent: {
-    margin: "10px 120px"
+    margin: "10px 10px"
   },
-  avatar: {
-    width: "60px",
-    height: "60px"
+  nameAvatar: {
+    marginRight:"10px",
+    width:"40px",
+    height:"40px",
+    [theme.breakpoints.down("sm")]:{
+      width:"30px",
+      height:"30px"
+    }
   },
   nameContainer: {
-    display: "flex"
+    display: "flex",
+    justifyContent:"space-between"
+  },
+  nameAndAvatar: {
+    display : "flex"
   },
   mapPlaceHolder: {
     height: "200px"
@@ -55,6 +64,6 @@ const placeHomeStyle = {
     marginRight: "10px"
   },
   reviewText: {}
-};
+});
 
 export default placeHomeStyle;

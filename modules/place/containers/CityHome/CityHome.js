@@ -121,7 +121,7 @@ class CityHome extends Component {
           className={classes.parrallexClass}
         >
           <div className={classes.container}>
-            <Hidden smDown implementation="css">
+            <Hidden xsDown implementation="css">
               <Button
                 onClick={this.openAddFavoritePlace.bind(this,city)}
                 className={classes.addPlaceButton}

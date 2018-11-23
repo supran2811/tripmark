@@ -128,6 +128,30 @@ export default function placeReducer(state = initialState, action) {
     return state.merge({ bookmarks: updatedBookmarks ,selectedPlaces});
   }
   case SET_ADD_BOOKMARK.ACTION:
+  {
+    const { city, place } = action;
+    
+    let updatedPlace = { ...place , [BOOKMARKED]:true };
+
+    const bookmarks = state.get("bookmarks") || Map();
+    const cityMapObj = city ? Map(city) : Map();
+    const id = city["place_id"];
+    const newBookmarks = Map({
+      [id]: cityMapObj.set(
+        "places",
+        Map({ [place.place_id]: updatedPlace })
+      )
+    });
+    const updatedBookmarks = bookmarks.mergeDeep(newBookmarks);
+
+    let selectedPlaces = state.get("selectedPlaces");
+    const selectedPlace = selectedPlaces.get(place["place_id"]);
+    if(selectedPlace) {
+      selectedPlaces = selectedPlaces.set(place["place_id"] , selectedPlace.set(BOOKMARKED,true));
+    }
+
+    return state.merge({ bookmarks: updatedBookmarks ,selectedPlaces});
+  }
   case ADD_BOOKMARK.SUCCESS: {
     const { city, place } = action;
     let bookmarks = state.get("bookmarks") || Map();

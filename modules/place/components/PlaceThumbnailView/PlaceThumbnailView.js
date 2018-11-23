@@ -70,6 +70,7 @@ class PlaceThumbnailView extends Component {
             onClick={() =>  onBookmarkClick(placeToSave, isBookmarked)}
             color={isBookmarked ? "primary" : "default"}
             className={classes.bookmarkIcon}
+            disabled={addBookmarkPending || deleteBookmarkPending || false }
           >
             {
               (deleteBookmarkPending || addBookmarkPending) ? <PageLoader type="circular" size = {20}/> : <Bookmark />
