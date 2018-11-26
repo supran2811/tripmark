@@ -6,10 +6,13 @@ import Bookmark from "@material-ui/icons/Bookmark";
 import Avatar from "@material-ui/core/Avatar";
 import StarRatings from "react-star-ratings";
 import { Map, Marker } from "google-maps-react";
-import { CardContent, CardActions } from "@material-ui/core";
+import { CardContent, CardActions, CardActionArea } from "@material-ui/core";
 import RegularButton from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import { Hidden } from "@material-ui/core";
+import Directions from "@material-ui/icons/Directions";
+import Language from "@material-ui/icons/Language";
+import Call from "@material-ui/icons/Call";
 
 import withLibs, { withGoogleApiLibs } from "../../../../lib/withLibs";
 import {deleteBookmarkAction, addBookmark } from "../../store/action";
@@ -18,7 +21,7 @@ import AppHeader from "../../../app/components/AppHeader";
 import PageLoader from "../../../app/components/PageLoader";
 import Parallax from "../../../../components/Parallax";
 import Button from "../../../../components/CustomButtons";
-import { getOptimalBGImageUrl, getPhotoUrl } from "../../../../google/places";
+import { getOptimalBGImageUrl, getPhotoUrl, openInGoogleMap } from "../../../../google/places";
 import placeHomeStyle from "./placeHomeStyle";
 import GridContainer from "../../../../components/GridContainer";
 import GridItem from "../../../../components/GridItem";
@@ -33,7 +36,7 @@ class PlaceHome extends Component {
   };
 
   render() {
-    const { place, t } = this.props;
+    const { place, t , classes } = this.props;
     return (
       <div>
         {place ? (
@@ -52,6 +55,22 @@ class PlaceHome extends Component {
                 onCloseClicked={this.closePhotoViewer}
               />
             )}
+            {
+              <Hidden smUp implementation="css">
+                <Card className = {classes.bottomActions}>
+                  <IconButton>
+                    <Directions color="primary" fontSize="large"/>
+                  </IconButton>
+                  <IconButton>
+                    <Language color="primary" fontSize="large"/>
+                  </IconButton>
+                  <IconButton>
+                    <Call color="primary" fontSize="large"/>
+                  </IconButton>
+                </Card>
+               
+              </Hidden>
+            }
           </React.Fragment>
         ) : (
           this.renderDefault()
@@ -119,158 +138,201 @@ class PlaceHome extends Component {
   renderOtherPlaceDetails = () => {
     const { classes, place, t } = this.props;
     const {
-      name,
       rating,
       opening_hours,
-      formatted_address,
-      international_phone_number,
-      permanently_closed,
-      icon,
-      geometry,
-      googleUrl,
-      website,
-      reviews,
-      addBookmarkPending,
-      deleteBookmarkPending,
-      bookmarked
+      reviews
     } = place;
     return (
       <GridContainer className={classes.mainContent}>
         <GridItem xs={12}>
-          <div className={classes.nameContainer}>
-            <div className = {classes.nameAndAvatar}>
-              <Avatar src={icon} className = {classes.nameAvatar} />
-              <Hidden xsDown implementation="css">
-                <Typography variant="display1" component="h4" noWrap>
-                  {name}
-                </Typography>
-              </Hidden>
-              <Hidden smUp implementation="css">
-                <Typography variant="headline" component="h4" noWrap>
-                  {name}
-                </Typography>
-              </Hidden>
-            </div>
-            <Hidden smUp implementation="css">
-              <IconButton
-                aria-label={t("addYourFavorite")}
-                onClick={this.addRemoveBookmark}
-                color={bookmarked ? "primary" : "default"}
-                disabled={addBookmarkPending || deleteBookmarkPending || false }
-              >
-                {
-                  (addBookmarkPending || deleteBookmarkPending) ? <PageLoader type="circular" size = {24}/>
-                    : <Bookmark />
-                }
-                
-              </IconButton>  
-            </Hidden>
-          </div>
+          {this.renderHeadingSection()}
           {rating && (
-            <StarRatings
-              rating={rating}
-              starRatedColor="#f00"
-              numberOfStars={5}
-              starDimension="20px"
-              name="rating"
-            />
+            this.renderRating(rating)
           )}
           {opening_hours &&
-            (opening_hours.open_now === false ? (
-              <Typography variant="subheading" component="h4" color="error">
-                CLOSED
-              </Typography>
-            ) : (
-              <Typography
-                variant="subheading"
-                component="h4"
-                color="textPrimary"
-              >
-                OPEN
-              </Typography>
-            ))}
+            this.renderOpeningStatus() }
         </GridItem>
         <GridItem sm={12} md={6} >
           {opening_hours &&
             (opening_hours.weekday_text ? (
-              <Card>
-                <CardContent>
-                  <Typography variant="headline" component="h3" gutterBottom>
-                    Opening Hours
-                  </Typography>
-                  {opening_hours.weekday_text.map(text => {
-                    return (
-                      <div key={text}>
-                        <Typography component="p" noWrap>
-                          {text}
-                        </Typography>
-                      </div>
-                    );
-                  })}
-                </CardContent>
-              </Card>
+              this.renderOpeningHours()
             ) : null)}
         </GridItem>
         <GridItem sm={12} md={6} >
-          <Card>
-            <CardContent>
-              <Typography variant="headline" component="h3" gutterBottom>
-                Contact
-              </Typography>
-              <div className = {classes.mapPlaceHolder}>
-                {this.renderMap(geometry,name)}
-              </div>
-              
-              <div className={classes.addressContent}>
-                {formatted_address && (
-                  <Typography component="p" gutterBottom>
-                    {formatted_address}
-                  </Typography>
-                )}
-                {international_phone_number && (
-                  <Typography variant="button" component="h3" gutterBottom>
-                    {international_phone_number}
-                  </Typography>
-                )}
-                {website && (
-                  <Typography component="p" gutterBottom>
-                    {website}
-                  </Typography>
-                )}
-              </div>
-            </CardContent>
-            <CardActions className={classes.addressActionArea}>
-              <RegularButton size="small" color="primary">
-                {t("get_direction")}
-              </RegularButton>
-            </CardActions>
-          </Card>
+          { this.renderContact() }
         </GridItem>
         {reviews && (
           <GridItem xs={12}>
-            <Card>
-              <CardContent>
-                <Typography variant="headline" component="h3" gutterBottom>
-                  User Reviews
-                </Typography>
-
-                <GridContainer>
-                  {reviews.map(review => {
-                    return (
-                      <GridItem sm={12} md={6}  key={review["author_name"]}>
-                        {this.renderReview(review)}
-                      </GridItem>
-                    );
-                  })}
-                </GridContainer>
-              </CardContent>
-            </Card>
+            { this.renderReviewSection() }
           </GridItem>
         )}
       </GridContainer>
     );
   };
 
+  renderHeadingSection = () => {
+    const { classes, place, t } = this.props;
+    const { name , 
+      addBookmarkPending,
+      deleteBookmarkPending,
+      bookmarked,
+      icon } = place;
+    return (
+      <div className={classes.nameContainer}>
+        <div className = {classes.nameAndAvatar}>
+          <Avatar src={icon} className = {classes.nameAvatar} />
+          <Hidden xsDown implementation="css">
+            <Typography variant="display1" component="h4" noWrap>
+              {name}
+            </Typography>
+          </Hidden>
+          <Hidden smUp implementation="css">
+            <Typography variant="headline" component="h4" noWrap>
+              {name}
+            </Typography>
+          </Hidden>
+        </div>
+        <Hidden smUp implementation="css">
+          <IconButton
+            aria-label={t("addYourFavorite")}
+            onClick={this.addRemoveBookmark}
+            color={bookmarked ? "primary" : "default"}
+            disabled={addBookmarkPending || deleteBookmarkPending || false }
+          >
+            {
+              (addBookmarkPending || deleteBookmarkPending) ? <PageLoader type="circular" size = {24}/>
+                : <Bookmark />
+            }
+            
+          </IconButton>  
+        </Hidden>
+      </div>
+    );
+  }
+
+  renderRating = (rating) => {
+    return (
+      <StarRatings
+        rating={rating}
+        starRatedColor="#f00"
+        numberOfStars={5}
+        starDimension="20px"
+        name="rating"
+      />
+    );
+  }
+
+  renderOpeningStatus = () => {
+    const { classes, place, t } = this.props;
+    const { opening_hours , permanently_closed } = place;
+    return (
+      (opening_hours.open_now === false ? (
+        <Typography variant="subheading" component="h4" color="error">
+          { permanently_closed ? t("permenantly_closed") : t("close_text")}
+        </Typography>
+      ) : (
+        <Typography
+          variant="subheading"
+          component="h4"
+          color="textPrimary"
+        >
+          {t("open_text")}
+        </Typography>
+      ))
+    );
+  }
+
+  renderOpeningHours = () => {
+    const { classes, place, t } = this.props;
+    const { opening_hours } = place;
+    return (
+      <Card>
+        <CardContent>
+          <Typography variant="headline" component="h3" gutterBottom>
+            { t("opening_hours") }
+          </Typography>
+          {opening_hours.weekday_text.map(text => {
+            return (
+              <div key={text}>
+                <Typography component="p" noWrap>
+                  {text}
+                </Typography>
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+    );
+  }
+
+  renderContact = () => {
+    const { classes, place, t } = this.props;
+    const  { name , 
+      geometry , 
+      formatted_address,
+      international_phone_number,
+      website,
+      place_id } = place;
+
+    return (
+      <Card>
+        <CardContent>
+          <Typography variant="headline" component="h3" gutterBottom>
+            { t("contact") }
+          </Typography>
+          <div className = {classes.mapPlaceHolder}>
+            {this.renderMap(geometry,name)}
+          </div>
+          
+          <div className={classes.addressContent}>
+            {formatted_address && (
+              <Typography component="p" gutterBottom>
+                {formatted_address}
+              </Typography>
+            )}
+            {international_phone_number && (
+              <RegularButton 
+                size="small" 
+                color="secondary" 
+                variant="text"
+                href={`tel:${international_phone_number}`}
+                className={classes.phoneNumber}>
+                <Call color="secondary" fontSize="small" className = {classes.iconStyle}/> {international_phone_number}
+              </RegularButton>
+            )}
+            {website && (
+              <div>
+                <RegularButton size="small" 
+                  color="secondary" 
+                  onClick = {() => this.openExternalWebsite(website)}
+                  className = {classes.urlLink}
+                  variant="text">
+                  <Language color="secondary" fontSize="small" className = {classes.iconStyle}/> {website}
+                </RegularButton>
+              </div>
+            )}
+            <div>
+              <RegularButton size="small" 
+                color="primary" 
+                onClick = {() => this.openGoogleMapLink(place_id,formatted_address)}
+                className={classes.getdirection}>
+                <Directions color="primary" fontSize="small" className = {classes.iconStyle}/> 
+                {t("get_direction")}
+              </RegularButton>
+            </div>
+          </div>
+        </CardContent>
+        {/* <CardActions className={classes.addressActionArea}>
+          <RegularButton size="small" 
+            color="primary" 
+            onClick = {() => this.openGoogleMapLink(place_id,formatted_address)}>
+            <Directions color="primary" fontSize="small" className = {classes.iconStyle}/> {t("get_direction")}
+          </RegularButton>
+        </CardActions> */}
+      </Card>
+    );
+  }
+  
   renderMap = (geometry,name) => {
     return (
       <Map
@@ -292,6 +354,31 @@ class PlaceHome extends Component {
       </Map>
     );
   };
+
+  renderReviewSection = () => {
+    const { classes, place, t } = this.props;
+    const  { reviews } = place;
+
+    return (
+      <Card>
+        <CardContent>
+          <Typography variant="headline" component="h3" gutterBottom>
+            { t("user_reviews") }
+          </Typography>
+
+          <GridContainer>
+            {reviews.map(review => {
+              return (
+                <GridItem sm={12} md={6}  key={review["author_name"]}>
+                  {this.renderReview(review)}
+                </GridItem>
+              );
+            })}
+          </GridContainer>
+        </CardContent>
+      </Card>
+    );
+  }
 
   renderReview = review => {
     const { classes } = this.props;
@@ -362,6 +449,17 @@ class PlaceHome extends Component {
   doLogOut = () => {
     this.props.dispatch(logoutRequest());
   };
+
+  openExternalWebsite = url => {
+    window.open(
+      url,
+      "_blank"
+    );
+  }
+
+  openGoogleMapLink( placeId  , address  ) {
+    openInGoogleMap(placeId,address);
+  }
 }
 const mapStateToProps = (state, props) => {
   return {

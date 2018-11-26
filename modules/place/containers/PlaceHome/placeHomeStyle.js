@@ -25,7 +25,8 @@ const placeHomeStyle = theme => ({
     color: "#000"
   },
   mainContent: {
-    margin: "10px 10px"
+    margin: "10px 10px",
+    paddingBottom:"80px"
   },
   nameAvatar: {
     marginRight:"10px",
@@ -63,7 +64,32 @@ const placeHomeStyle = theme => ({
     flexShrink: "0",
     marginRight: "10px"
   },
-  reviewText: {}
+  reviewText: {},
+  urlLink:{
+    textTransform:"none",
+    marginLeft:"-10px"
+  },
+  phoneNumber:{
+    marginLeft:"-10px"
+  },
+  getdirection:{
+    marginLeft:"-10px"
+  },
+  bottomActions : {
+    position:"fixed",
+    width:"100%",
+    bottom:0,
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:"space-around",
+    margin:0,
+    padding:"0 10px",
+    borderRadius:0,
+    height:"80px"
+  },
+  iconStyle:{
+    marginRight:"10px"
+  }
 });
 
 export default placeHomeStyle;

@@ -8,6 +8,7 @@
   "searchResultText":"Search results matching",
   "open_text":"OPEN",
   "close_text":"CLOSED",
+  "permenantly_closed" : "PERMENANTLY CLOSED",
   "user_reviews" :"User Reviews",
   "get_direction":"Get Directions",
   "contact":"Contact",
