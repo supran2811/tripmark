@@ -78,6 +78,9 @@ const headerStyle = theme => ({
   appResponsive: {
     margin: "20px 10px"
   },
+  appIcon:{
+    marginRight:"10px"
+  },
   primary: {
     backgroundColor: primaryColor,
     color: "#FFFFFF",
@@ -164,6 +167,9 @@ const headerStyle = theme => ({
     [theme.breakpoints.down("sm")]:{
       marginLeft:"0px"
     }
+  },
+  sidebar:{
+    display:"inline-block"
   }
 });
 

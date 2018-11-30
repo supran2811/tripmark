@@ -41,13 +41,14 @@ class PlaceHome extends Component {
       <div>
         {place ? (
           <React.Fragment>
-            <AppHeader color="transparent" 
+            <AppHeader color="primary" 
               fixed isAuthenticated t={t} 
               logOut = {this.doLogOut}
-              changeColorOnScroll={{
-                height: 100,
-                color: "primary"
-              }}/>
+              // changeColorOnScroll={{
+              //   height: 100,
+              //   color: "primary"
+              // }}
+            />
             {this.renderPlaceDetails()}
             {this.state.showPhotoViewer && (
               <PhotoView
@@ -57,18 +58,7 @@ class PlaceHome extends Component {
             )}
             {
               <Hidden smUp implementation="css">
-                <Card className = {classes.bottomActions}>
-                  <IconButton>
-                    <Directions color="primary" fontSize="large"/>
-                  </IconButton>
-                  <IconButton>
-                    <Language color="primary" fontSize="large"/>
-                  </IconButton>
-                  <IconButton>
-                    <Call color="primary" fontSize="large"/>
-                  </IconButton>
-                </Card>
-               
+                {this.renderActions()}
               </Hidden>
             }
           </React.Fragment>
@@ -76,6 +66,37 @@ class PlaceHome extends Component {
           this.renderDefault()
         )}
       </div>
+    );
+  }
+
+  renderActions = () => {
+    const { place, t , classes } = this.props;
+    const  { name , 
+      geometry , 
+      formatted_address,
+      international_phone_number,
+      website,
+      place_id } = place;
+
+    return (
+      <Card className = {classes.bottomActions}>
+        <IconButton onClick = { () => this.openGoogleMapLink(place_id,formatted_address)}>
+          <Directions color="primary" fontSize="large"/>
+        </IconButton>
+        {
+          website && 
+          <IconButton onClick = {() => this.openExternalWebsite(website)}>
+            <Language color="primary" fontSize="large"/>
+          </IconButton>
+        }
+        {
+          international_phone_number && 
+          <IconButton onClick = {() => this.openExternalWebsite(`tel:${international_phone_number}`)}>
+            <Call color="primary" fontSize="large"/>
+          </IconButton>
+        }
+        
+      </Card>
     );
   }
 

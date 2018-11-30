@@ -51,11 +51,11 @@ class CityHome extends Component {
         {city ? (
           <React.Fragment>
             <AppHeader
-              color="transparent"
-              changeColorOnScroll={{
-                height: 100,
-                color: "primary"
-              }}
+              color="primary"
+              // changeColorOnScroll={{
+              //   height: 100,
+              //   color: "primary"
+              // }}
               fixed
               isAuthenticated
               t={t}

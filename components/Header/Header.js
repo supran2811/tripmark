@@ -12,6 +12,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
+import appIcon from "../../assets/img/appIcon.png";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 // core components
@@ -79,7 +80,10 @@ class Header extends React.Component {
     const brandComponent = (
       <Link href="/mypage">
         <Button className={classes.title}>
-          {brand}
+          <img src={appIcon} className = {classes.appIcon}></img>
+          <Hidden smDown implementation="css">
+            {brand}
+          </Hidden> 
         </Button>
       </Link>
     );
@@ -111,6 +115,20 @@ class Header extends React.Component {
               </div>
             ) : (
               <React.Fragment>
+                {
+                  rightLinks &&
+                  <div className = {classes.sidebar}>
+                    <Hidden mdUp implementation="css">
+                      <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={this.handleDrawerToggle}
+                      >
+                        <Menu />
+                      </IconButton>
+                    </Hidden>
+                  </div>
+                }
                 {brandComponent}
                 {childrenComponent}
               </React.Fragment>
@@ -119,10 +137,10 @@ class Header extends React.Component {
 
           </div>
           <Hidden smDown implementation="css">
-            <NoSSR>
-              {rightLinks}
-            </NoSSR>
+            {rightLinks}
           </Hidden>
+          
+          
         </Toolbar>
         <Hidden smUp implementation="css">
           <Drawer

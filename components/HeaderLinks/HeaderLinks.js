@@ -131,7 +131,7 @@ function HeaderLinks({ ...props }) {
                   <Tooltip
                     id={elementObject['icon']}
                     title={elementObject['tooltipText']}
-                    placement={window.innerWidth > 959 ? "top" : "left"}
+                    placement="left"
                     classes={{ tooltip: classes.tooltip }}
                   >
                       <Button
