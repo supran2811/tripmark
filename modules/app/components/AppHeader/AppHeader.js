@@ -82,6 +82,32 @@ class AppHeader extends Component {
       }
     }
 
+    let drawerElementConfig =this.props.rightLinks;
+    if (!drawerElementConfig) {
+      if (displayName) {
+        drawerElementConfig = {
+          headerElements:{
+            [displayName] : {
+              avatar: avatar,
+              href: "",
+              type: "Button", /// DropDown , Button or Tooltip
+              isExternal: false, /// true or false,
+              tooltipText: "",
+              color: "transparent"
+            },
+            [t("common:logoutText")]:{
+              icon: "",
+              type: "Button",
+              isExternal: false,
+              handleClick: this.props.logOut,
+              toolTipText: "",
+              color: "transparent"
+            }
+          }
+        };
+      }
+    }
+
     return (
       <div className={classes.appHeader}>
        
@@ -90,7 +116,9 @@ class AppHeader extends Component {
           brand={this.props.headerTitle || t("common:appName")}
           fixed={this.props.fixed}
           changeColorOnScroll={this.props.changeColorOnScroll}
-          rightLinks={<HeaderLinks {...headerElementConfig} />}>
+          rightLinks={<HeaderLinks {...headerElementConfig} />}
+          drawerLinks = {<HeaderLinks {...drawerElementConfig} />}>
+         
           { googleAutoComplete && (
             <div className = {classes.autocomplete}>
               <GoogleAutoComplete

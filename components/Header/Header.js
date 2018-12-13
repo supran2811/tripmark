@@ -12,12 +12,13 @@ import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
+
 import appIcon from "../../assets/img/appIcon.png";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 // core components
 import headerStyle from "./headerStyle";
-import NoSSR from "react-no-ssr";
+
 
 class Header extends React.Component {
   constructor(props) {
@@ -69,7 +70,8 @@ class Header extends React.Component {
       brand,
       fixed,
       absolute,
-      children
+      children,
+      drawerLinks
     } = this.props;
     const appBarClasses = classNames({
       [classes.appBar]: true,
@@ -153,7 +155,7 @@ class Header extends React.Component {
             onClose={this.handleDrawerToggle}
           >
             <div className={classes.appResponsive}>
-              {leftLinks}
+              {drawerLinks}
             </div>
           </Drawer>
         </Hidden>
@@ -182,6 +184,7 @@ Header.propTypes = {
   ]),
   rightLinks: PropTypes.node,
   leftLinks: PropTypes.node,
+  drawerLinks:PropTypes.node,
   children: PropTypes.object,
   brand: PropTypes.string,
   fixed: PropTypes.bool,

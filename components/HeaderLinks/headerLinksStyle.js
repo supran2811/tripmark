@@ -63,6 +63,14 @@ const headerLinksStyle = theme => ({
       }
     }
   },
+  profile:{
+    color: "inherit",
+    position: "relative",
+    fontWeight: "400",
+    fontSize: "14px",
+    padding:"0px",
+    margin:"20px 0px"
+  },
   notificationNavLink: {
     color: "inherit",
     padding: "0.9375rem",

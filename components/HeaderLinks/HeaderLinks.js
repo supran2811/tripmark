@@ -45,7 +45,18 @@ function HeaderLinks({ ...props }) {
   const headers = _.keys(headerElements).map(elementName => {
     const elementObject = headerElements[elementName];
     if(elementObject['type'] === 'Button') {
-      if(elementObject['isExternal']){
+      if(elementObject['avatar']) {
+        return <ListItem key={elementName} className={classes.listItem}>
+                <Button
+                  href={elementObject['href']}
+                  color={elementObject['color']}
+                  target="_blank"
+                  className={classes.profile}>
+                    {elementObject['avatar']}{elementName}
+                </Button>
+              </ListItem>
+      }
+      else if(elementObject['isExternal']){
         return <ListItem key={elementName} className={classes.listItem}>
                 <Button
                   href={elementObject['href']}

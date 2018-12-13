@@ -39,7 +39,7 @@ const headerStyle = theme => ({
   },
   fixed: {
     position: "fixed",
-    zIndex: "1900"
+    zIndex: "1200"
   },
   container: {
     ...container,
@@ -76,7 +76,7 @@ const headerStyle = theme => ({
     }
   },
   appResponsive: {
-    margin: "20px 10px"
+    margin: "0px"
   },
   appIcon:{
     marginRight:"10px"
@@ -158,6 +158,7 @@ const headerStyle = theme => ({
     textAlign: "left",
     paddingRight: "0px",
     paddingLeft: "0",
+    zIndex:9999,
     ...transition
   },
   childrens:{

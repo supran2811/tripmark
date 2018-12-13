@@ -16,7 +16,7 @@ const cityHomeStyle = theme => ({
   addPlaceButton: {
     backgroundColor: "#fff",
     margin: "20px",
-    zIndex: 3500,
+    zIndex: 1100,
     color: "#000"
   },
   parrallexClass:{
