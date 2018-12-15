@@ -12,10 +12,12 @@ import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
+import { Router } from "../../routes";
 
 import appIcon from "../../assets/img/appIcon.png";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
+import ArrowBack from "@material-ui/icons/ArrowBack";
 // core components
 import headerStyle from "./headerStyle";
 
@@ -31,6 +33,9 @@ class Header extends React.Component {
   }
   handleDrawerToggle() {
     this.setState({ mobileOpen: !this.state.mobileOpen });
+  }
+  handleBackNavigation() {
+    Router.back();
   }
   componentDidMount() {
     if (this.props.changeColorOnScroll) {
@@ -71,7 +76,8 @@ class Header extends React.Component {
       fixed,
       absolute,
       children,
-      drawerLinks
+      drawerLinks,
+      backNavigation
     } = this.props;
     const appBarClasses = classNames({
       [classes.appBar]: true,
@@ -112,7 +118,6 @@ class Header extends React.Component {
                     {brandComponent}
                     {childrenComponent}
                   </React.Fragment>
-               
                 </Hidden>
               </div>
             ) : (
@@ -121,13 +126,23 @@ class Header extends React.Component {
                   rightLinks &&
                   <div className = {classes.sidebar}>
                     <Hidden mdUp implementation="css">
-                      <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={this.handleDrawerToggle}
-                      >
-                        <Menu />
-                      </IconButton>
+                      { backNavigation ? 
+                        <IconButton
+                          color="inherit"
+                          aria-label="go back"
+                          onClick={this.handleBackNavigation}
+                        >
+                          <ArrowBack />
+                        </IconButton> 
+
+                        : <IconButton
+                          color="inherit"
+                          aria-label="open drawer"
+                          onClick={this.handleDrawerToggle}
+                        >
+                          <Menu />
+                        </IconButton>
+                      }
                     </Hidden>
                   </div>
                 }
@@ -141,8 +156,6 @@ class Header extends React.Component {
           <Hidden smDown implementation="css">
             {rightLinks}
           </Hidden>
-          
-          
         </Toolbar>
         <Hidden smUp implementation="css">
           <Drawer
@@ -189,6 +202,7 @@ Header.propTypes = {
   brand: PropTypes.string,
   fixed: PropTypes.bool,
   absolute: PropTypes.bool,
+  backNavigation:PropTypes.bool,
   // this will cause the sidebar to change the color from
   // this.props.color (see above) to changeColorOnScroll.color
   // when the window.pageYOffset is heigher or equal to

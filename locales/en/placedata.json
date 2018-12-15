@@ -12,6 +12,7 @@
   "user_reviews" :"User Reviews",
   "get_direction":"Get Directions",
   "contact":"Contact",
-  "opening_hours":"Opening Hours"
+  "opening_hours":"Opening Hours",
+  "close":"Close"
  
 }

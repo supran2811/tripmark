@@ -44,6 +44,7 @@ class PlaceHome extends Component {
             <AppHeader color="primary" 
               fixed isAuthenticated t={t} 
               logOut = {this.doLogOut}
+              backNavigation
               // changeColorOnScroll={{
               //   height: 100,
               //   color: "primary"

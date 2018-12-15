@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import UserAgent from "express-useragent";
 
 import GridItem from "../../../../components/GridItem";
 import PlaceThumbnailView from "../PlaceThumbnailView";
+import { Router } from "../../../../routes";
+
 
 class PlaceResultGrid extends Component {
 
@@ -12,6 +15,7 @@ class PlaceResultGrid extends Component {
   }
 
   render() {
+
     const { places , translations } = this.props;
 
     const placesToRender = places
@@ -32,10 +36,25 @@ class PlaceResultGrid extends Component {
     return placesToRender;
   }
   openPlaceDetails = placeId => {
-    window.open(
-      `${window.location.origin}/city/${this.props.cityId}/place/${placeId}`,
-      "_blank"
-    );
+    if("navigator" in window) {
+      const userAgent = UserAgent.parse(navigator.userAgent);
+      if(userAgent.isDesktop) {
+        window.open(
+          `${window.location.origin}/city/${this.props.cityId}/place/${placeId}`,
+          "_blank"
+        );    
+      }
+      else {
+        Router.pushRoute("city/place", { cityId: this.props.cityId , placeId:placeId });
+      }
+    }
+    else {
+      window.open(
+        `${window.location.origin}/city/${this.props.cityId}/place/${placeId}`,
+        "_blank"
+      );
+    }
+    
   };
 
   toggleBookmark = (place, remove) => {

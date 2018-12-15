@@ -34,18 +34,18 @@ class AppHeader extends Component {
     if (!headerElementConfig) {
       headerElementConfig = {
         headerElements: {
-          facebook: {
-            type: "Tooltip",
-            tooltipText: "this is a tooltip text on facebook",
-            color: "transparent",
-            icon: "fab fa-facebook"
-          },
-          twitter: {
-            type: "Tooltip",
-            tooltipText: "this is a tooltip text on twitter",
-            color: "transparent",
-            icon: "fab fa-twitter"
-          }
+          // facebook: {
+          //   type: "Tooltip",
+          //   tooltipText: "this is a tooltip text on facebook",
+          //   color: "transparent",
+          //   icon: "fab fa-facebook"
+          // },
+          // twitter: {
+          //   type: "Tooltip",
+          //   tooltipText: "this is a tooltip text on twitter",
+          //   color: "transparent",
+          //   icon: "fab fa-twitter"
+          // }
         }
       };
 
@@ -115,6 +115,7 @@ class AppHeader extends Component {
           color={this.props.color}
           brand={this.props.headerTitle || t("common:appName")}
           fixed={this.props.fixed}
+          backNavigation={this.props.backNavigation}
           changeColorOnScroll={this.props.changeColorOnScroll}
           rightLinks={<HeaderLinks {...headerElementConfig} />}
           drawerLinks = {<HeaderLinks {...drawerElementConfig} />}>
@@ -154,7 +155,8 @@ AppHeader.propTypes = {
   googleAutoComplete:PropTypes.bool,
   t:PropTypes.func.isRequired,
   logOut:PropTypes.func,
-  user : PropTypes.object
+  user : PropTypes.object,
+  backNavigation:PropTypes.bool
 };
 
 export default withStyles(appHeaderStyle)(AppHeader);

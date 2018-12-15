@@ -55,7 +55,7 @@ class AddNewPlace extends Component {
 
     const rightHeaderLinks = {
       headerElements: {
-        Close: {
+        [t("close")]: {
           icon: <Close className={classes.icons} />,
           type: "Button",
           isExternal: false,
@@ -74,6 +74,7 @@ class AddNewPlace extends Component {
             color="primary"
             headerTitle={t("addYourFavorite")}
             rightLinks={rightHeaderLinks}
+            backNavigation
           />
           {this.renderMainContent() }
         </React.Fragment>
