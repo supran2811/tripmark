@@ -50,7 +50,6 @@ function HeaderLinks({ ...props }) {
                 <Button
                   href={elementObject['href']}
                   color={elementObject['color']}
-                  target="_blank"
                   className={classes.profile}>
                     {elementObject['avatar']}{elementName}
                 </Button>

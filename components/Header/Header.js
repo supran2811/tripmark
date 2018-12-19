@@ -135,13 +135,13 @@ class Header extends React.Component {
                           <ArrowBack />
                         </IconButton> 
 
-                        : <IconButton
+                        : drawerLinks ? <IconButton
                           color="inherit"
                           aria-label="open drawer"
                           onClick={this.handleDrawerToggle}
                         >
                           <Menu />
-                        </IconButton>
+                        </IconButton> : null
                       }
                     </Hidden>
                   </div>
@@ -157,21 +157,26 @@ class Header extends React.Component {
             {rightLinks}
           </Hidden>
         </Toolbar>
-        <Hidden smUp implementation="css">
-          <Drawer
-            variant="temporary"
-            anchor={"left"}
-            open={this.state.mobileOpen}
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            onClose={this.handleDrawerToggle}
-          >
-            <div className={classes.appResponsive}>
-              {drawerLinks}
-            </div>
-          </Drawer>
-        </Hidden>
+        {
+          drawerLinks 
+            && 
+            <Hidden smUp implementation="css">
+              <Drawer
+                variant="temporary"
+                anchor={"left"}
+                open={this.state.mobileOpen}
+                classes={{
+                  paper: classes.drawerPaper
+                }}
+                onClose={this.handleDrawerToggle}
+              >
+                <div className={classes.appResponsive}>
+                  {drawerLinks}
+                </div>
+              </Drawer>
+            </Hidden>
+        }
+        
 
       </AppBar>
     );

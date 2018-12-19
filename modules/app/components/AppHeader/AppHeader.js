@@ -10,17 +10,22 @@ import Header from "../../../../components/Header";
 import HeaderLinks from "../../../../components/HeaderLinks";
 import appHeaderStyle from "./appHeaderStyle";
 import GoogleAutoComplete from "../../../../components/GoogleAutoComplete";
+import defaultProfilePhoto from "../../../../assets/img/profilephoto.png";
 
 class AppHeader extends Component {
 
   render() {
-    const { classes, t, googleAutoComplete, selectedCityName , user } = this.props;
+    const { classes, t, googleAutoComplete, selectedCityName , user , isAuthenticated , noLinks } = this.props;
 
     const displayName = (user && user.username) ||  auth.getUserName() ;
 
     const profileImageUrl = (user && user.profilePhotoUrl) || auth.getProfilePhotoUrl();
 
-    const avatar =
+
+    let avatar;
+
+    if(isAuthenticated) {
+      avatar =
       profileImageUrl === "" || profileImageUrl == null ? (
         <Avatar className={classes.avatar}>
           {" "}
@@ -30,83 +35,106 @@ class AppHeader extends Component {
         <Avatar src={profileImageUrl} className={classes.avatar} />
       );
 
-    let headerElementConfig = this.props.rightLinks;
-    if (!headerElementConfig) {
-      headerElementConfig = {
-        headerElements: {
-          // facebook: {
-          //   type: "Tooltip",
-          //   tooltipText: "this is a tooltip text on facebook",
-          //   color: "transparent",
-          //   icon: "fab fa-facebook"
-          // },
-          // twitter: {
-          //   type: "Tooltip",
-          //   tooltipText: "this is a tooltip text on twitter",
-          //   color: "transparent",
-          //   icon: "fab fa-twitter"
-          // }
-        }
-      };
-
-      if (!this.props.isAuthenticated) {
-        headerElementConfig.headerElements["Login"] = {
-          icon: "",
-          type: "Button",
-          isExternal: false,
-          href: "/login",
-          toolTipText: "",
-          color: "transparent"
-        };
-      } else if (displayName) {
-        headerElementConfig.headerElements[displayName] = {
-          avatar: avatar,
-          childrens: [
-            {
-              text: t("common:yourProfileText"),
-              href: "/url",
-              isExternal: false
-            },
-            {
-              text: t("common:logoutText"),
-              isExternal: false,
-              handleClick: this.props.logOut
-            }
-          ],
-          href: "",
-          type: "DropDown", /// DropDown , Button or Tooltip
-          isExternal: false, /// true or false,
-          tooltipText: "",
-          color: "transparent"
-        };
-      }
     }
-
+    else {
+      avatar = <Avatar src={defaultProfilePhoto} className={classes.avatar} />;
+    }
+    
+    let headerElementConfig = this.props.rightLinks;
     let drawerElementConfig =this.props.rightLinks;
-    if (!drawerElementConfig) {
-      if (displayName) {
-        drawerElementConfig = {
-          headerElements:{
-            [displayName] : {
-              avatar: avatar,
-              href: "",
-              type: "Button", /// DropDown , Button or Tooltip
-              isExternal: false, /// true or false,
-              tooltipText: "",
-              color: "transparent"
-            },
-            [t("common:logoutText")]:{
-              icon: "",
-              type: "Button",
-              isExternal: false,
-              handleClick: this.props.logOut,
-              toolTipText: "",
-              color: "transparent"
-            }
+    if(!noLinks) {
+      if (!headerElementConfig) {
+        headerElementConfig = {
+          headerElements: {
+            // facebook: {
+            //   type: "Tooltip",
+            //   tooltipText: "this is a tooltip text on facebook",
+            //   color: "transparent",
+            //   icon: "fab fa-facebook"
+            // },
+            // twitter: {
+            //   type: "Tooltip",
+            //   tooltipText: "this is a tooltip text on twitter",
+            //   color: "transparent",
+            //   icon: "fab fa-twitter"
+            // }
           }
         };
+  
+        if (!isAuthenticated) {
+          headerElementConfig.headerElements[t("common:loginText")] = {
+            icon: "",
+            type: "Button",
+            isExternal: false,
+            href: "/login",
+            toolTipText: "",
+            color: "transparent"
+          };
+        } else if (displayName) {
+          headerElementConfig.headerElements[displayName] = {
+            avatar: avatar,
+            childrens: [
+              {
+                text: t("common:yourProfileText"),
+                href: "/url",
+                isExternal: false
+              },
+              {
+                text: t("common:logoutText"),
+                isExternal: false,
+                handleClick: this.props.logOut
+              }
+            ],
+            href: "",
+            type: "DropDown", /// DropDown , Button or Tooltip
+            isExternal: false, /// true or false,
+            tooltipText: "",
+            color: "transparent"
+          };
+        }
+      }
+  
+      
+      if (!drawerElementConfig) {
+        if (displayName) {
+          drawerElementConfig = {
+            headerElements:{
+              [displayName] : {
+                avatar: avatar,
+                href: "",
+                type: "Button", /// DropDown , Button or Tooltip
+                isExternal: false, /// true or false,
+                tooltipText: "",
+                color: "transparent"
+              },
+              [t("common:logoutText")]:{
+                icon: "",
+                type: "Button",
+                isExternal: false,
+                handleClick: this.props.logOut,
+                toolTipText: "",
+                color: "transparent"
+              }
+            }
+          };
+        }
+        else {
+          drawerElementConfig = {
+            headerElements:{
+              [t("common:loginText")] : {
+                avatar: avatar,
+                href: "/login",
+                type: "Button", /// DropDown , Button or Tooltip
+                isExternal: false, /// true or false,
+                tooltipText: "",
+                color: "transparent"
+              }
+            }
+          };
+        }
       }
     }
+    
 
     return (
       <div className={classes.appHeader}>
@@ -118,7 +146,7 @@ class AppHeader extends Component {
           backNavigation={this.props.backNavigation}
           changeColorOnScroll={this.props.changeColorOnScroll}
           rightLinks={<HeaderLinks {...headerElementConfig} />}
-          drawerLinks = {<HeaderLinks {...drawerElementConfig} />}>
+          drawerLinks = {drawerElementConfig ? <HeaderLinks {...drawerElementConfig} /> : undefined}>
          
           { googleAutoComplete && (
             <div className = {classes.autocomplete}>
@@ -135,8 +163,6 @@ class AppHeader extends Component {
       </div>
     );
   }
-
-  
 
   onSuggestSelect = item => {
     item && Router.pushRoute("city", { cityId: item.placeId });
@@ -156,7 +182,8 @@ AppHeader.propTypes = {
   t:PropTypes.func.isRequired,
   logOut:PropTypes.func,
   user : PropTypes.object,
-  backNavigation:PropTypes.bool
+  backNavigation:PropTypes.bool,
+  noLinks:PropTypes.bool
 };
 
 export default withStyles(appHeaderStyle)(AppHeader);

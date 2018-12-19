@@ -83,15 +83,19 @@ class AddNewPlace extends Component {
   }
 
   renderMainContent = () => {
+
+    console.log(this.props);
     const {
       classes,
       t,
       suggestions,
       places,
       loading,
-      id
+      city
     } = this.props;
-    
+
+    const id = city.get("place_id");
+
     return (
       <GridContainer className={classes.container}>
         <GridItem xs={12}>
@@ -200,7 +204,6 @@ const mapStateToProps = state => ({
 AddNewPlace.propTypes = {
   dispatch:PropTypes.func.isRequired,
   t:PropTypes.func.isRequired,
-  id:PropTypes.string.isRequired,
   classes:PropTypes.object.isRequired,
   city:PropTypes.object,
   suggestions:PropTypes.array,

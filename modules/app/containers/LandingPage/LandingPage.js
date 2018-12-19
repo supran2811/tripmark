@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import NoSSR from "react-no-ssr";
-import { withStyles } from "@material-ui/core";
-import { translate } from "react-i18next";
 import PropTypes from "prop-types";
 
+import withLibs from "../../../../lib/withLibs";
 import landingBg from "../../../../assets/img/landing-bg.jpg";
 import Parallax from "../../../../components/Parallax";
 import GridContainer from "../../../../components/GridContainer";
@@ -19,7 +17,6 @@ import {
 import { isLoading, getErrorData, hasError } from "../../store/selector";
 import { RESET_ERROR } from "../../store/actionTypes";
 import AppHeader from "../../components/AppHeader";
-import redirect from "../../../../lib/redirect";
 
 class LandingPage extends Component {
   
@@ -28,17 +25,13 @@ class LandingPage extends Component {
   }
 
   render() {
-    const { classes, t, ...rest } = this.props;
+    const { classes, t } = this.props;
 
     return (
       <div>
         <AppHeader
           color="primary"
           fixed
-          changeColorOnScroll={{
-            height: 400,
-            color: "white"
-          }}
           t={t}
         />
         <Parallax filter image={landingBg} className={classes.parrallexClass}>
@@ -95,5 +88,5 @@ LandingPage.propTypes = {
 };
 
 export default connect(mapStateToProps)(
-  withStyles(landingPageStyle)(translate(["common"])(LandingPage))
+  withLibs(LandingPage, ["common"], landingPageStyle)
 );

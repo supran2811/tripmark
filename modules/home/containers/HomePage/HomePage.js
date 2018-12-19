@@ -10,7 +10,6 @@ import GridItem from "../../../../components/GridItem";
 import withLibs from "../../../../lib/withLibs";
 import AppHeader from "../../../app/components/AppHeader";
 import GoogleAutoComplete from "../../../../components/GoogleAutoComplete";
-import { resetCityDetails, fetchBookmarks } from "../../../place/store/action";
 import PageLoader from "../../../app/components/PageLoader";
 import { logoutRequest } from "../../../auth/store/action";
 import { selectors as placeSelectors } from "../../../place/store";
@@ -22,16 +21,6 @@ import Parallax from "../../../../components/Parallax";
 
 class HomePage extends Component {
   
-  componentDidMount() {
-    console.log("Homepage ",this.props);
-    // const { dispatch , cities , uid } = this.props;
-    // dispatch(resetCityDetails());
-    // console.log("Inside HomePage componentDidMount ",cities,uid);
-    // if(!cities) {
-    //   dispatch(fetchBookmarks(uid));
-    // }
-  }
-
   render() {
     const { classes, t , cities  , loading , user } = this.props;
     return (

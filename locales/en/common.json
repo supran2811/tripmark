@@ -1,6 +1,7 @@
 {
   "appName":"TripMark",
   "logoutText":"Log Out",
+  "loginText" : "Log In",
   "yourProfileText":"Profile",
   "searchBoxPlaceHolder":"Where do you want to go?"
 }

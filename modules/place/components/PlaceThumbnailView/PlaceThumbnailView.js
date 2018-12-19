@@ -49,13 +49,15 @@ class PlaceThumbnailView extends Component {
       formatted_address
     };
 
+    let nameToDisplay = name.length > 20 ? (name.substr(0,20) + "...") : name;
+
     return (
       <Card className={classes.card}>
         <CardActionArea onClick={() => onMainClick(place_id)}>
           <CardMedia className={classes.media} image={photoUrl} title={name} />
           <div className={classes.mediaContent}>
             <Typography variant="title" component="h4" noWrap color="inherit">
-              {name}
+              {nameToDisplay}
             </Typography>
           </div>
         </CardActionArea>

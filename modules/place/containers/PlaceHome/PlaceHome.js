@@ -204,12 +204,12 @@ class PlaceHome extends Component {
         <div className = {classes.nameAndAvatar}>
           <Avatar src={icon} className = {classes.nameAvatar} />
           <Hidden xsDown implementation="css">
-            <Typography variant="display1" component="h4" noWrap>
+            <Typography variant="display1" component="h4">
               {name}
             </Typography>
           </Hidden>
           <Hidden smUp implementation="css">
-            <Typography variant="headline" component="h4" noWrap>
+            <Typography variant="headline" component="h4">
               {name}
             </Typography>
           </Hidden>

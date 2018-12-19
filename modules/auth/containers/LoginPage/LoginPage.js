@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import NoSSR from "react-no-ssr";
-import { withStyles } from "@material-ui/core";
 import { loginRequest, googleSignUpRequest } from "../../../auth/store/action";
 import PropTypes from "prop-types";
 
-import Header from "../../../../components/Header";
-import HeaderLinks from "../../../../components/HeaderLinks";
 import SignUp from "../../../auth/components/SignUp";
 import loginPageStyle from "./loginPageStyle";
 import { isAuthenticated } from "../../../auth/store/selector";
 import { isLoading, getErrorData, hasError } from "../../../app/store/selector";
 import { RESET_ERROR } from "../../../app/store/actionTypes";
+import AppHeader from "../../../app/components/AppHeader";
+import withLibs from "../../../../lib/withLibs";
 
 class LoginPage extends Component {
   componentDidMount() {
@@ -19,30 +17,14 @@ class LoginPage extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const headerElementConfig = {
-      headerElements: {
-        facebook: {
-          type: "Tooltip",
-          tooltipText: "this is a tooltip text on facebook",
-          color: "transparent",
-          icon: "fab fa-facebook"
-        },
-        twitter: {
-          type: "Tooltip",
-          tooltipText: "this is a tooltip text on twitter",
-          color: "transparent",
-          icon: "fab fa-twitter"
-        }
-      }
-    };
+    const { classes , t } = this.props;
     return (
       <div>
-        <Header
-          absolute
+        <AppHeader
           color="primary"
-          brand="TripMark"
-          rightLinks={<HeaderLinks {...headerElementConfig} />}
+          fixed
+          t={t}
+          noLinks
         />
         <div className={classes.container}>
           <SignUp
@@ -72,7 +54,8 @@ LoginPage.propTypes = {
   classes: PropTypes.object.isRequired,
   loading: PropTypes.bool,
   error: PropTypes.bool.isRequired,
-  errorData: PropTypes.object
+  errorData: PropTypes.object,
+  t:PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps)(withStyles(loginPageStyle)(LoginPage));
+export default connect(mapStateToProps)(withLibs(LoginPage, ["common"], loginPageStyle));
