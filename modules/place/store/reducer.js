@@ -46,8 +46,6 @@ export default function placeReducer(state = initialState, action) {
   switch (action.type) {
   case FETCH_CITY_DETAILS.SUCCESS: {
     
-    console.log("Place reducer fetch results ",action.response.data);
-
     const {result : city , places} = action.response.data;
 
     const cityid  = city["place_id"];
@@ -81,7 +79,9 @@ export default function placeReducer(state = initialState, action) {
     return state.merge({ predictions, query });
   }
   case CLEAR_SUGGESTIONS.ACTION: {
-    return state.merge({ predictions: [] });
+    const query = state.get("query");
+    const updatedQuery = query.set("term" , "").set("type","text");
+    return state.merge({ predictions: [] , query:updatedQuery });
   }
   case TEXT_SEARCH.SUCCESS: {
     const query = action.query;

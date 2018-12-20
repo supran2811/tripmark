@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
 import Router from "next/router";
 import Close from "@material-ui/icons/Close";
@@ -34,16 +34,19 @@ import { getPhotoUrl } from "../../../../google/places";
 
 class AddNewPlace extends Component {
 
-
-  state = {
-    label:""
-  }
-
   static getDerivedStateFromProps(nextProps, state) {
     const { query } = nextProps;
     const label = query.get("label");
 
     return label ? {label:query.get("label") } : null;
+  }
+
+  state = {
+    label:""
+  }
+
+  componentDidMount() {
+    this.props.dispatch(clearSuggestion());
   }
 
   handleClose() {

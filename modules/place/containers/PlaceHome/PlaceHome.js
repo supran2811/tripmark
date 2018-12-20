@@ -14,7 +14,7 @@ import Directions from "@material-ui/icons/Directions";
 import Language from "@material-ui/icons/Language";
 import Call from "@material-ui/icons/Call";
 
-import withLibs, { withGoogleApiLibs } from "../../../../lib/withLibs";
+import { withGoogleApiLibs } from "../../../../lib/withLibs";
 import {deleteBookmarkAction, addBookmark } from "../../store/action";
 import { getSelectedPlace } from "../../store/selector";
 import AppHeader from "../../../app/components/AppHeader";
@@ -36,7 +36,7 @@ class PlaceHome extends Component {
   };
 
   render() {
-    const { place, t , classes } = this.props;
+    const { place, t } = this.props;
     return (
       <div>
         {place ? (
@@ -45,10 +45,6 @@ class PlaceHome extends Component {
               fixed isAuthenticated t={t} 
               logOut = {this.doLogOut}
               backNavigation
-              // changeColorOnScroll={{
-              //   height: 100,
-              //   color: "primary"
-              // }}
             />
             {this.renderPlaceDetails()}
             {this.state.showPhotoViewer && (
@@ -136,7 +132,7 @@ class PlaceHome extends Component {
                     : <React.Fragment>
                       {
                         addBookmarkPending ? <PageLoader type="circular" size = {20}/> 
-                          : <Bookmark color="default"/> 
+                          : <Bookmark /> 
                       }
                       { t("markAsFavourtie") }
                     </React.Fragment>
@@ -218,7 +214,7 @@ class PlaceHome extends Component {
           <IconButton
             aria-label={t("addYourFavorite")}
             onClick={this.addRemoveBookmark}
-            color={bookmarked ? "primary" : "default"}
+            color={bookmarked ? "primary" : "inherit"}
             disabled={addBookmarkPending || deleteBookmarkPending || false }
           >
             {

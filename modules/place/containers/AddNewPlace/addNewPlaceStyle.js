@@ -1,9 +1,12 @@
 import { container } from "../../../../assets/jss/material-kit-react";
 
-const addNewPlaceStyle = {
+const addNewPlaceStyle = theme => ({
   container:{
     ...container,
-    marginTop:"120px"
+    marginTop:"120px",
+    [theme.breakpoints.down("sm")]:{
+      padding:"0px 0px"
+    }
   },
   icons: {
     width: "20px",
@@ -13,6 +16,6 @@ const addNewPlaceStyle = {
   labelStyle : {
     marginTop : "30px"
   }
-};
+});
 
 export default addNewPlaceStyle;

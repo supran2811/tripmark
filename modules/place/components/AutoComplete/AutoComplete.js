@@ -12,13 +12,15 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import _ from "lodash";
 import { TextField } from "@material-ui/core";
 import Search from "@material-ui/icons/Search";
-
+import UserAgent from "express-useragent";
+import { Router } from "../../../../routes";
 
 import autoCompleteStyle from "./autoCompleteStyle";
 import { filterCategory } from "../../../../google/places";
 import Button from "../../../../components/CustomButtons";
 
 class AutoComplete extends Component {
+
   state = {
     value: ""
   };
@@ -30,6 +32,7 @@ class AutoComplete extends Component {
       <TextField
         id="autoCompleteInput"
         fullWidth
+        autoFocus
         InputProps={{
           disableUnderline: true,
           inputRef: node => {
@@ -46,6 +49,10 @@ class AutoComplete extends Component {
     );
   };
 
+  focusInput() {
+    this.inputRef.current.focus();
+  }
+
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
     const { classes, suggestionClicked , cityid } = this.props;
     const suggestionText = this.getSuggestionText(suggestion);
@@ -61,10 +68,9 @@ class AutoComplete extends Component {
         classes={{ root: classes.menuItem }}
       >
         {suggestion.type !== "category" ? (
-          <a href={`/city/${cityid}/place/${suggestion.place_id}`}
+          <a
             rel="noopener"
-            className={classes.menuItemContent}
-            target="_blank">
+            className={classes.menuItemContent}>
             <LocationOn />
             <div className={classes.menuItemBody}>
               <div className={classes.mainContent}>
@@ -178,7 +184,7 @@ class AutoComplete extends Component {
           )}
         />
         <Button
-          className={classes.buttonStye}
+          className={classes.buttonStyle}
           color="info"
           size="lg"
           loading={isLoading}
@@ -202,10 +208,19 @@ class AutoComplete extends Component {
     const { cityid } = this.props;
     if (method === "enter" || method === "click") {
       if (suggestion.type !== "category") {
-        window.open(
-          `${window.location.origin}/city/${cityid}/place/${suggestion.place_id}`,
-          "_blank"
-        );
+        const userAgent = UserAgent.parse(navigator.userAgent);
+        if(userAgent.isDesktop) {
+          console.log("Opening in desktop!!");
+          // window.open(
+          //   `${window.location.origin}/city/${cityid}/place/${suggestion.place_id}`,
+          //   "_blank"
+          // );
+        }
+        else {
+          console.log("Opening in mobile!!");
+          Router.pushRoute("city/place", { cityId: cityid , placeId:suggestion.place_id });
+        }
+        
       } else {
         this.setState({value:""});
         this.props.performSearch(suggestion);

@@ -35,6 +35,7 @@ class Header extends React.Component {
     this.setState({ mobileOpen: !this.state.mobileOpen });
   }
   handleBackNavigation() {
+    console.log("Go back");
     Router.back();
   }
   componentDidMount() {
