@@ -55,6 +55,7 @@ export class LandingPage extends Component {
                   isLoading={this.props.loading}
                   hasError={this.props.error}
                   errorData={this.props.errorData}
+                  t={t}
                 />
               </GridItem>
             </GridContainer>

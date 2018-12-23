@@ -1,4 +1,4 @@
-import { fork, takeEvery, put } from "redux-saga/effects";
+import { fork, takeEvery, put , call } from "redux-saga/effects";
 
 import { auth } from "../../../firebase";
 import {
@@ -17,9 +17,9 @@ export function* doSignUp(action) {
 
     //////Call method to perform signup/////
 
-    yield auth.doCreateUser(action.email, action.password);
+    yield call(auth.doCreateUser,action.email, action.password);
 
-    yield auth.doUpdateProfile(action.fullName);
+    yield call(auth.doUpdateProfile, action.fullName);
 
     yield put({ type: ACTION_SIGNUP.SUCCESS });
 
@@ -31,7 +31,8 @@ export function* doSignUp(action) {
 
 export function* doSignUpWithGoogle() {
   try {
-    yield auth.doGoogleSignIn();
+    yield put({ type: ACTION_GOOGLE_SIGNUP.PENDING });
+    yield call(auth.doGoogleSignIn);
     yield put({ type: ACTION_GOOGLE_SIGNUP.SUCCESS });
   } catch (error) {
     yield put({ type: ACTION_GOOGLE_SIGNUP.ERROR, error });
@@ -43,7 +44,7 @@ export function* doLogin(action) {
     yield put({ type: ACTION_LOGIN.PENDING });
 
     //////Call method to perform login/////
-    yield auth.doSignInUser(action.email, action.password);
+    yield call(auth.doSignInUser,action.email, action.password);
 
     yield put({ type: ACTION_LOGIN.SUCCESS });
   } catch (error) {
@@ -55,19 +56,17 @@ export function* doSetToken() {
   try {
     yield put({ type: ACTION_SET_TOKEN.PENDING });
 
-    const token = yield auth.getToken();
+    const token = yield call(auth.getToken);
 
-    const uid = yield auth.getUserId();
+    const uid = yield call(auth.getUserId);
 
-    const username = yield auth.getUserName();
+    const username = yield call(auth.getUserName);
 
-    const profilePhotoUrl = yield auth.getProfilePhotoUrl();
+    const profilePhotoUrl = yield call(auth.getProfilePhotoUrl);
 
     const user = { token , uid , username , profilePhotoUrl};
 
-    const response = yield sendLoginRequest(user);
-
-    console.log("Response from sendLogin ",response);
+    const response = yield call(sendLoginRequest,user);
 
     yield put({ type: ACTION_SET_TOKEN.SUCCESS, data: token });
   } catch (error) {
@@ -78,8 +77,8 @@ export function* doSetToken() {
 export function* doLogOut() {
   try {
     yield put({ type: ACTION_LOGOUT.PENDING });
-    yield auth.doSignOut();
-    const response = yield sendLogoutRequest();
+    yield call(auth.doSignOut);
+    const response = yield call(sendLogoutRequest);
     yield put({type:CLEAR_BOOKMARKS.ACTION});
     yield put({type:RESET_CITY_DETAILS.ACTION});
     yield put({ type: ACTION_LOGOUT.SUCCESS });
@@ -90,9 +89,11 @@ export function* doLogOut() {
 }
 
 export default function* saga() {
-  yield fork(takeEvery, ACTION_LOGIN.ACTION, doLogin);
-  yield fork(takeEvery, ACTION_SIGNUP.ACTION, doSignUp);
-  yield fork(takeEvery, ACTION_SET_TOKEN.ACTION, doSetToken);
-  yield fork(takeEvery, ACTION_GOOGLE_SIGNUP.ACTION, doSignUpWithGoogle);
-  yield fork(takeEvery, ACTION_LOGOUT.ACTION, doLogOut);
+  yield [
+    fork(takeEvery, ACTION_LOGIN.ACTION, doLogin),
+    fork(takeEvery, ACTION_SIGNUP.ACTION, doSignUp),
+    fork(takeEvery, ACTION_SET_TOKEN.ACTION, doSetToken),
+    fork(takeEvery, ACTION_GOOGLE_SIGNUP.ACTION, doSignUpWithGoogle),
+    fork(takeEvery, ACTION_LOGOUT.ACTION, doLogOut)
+  ];
 }

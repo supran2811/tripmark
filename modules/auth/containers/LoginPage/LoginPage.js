@@ -10,8 +10,10 @@ import { isLoading, getErrorData, hasError } from "../../../app/store/selector";
 import { RESET_ERROR } from "../../../app/store/actionTypes";
 import AppHeader from "../../../app/components/AppHeader";
 import withLibs from "../../../../lib/withLibs";
+import { withStyles } from "@material-ui/core";
 
-class LoginPage extends Component {
+export class LoginPage extends Component {
+
   componentDidMount() {
     this.props.dispatch({ type: RESET_ERROR.ACTION });
   }
@@ -36,6 +38,7 @@ class LoginPage extends Component {
             isLoading={this.props.loading}
             hasError={this.props.error}
             errorData={this.props.errorData}
+            t={t}
           />
         </div>
       </div>
@@ -52,10 +55,10 @@ const mapStateToProps = state => ({
 LoginPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
+  t:PropTypes.func.isRequired,
+  error: PropTypes.bool,
   loading: PropTypes.bool,
-  error: PropTypes.bool.isRequired,
   errorData: PropTypes.object,
-  t:PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps)(withLibs(LoginPage, ["common"], loginPageStyle));
+export default connect(mapStateToProps)(withLibs(LoginPage, ["authdata","common"], loginPageStyle));

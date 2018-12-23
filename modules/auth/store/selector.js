@@ -7,3 +7,4 @@ export const isFirebaseLoaded = state => state.get(NAME).get("firebaseLoaded");
 export const getPathToRedirect = state => state.get(NAME).get("pathToRedirect");
 
 export const isAuthenticated = createSelector(getToken, token => token !== "");
+

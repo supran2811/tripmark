@@ -1,4 +1,4 @@
-import { Map, Record, fromJS } from "immutable";
+import { Map, Record } from "immutable";
 
 import {
   ACTION_SET_TOKEN,

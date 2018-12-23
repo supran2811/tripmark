@@ -16,8 +16,6 @@ import LockOutline from "@material-ui/icons/LockOutline";
 import People from "@material-ui/icons/People";
 import Check from "@material-ui/icons/Check";
 
-import { translate } from "react-i18next";
-
 import GridContainer from "../../../../components/GridContainer";
 import GridItem from "../../../../components/GridItem";
 import Card, {
@@ -29,7 +27,7 @@ import CustomInput from "../../../../components/CustomInput";
 import signupFormStyle from "./signupFormStyle";
 import Button from "../../../../components/CustomButtons";
 
-class SignUpForm extends Component {
+export class SignUpForm extends Component {
   state = {
     cardAnimation: "cardHidden",
     enableSubmit: false,
@@ -70,18 +68,19 @@ class SignUpForm extends Component {
     this.setState({ rememberPassword: e.target.checked });
   };
 
-  validateForm(t) {
-    if (this.props.isLogin && this.isEmailValid(t) && this.isPasswordValid(t)) {
-      this.props.requestLogin(
+  validateForm = ( ) => {
+    const { isLogin , requestLogin ,requestSignUp } = this.props;
+    if (isLogin && this.isEmailValid() && this.isPasswordValid()) {
+      requestLogin(
         this.state.email.value,
         this.state.password.value
       );
     } else if (
-      this.isNameValid(t) &&
-      this.isEmailValid(t) &&
-      this.isPasswordValid(t)
+      this.isNameValid() &&
+      this.isEmailValid() &&
+      this.isPasswordValid()
     ) {
-      this.props.requestSignUp(
+      requestSignUp(
         this.state.name.value,
         this.state.email.value,
         this.state.password.value
@@ -89,7 +88,8 @@ class SignUpForm extends Component {
     }
   }
 
-  isNameValid(t) {
+  isNameValid = () => {
+    const { t } = this.props;
     const name = this.state.name.value.trim();
     let nameObj;
     if (name.length == 0) {
@@ -113,7 +113,8 @@ class SignUpForm extends Component {
     }
   }
 
-  isEmailValid(t) {
+  isEmailValid = ( ) => {
+    const { t } = this.props;
     const email = this.state.email.value.trim();
     let emailObj;
     if (email.length == 0) {
@@ -136,7 +137,8 @@ class SignUpForm extends Component {
     return true;
   }
 
-  isPasswordValid(t) {
+  isPasswordValid = ( ) => {
+    const { t } = this.props;
     const password = this.state.password.value.trim();
     let passwordObj;
     if (password.length == 0) {
@@ -189,7 +191,7 @@ class SignUpForm extends Component {
                         ? this.state.name.errorLabel
                         : t("enterNameInputPlaceholder")
                     }
-                    id="name"
+                    id="fullNameID"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -211,7 +213,7 @@ class SignUpForm extends Component {
                       ? this.state.email.errorLabel
                       : t("emailnputPlaceholder")
                   }
-                  id="email"
+                  id="emailID"
                   formControlProps={{
                     fullWidth: true
                   }}
@@ -232,7 +234,7 @@ class SignUpForm extends Component {
                       ? this.state.password.errorLabel
                       : t("passwordInputPlaceholder")
                   }
-                  id="password"
+                  id="passwordID"
                   formControlProps={{
                     fullWidth: true
                   }}
@@ -274,10 +276,10 @@ class SignUpForm extends Component {
                             classes={{ checked: classes.checked }}
                           />
                         }
-                        label="Remember Password"
+                        label={t("rememberPasswordLabel")}
                       />
                       <Button simple color="primary" size="lg">
-                        Forgot Password
+                        {t("forgotPasswordLabel")}
                       </Button>
                     </FormGroup>
                   </div>
@@ -289,8 +291,9 @@ class SignUpForm extends Component {
                   fullWidth
                   block
                   size="lg"
+                  id="submitButtonID"
                   loading={this.props.isLoading}
-                  onClick={() => this.validateForm(t)}
+                  onClick={this.validateForm}
                 >
                   {this.props.isLogin ? t("loginLabel") : t("signUpActionText")}
                 </Button>
@@ -302,19 +305,17 @@ class SignUpForm extends Component {
     );
   }
 
-  responseGoogle = response => {
-  };
 }
 
 SignUpForm.propTypes = {
   classes:PropTypes.object.isRequired,
+  t:PropTypes.func.isRequired,
   isLogin:PropTypes.bool,
   requestLogin:PropTypes.func,
   requestSignUp:PropTypes.func,
   isLoading:PropTypes.bool,
-  t:PropTypes.func.isRequired,
   googleSignUp:PropTypes.func,
   errorData:PropTypes.object
 };
 
-export default withStyles(signupFormStyle)(translate(["authdata"])(SignUpForm));
+export default withStyles(signupFormStyle)(SignUpForm);
