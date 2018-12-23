@@ -1,5 +1,3 @@
-import { container, transition } from "../../../../assets/jss/material-kit-react";
-
 const appHeaderStyle = theme => ({
   appHeader: {
     position: "fixed",

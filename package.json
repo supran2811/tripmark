@@ -4,7 +4,7 @@
   "description": "Bookmark your trips",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "node server.js",
     "start": "cross-env NODE_ENV=production node server.js"
   },
@@ -90,8 +90,16 @@
     "with-query": "^1.1.2"
   },
   "devDependencies": {
+    "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
-    "eslint": "^5.7.0"
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
+    "eslint": "^5.7.0",
+    "jest": "^23.6.0",
+    "jest-junit": "^5.2.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-test-renderer": "^16.7.0",
+    "redux-mock-store": "^1.5.3"
   }
 }

@@ -11,5 +11,6 @@
   "emailIsRequiredErrorText" : "Email is required",
   "emailLengthErrorText" : "Email format is not correct",
   "passwordIsRequiredErrorText" : "Password is required",
-  "passwordLengthErrorText" : "Password must be more than 6 letters"
+  "passwordLengthErrorText" : "Password must be more than 6 letters",
+  "welcomepagetext" :"Every landing page needs a small description after the big bold title, that‘s why we added this text here. Add here all the information that can make you or your product create the first impression."
 }

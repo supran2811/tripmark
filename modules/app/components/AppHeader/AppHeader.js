@@ -12,7 +12,7 @@ import appHeaderStyle from "./appHeaderStyle";
 import GoogleAutoComplete from "../../../../components/GoogleAutoComplete";
 import defaultProfilePhoto from "../../../../assets/img/profilephoto.png";
 
-class AppHeader extends Component {
+export class AppHeader extends Component {
 
   render() {
     const { classes, t, googleAutoComplete, selectedCityName , user , isAuthenticated , noLinks } = this.props;
