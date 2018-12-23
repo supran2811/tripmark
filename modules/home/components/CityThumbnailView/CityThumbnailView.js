@@ -10,7 +10,7 @@ import Card from "../../../../components/Card";
 import { Router } from "../../../../routes";
 import cityThumbnailViewStyle from "./cityThumbnailViewStyle";
 
-class CityThumbnailView extends Component {
+export class CityThumbnailView extends Component {
   
   render() {
     const { classes , city } = this.props;
@@ -28,14 +28,13 @@ class CityThumbnailView extends Component {
   }
 
   navigateToCityDetails = () => {
-  
     Router.pushRoute("city", { cityId: this.props.city["place_id"] });
   }
 }
 
 CityThumbnailView.propTypes = {
   classes: PropTypes.object.isRequired,
-  city: PropTypes.object
+  city: PropTypes.object.isRequired
 };
 
 export default withStyles(cityThumbnailViewStyle)(CityThumbnailView);

@@ -19,7 +19,7 @@ import homeBg from "../../../../assets/img/home-bg.jpg";
 import Parallax from "../../../../components/Parallax";
 
 
-class HomePage extends Component {
+export class HomePage extends Component {
   
   render() {
     const { classes, t , cities  , loading , user } = this.props;
@@ -93,7 +93,6 @@ HomePage.propTypes = {
   loading: PropTypes.bool,
   user : PropTypes.object
 };
-
 
 export default connect(mapStateToProps)(
   withLibs(HomePage, ["homedata", "common"], homePageStyle)

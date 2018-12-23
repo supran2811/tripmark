@@ -74,8 +74,7 @@ export function cancelAutoCompleteSearch() {
   };
 }
 
-export function addBookmark(city, place , cityid) {
-  console.log("ADD BOOKMARK",place);
+export function addBookmark(city, place ) {
   return {
     type: ADD_BOOKMARK.ACTION,
     city,
@@ -115,7 +114,6 @@ export function fetchBookmarkPlaces(cityid) {
 }
 
 export function fetchBookmarks(uid) {
-  console.log("Inside fetchBookmarks() ");
   return {
     type: GET_BOOKMARKS.ACTION,
     uid
@@ -125,5 +123,5 @@ export function fetchBookmarks(uid) {
 export function clearBookmarks() {
   return {
     type:CLEAR_BOOKMARKS.ACTION
-  }
+  };
 }

@@ -32,11 +32,11 @@ import PageLoader from "../../../app/components/PageLoader";
 import PaginationComponent from "../../../../hoc/PaginationComponent";
 import { getPhotoUrl } from "../../../../google/places";
 
-class AddNewPlace extends Component {
+export class AddNewPlace extends Component {
 
   static getDerivedStateFromProps(nextProps, state) {
     const { query } = nextProps;
-    const label = query.get("label");
+    const label = query ? query.get("label"):null;
 
     return label ? {label:query.get("label") } : null;
   }
@@ -46,7 +46,7 @@ class AddNewPlace extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(clearSuggestion());
+    this.props.clearSuggestion();
   }
 
   handleClose() {
@@ -87,7 +87,6 @@ class AddNewPlace extends Component {
 
   renderMainContent = () => {
 
-    console.log(this.props);
     const {
       classes,
       t,
@@ -141,7 +140,7 @@ class AddNewPlace extends Component {
   }
 
   fetchSuggestions = query => {
-    const { dispatch, city } = this.props;
+    const { autoCompleteSearch, city } = this.props;
     const latlngObj = city.get("geometry")
       ? city.get("geometry").get("location").toJSON()
       : undefined;
@@ -149,31 +148,31 @@ class AddNewPlace extends Component {
 
     const params = { latlngObj , radius };
 
-    dispatch(autoCompleteSearch(query, params));
+    autoCompleteSearch(query, params);
   };
 
   searchText = query => {
-    const { dispatch, city } = this.props;
+    const { textSearch, clearSuggestion , city } = this.props;
     const latlngObj = city.get("geometry")
       ? city.get("geometry").get("location").toJSON()
       : undefined;
     const radius = "100000";
 
     const params = { latlngObj, radius };
-    dispatch(clearSuggestion());
-    dispatch(textSearch(query, params));
+    clearSuggestion();
+    textSearch(query, params);
   };
 
   searchTextNext = () => {
-    const { dispatch, nextToken } = this.props;
+    const { textSearch, nextToken } = this.props;
     if (nextToken) {
       const query = { pagetoken: nextToken };
-      dispatch(textSearch(query, {}));
+      textSearch(query, {});
     }
   };
 
   bookmarkPlace = place => {
-    const { city, dispatch } = this.props;
+    const { city, addBookmark } = this.props;
     
     const { name, place_id, photos, geometry } = city.toJSON();
 
@@ -184,14 +183,13 @@ class AddNewPlace extends Component {
       location: { ...geometry.location }
     };
 
-    console.log("Inside add bookmark ",place);
-    dispatch(addBookmark(cityToSave, place));
+    addBookmark(cityToSave, place);
   };
 
   removeBookmark = placeId => {
-    const { city, dispatch } = this.props;
+    const { city, deleteBookmarkAction } = this.props;
     const { place_id: cityId } = city.toJSON();
-    dispatch(deleteBookmarkAction(cityId, placeId));
+    deleteBookmarkAction(cityId, placeId);
   };
 }
 
@@ -205,7 +203,11 @@ const mapStateToProps = state => ({
 });
 
 AddNewPlace.propTypes = {
-  dispatch:PropTypes.func.isRequired,
+  deleteBookmarkAction:PropTypes.func.isRequired,
+  addBookmark:PropTypes.func.isRequired,
+  textSearch:PropTypes.func.isRequired,
+  clearSuggestion:PropTypes.func.isRequired,
+  autoCompleteSearch:PropTypes.func.isRequired,
   t:PropTypes.func.isRequired,
   classes:PropTypes.object.isRequired,
   city:PropTypes.object,
@@ -216,6 +218,12 @@ AddNewPlace.propTypes = {
   query:PropTypes.object
 };
 
-export default connect(mapStateToProps)(
+export default connect(mapStateToProps , {
+  deleteBookmarkAction,
+  addBookmark,
+  textSearch,
+  clearSuggestion,
+  autoCompleteSearch
+})(
   withLibs(AddNewPlace, ["placedata", "common"], addNewPlaceStyle)
 );

@@ -5,7 +5,7 @@ import GridItem from "../../../../components/GridItem";
 import CityThumbnailView from "../CityThumbnailView";
 
 
-class CityResultGrid extends Component {
+export class CityResultGrid extends Component {
   render() {
     const { cities } = this.props;
     const citiesToRender = cities ? cities.map(this.renderCity) : null;

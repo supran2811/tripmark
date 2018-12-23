@@ -16,6 +16,7 @@ import Call from "@material-ui/icons/Call";
 
 import { withGoogleApiLibs } from "../../../../lib/withLibs";
 import {deleteBookmarkAction, addBookmark } from "../../store/action";
+import { logoutRequest } from "../../../auth/store/action";
 import { getSelectedPlace } from "../../store/selector";
 import AppHeader from "../../../app/components/AppHeader";
 import PageLoader from "../../../app/components/PageLoader";
@@ -27,9 +28,8 @@ import GridContainer from "../../../../components/GridContainer";
 import GridItem from "../../../../components/GridItem";
 import Card from "../../../../components/Card";
 import PhotoView from "../../components/PhotoView";
-import { ADD_BOOKMARK_PENDING, DELETE_BOOKMARK_PENDING } from "../../store/constants";
 
-class PlaceHome extends Component {
+export class PlaceHome extends Component {
   state = {
     expandOpeningHours: false,
     showPhotoViewer: false
@@ -103,7 +103,6 @@ class PlaceHome extends Component {
 
   renderPlaceDetails() {
     const { place, classes, t } = this.props;
-    console.log("Place pending bookmark status ",place[ADD_BOOKMARK_PENDING],place[DELETE_BOOKMARK_PENDING]);
     const { addBookmarkPending , deleteBookmarkPending }  = place;
     return (
       <React.Fragment>
@@ -340,13 +339,6 @@ class PlaceHome extends Component {
             </div>
           </div>
         </CardContent>
-        {/* <CardActions className={classes.addressActionArea}>
-          <RegularButton size="small" 
-            color="primary" 
-            onClick = {() => this.openGoogleMapLink(place_id,formatted_address)}>
-            <Directions color="primary" fontSize="small" className = {classes.iconStyle}/> {t("get_direction")}
-          </RegularButton>
-        </CardActions> */}
       </Card>
     );
   }
@@ -425,10 +417,10 @@ class PlaceHome extends Component {
   };
 
   addRemoveBookmark = () => {
-    const { place , dispatch ,cityId } = this.props;
+    const { place , deleteBookmarkAction ,cityId ,addBookmark} = this.props;
 
     if(place.bookmarked) {
-      dispatch(deleteBookmarkAction(cityId,place["place_id"]));
+      deleteBookmarkAction(cityId,place["place_id"]);
     }
     else {
      
@@ -452,7 +444,7 @@ class PlaceHome extends Component {
         place_id:cityId
       };
       
-      dispatch(addBookmark(cityToSave , placeToSave));
+      addBookmark(cityToSave , placeToSave);
     }
   };
 
@@ -465,7 +457,7 @@ class PlaceHome extends Component {
   };
 
   doLogOut = () => {
-    this.props.dispatch(logoutRequest());
+    this.props.logoutRequest();
   };
 
   openExternalWebsite = url => {
@@ -486,7 +478,9 @@ const mapStateToProps = (state, props) => {
 };
 
 PlaceHome.propTypes = {
-  dispatch:PropTypes.func.isRequired,
+  deleteBookmarkAction:PropTypes.func.isRequired,
+  addBookmark:PropTypes.func.isRequired,
+  logoutRequest:PropTypes.func.isRequired,
   cityId:PropTypes.string.isRequired,
   id:PropTypes.string.isRequired,
   t:PropTypes.func.isRequired,
@@ -495,6 +489,10 @@ PlaceHome.propTypes = {
   classes:PropTypes.object,
 };
 
-export default connect(mapStateToProps)(
+export default connect(mapStateToProps , {
+  deleteBookmarkAction,
+  addBookmark,
+  logoutRequest
+})(
   withGoogleApiLibs(PlaceHome, ["placedata", "common"], placeHomeStyle)
 );

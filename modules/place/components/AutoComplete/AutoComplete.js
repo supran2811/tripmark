@@ -19,7 +19,7 @@ import autoCompleteStyle from "./autoCompleteStyle";
 import { filterCategory } from "../../../../google/places";
 import Button from "../../../../components/CustomButtons";
 
-class AutoComplete extends Component {
+export class AutoComplete extends Component {
 
   state = {
     value: ""
@@ -48,10 +48,6 @@ class AutoComplete extends Component {
       />
     );
   };
-
-  focusInput() {
-    this.inputRef.current.focus();
-  }
 
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
     const { classes, suggestionClicked , cityid } = this.props;
@@ -210,14 +206,12 @@ class AutoComplete extends Component {
       if (suggestion.type !== "category") {
         const userAgent = UserAgent.parse(navigator.userAgent);
         if(userAgent.isDesktop) {
-          console.log("Opening in desktop!!");
-          // window.open(
-          //   `${window.location.origin}/city/${cityid}/place/${suggestion.place_id}`,
-          //   "_blank"
-          // );
+          window.open(
+            `${window.location.origin}/city/${cityid}/place/${suggestion.place_id}`,
+            "_blank"
+          );
         }
         else {
-          console.log("Opening in mobile!!");
           Router.pushRoute("city/place", { cityId: cityid , placeId:suggestion.place_id });
         }
         
@@ -245,9 +239,9 @@ AutoComplete.propTypes = {
   fetchSuggestions: PropTypes.func.isRequired,
   performSearch: PropTypes.func.isRequired,
   classes:PropTypes.object.isRequired,
+  suggestions: PropTypes.array.isRequired,
   cityid:PropTypes.string.isRequired,
-  isLoading:PropTypes.bool.isRequired,
-  suggestions: PropTypes.array,
+  isLoading:PropTypes.bool,
   suggestionClicked:PropTypes.func
 };
 

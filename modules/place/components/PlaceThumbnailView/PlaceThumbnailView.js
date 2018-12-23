@@ -20,7 +20,6 @@ import { openInGoogleMap } from "../../../../google/places";
 class PlaceThumbnailView extends Component {
   render() {
     const { place, classes, onMainClick, onBookmarkClick , translations:t } = this.props;
-    console.log("PlaceThumbnailView place ",place);
     const name = place["name"];
     const photos = place["photos"];
 

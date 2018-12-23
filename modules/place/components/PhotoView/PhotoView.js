@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import photoViewStyle from "./photoViewStyle";
 import { getPhotoUrl } from "../../../../google/places";
 
-class PhotoView extends Component {
+export class PhotoView extends Component {
   state = {
     currentIndex: 0
   };
@@ -19,13 +19,13 @@ class PhotoView extends Component {
     const photo = photos[this.state.currentIndex];
     return (
       <div className={classes.container}>
-        <IconButton className={classes.closeIcon} onClick={onCloseClicked}>
+        <IconButton id="closeButtonID" className={classes.closeIcon} onClick={onCloseClicked}>
           <Close className={classes.iconStyle} />
         </IconButton>
         <ul className={classes.photoListContainer}>
           <li className = {classes.leftArrow}>
             {this.state.currentIndex > 0 && (
-              <IconButton onClick={this.goToPreviousPhoto}>
+              <IconButton id="prevButtonID" onClick={this.goToPreviousPhoto}>
                 <KeyboardArrowLeft className={classes.iconStyle} />
               </IconButton>
             )}
@@ -38,7 +38,7 @@ class PhotoView extends Component {
           </li>
           <li className={classes.rightArrow}>
             {this.state.currentIndex < photos.length - 1 && (
-              <IconButton onClick={this.goToNextPhoto}>
+              <IconButton id="nextButtonID" onClick={this.goToNextPhoto}>
                 <KeyboardArrowRight className={classes.iconStyle} />)
               </IconButton>
             )}

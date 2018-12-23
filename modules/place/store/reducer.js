@@ -1,4 +1,4 @@
-import { Map, List, Record,fromJS, Set } from "immutable";
+import { Map, List, Record} from "immutable";
 
 import {
   FETCH_CITY_DETAILS,

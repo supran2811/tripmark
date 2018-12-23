@@ -28,12 +28,11 @@ import PhotoView from "../../components/PhotoView";
 import GridContainer from "../../../../components/GridContainer";
 import { logoutRequest } from "../../../auth/store/action";
 
-class CityHome extends Component {
+export class CityHome extends Component {
 
   state = {
     showPhotoViewer: false
   };
-
  
   openAddFavoritePlace(city) {
     Router.pushRoute("city/addfav", { cityId: city.get("place_id") });
@@ -150,13 +149,13 @@ class CityHome extends Component {
   };
 
   removeBookmark = placeId => {
-    const { city, dispatch } = this.props;
+    const { city, deleteBookmarkAction } = this.props;
     const { place_id: cityId } = city.toJSON();
-    dispatch(deleteBookmarkAction(cityId, placeId));
+    deleteBookmarkAction(cityId, placeId);
   };
 
   doLogOut = () => {
-    this.props.dispatch(logoutRequest());
+    this.props.logoutRequest();
   }
 }
 
@@ -168,7 +167,8 @@ const mapStateToProps = state => {
 };
 
 CityHome.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  logoutRequest: PropTypes.func.isRequired,
+  deleteBookmarkAction: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
   theme: PropTypes.object.isRequired,
@@ -178,6 +178,9 @@ CityHome.propTypes = {
   user: PropTypes.object
 };
 
-export default connect(mapStateToProps)(
+export default connect(mapStateToProps , {
+  logoutRequest,
+  deleteBookmarkAction
+})(
   withLibs(CityHome, ["placedata", "common"], cityHomeStyle)
 );
