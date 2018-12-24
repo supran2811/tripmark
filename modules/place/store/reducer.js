@@ -263,9 +263,7 @@ export default function placeReducer(state = initialState, action) {
         if (places) {
           const place = getValue(placeid , places);
           const updatedPlace = deleteKey(DELETE_BOOKMARK_PENDING , place);
-          console.log("Updated place ",updatedPlace);
           const updatedPlaces = places.set(placeid,updatedPlace);
-          console.log("Updated places ",updatedPlaces);
           bookmarks = bookmarks.set(
             cityid,
             cityObj.set("places", updatedPlaces)

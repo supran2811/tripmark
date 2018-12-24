@@ -27,22 +27,18 @@ export function* dofetchCityDetails({ cityid , uid }) {
   try {
     yield put({ type: FETCH_CITY_DETAILS.PENDING });
     const response = yield call(serviceApi.getCityDetails,cityid , uid);
-    console.log("Do fetch city details ",response);
     yield put({ type: FETCH_CITY_DETAILS.SUCCESS, response });
   } catch (error) {
-    console.log("FETCH_CITY_DETAILS::Error",error);
     yield put({ type: FETCH_CITY_DETAILS.ERROR, error });
   }
 }
 
 export function* dofetchPlaceDetails({ cityid, placeId , uid }) {
   try {
-    console.log("Inside dofetchPlaceDetails");
     yield put({ type: FETCH_PLACE_DETAILS.PENDING });
     const response = yield call(serviceApi.getPlaceDetails,cityid,placeId, uid);
     yield put({ type: FETCH_PLACE_DETAILS.SUCCESS, response });
   } catch (error) {
-    console.log("FETCH_CITY_DETAILS::Error",error);
     yield put({ type: FETCH_PLACE_DETAILS.ERROR, error });
   }
 }
@@ -54,7 +50,6 @@ export function* doTextSearch({ query, params }) {
     const response = yield call(serviceApi.textSearch, query, params);
     yield put({ type: TEXT_SEARCH.SUCCESS, response, query });
   } catch (error) {
-    console.log("Inside doTextSearch::error ",error);
     yield put({ type: TEXT_SEARCH.ERROR, error });
   }
 }
@@ -65,7 +60,6 @@ export function* doAutoCompleteSearchCancellable({ query, params }) {
     const response = yield call(serviceApi.autoCompleteSearch, query, params);
     yield put({ type: AUTOCOMPLETE_SEARCH.SUCCESS, response, query });
   } catch (error) {
-    console.log("doAutoCompleteSearchCancellable:::",error);
     yield put({ type: AUTOCOMPLETE_SEARCH.ERROR, error });
   } finally {
     if (yield cancelled()) {
@@ -99,7 +93,6 @@ export function* doAddBookmark({ city, place }) {
     addBookmarkedPlaces(city,place);
     yield put({ type: ADD_BOOKMARK.SUCCESS, city, place });
   } catch (error) {
-    console.log("Inside error in doAddBookmark",error);
     yield put({ type: ADD_BOOKMARK.ERROR,  city , place , error });
   }
 }
@@ -140,7 +133,7 @@ export function* cancelTask(task) {
 }
 
 export default function* saga() {
-  yield all([
+  yield [
     fork(takeEvery, FETCH_CITY_DETAILS.ACTION, dofetchCityDetails),
     fork(takeEvery, FETCH_PLACE_DETAILS.ACTION, dofetchPlaceDetails),
     fork(takeEvery, TEXT_SEARCH.ACTION, doTextSearch),
@@ -149,5 +142,5 @@ export default function* saga() {
     fork(takeEvery, GET_BOOKMARK_PLACES.ACTION, doGetAllBookmarksInCity),
     fork(takeEvery, DELETE_BOOKMARK.ACTION, doDeleteBookmarks),
     fork(takeEvery , GET_BOOKMARKS.ACTION , doGetAllBookmarks)
-  ]);
+  ];
 }
