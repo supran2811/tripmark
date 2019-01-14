@@ -64,3 +64,4 @@ export function resetRedirectPath() {
     type: ACTION_RESET_PATH_TO_REDIRECT.ACTION
   };
 }
+

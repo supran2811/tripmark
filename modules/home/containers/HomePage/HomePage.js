@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Router } from "../../../../routes";
 import PropTypes from "prop-types";
 import { Typography } from "@material-ui/core";
 
+import { Router } from "../../../../routes";
 import GridContainer from "../../../../components/GridContainer";
 import homePageStyle from "./homePageStyle";
 import GridItem from "../../../../components/GridItem";
@@ -74,7 +74,7 @@ export class HomePage extends Component {
   };
 
   doLogOut = () => {
-    this.props.dispatch(logoutRequest());
+    this.props.logoutRequest();
   }
 }
 
@@ -86,7 +86,7 @@ const mapStateToProps = state => {
 };
 
 HomePage.propTypes = {
-  dispatch:PropTypes.func.isRequired,
+  logoutRequest:PropTypes.func.isRequired,
   classes:PropTypes.object.isRequired,
   t:PropTypes.func.isRequired,
   cities:PropTypes.array,
@@ -94,6 +94,6 @@ HomePage.propTypes = {
   user : PropTypes.object
 };
 
-export default connect(mapStateToProps)(
+export default connect(mapStateToProps,{logoutRequest})(
   withLibs(HomePage, ["homedata", "common"], homePageStyle)
 );

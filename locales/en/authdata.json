@@ -14,5 +14,6 @@
   "passwordLengthErrorText" : "Password must be more than 6 letters",
   "rememberPasswordLabel" :"Remember Password",
   "forgotPasswordLabel" :" Forgot Password",
-  "welcomepagetext" :"Every landing page needs a small description after the big bold title, that‘s why we added this text here. Add here all the information that can make you or your product create the first impression."
+  "welcomepagetext" :"Every landing page needs a small description after the big bold title, that‘s why we added this text here. Add here all the information that can make you or your product create the first impression.",
+  "headingText":"Your story starts with us"
 }

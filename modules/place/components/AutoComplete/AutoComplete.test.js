@@ -1,14 +1,12 @@
 import React from "react";
 import { mount } from "enzyme";
 import MenuItem from "@material-ui/core/MenuItem";
+import renderer from "react-test-renderer"; 
 
 import  AutoComplete  from "./AutoComplete";
 
 describe("Auto complete" , () => {
   let wrapper;
-  const translations = {
-    "autoCompletePlaceHolder":"Where do you want to go?"
-  };
   const fetchSuggestions = jest.fn();
   const performSearch = jest.fn();
   const cityid = "123";
@@ -32,7 +30,7 @@ describe("Auto complete" , () => {
 
   beforeEach(() => {
     wrapper = mount(<AutoComplete 
-      translation = {(key) => translations[key]}
+      translation = {(key) => key}
       fetchSuggestions = {fetchSuggestions}
       performSearch = {performSearch}
       cityid = {cityid}

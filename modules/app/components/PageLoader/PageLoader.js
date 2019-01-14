@@ -12,6 +12,7 @@ class PageLoader extends Component {
     return (type && type === "circular")
       ? <CircularProgress color="secondary" size = {size}/>
       : <LinearProgress color="secondary" />;
+      
   }
 }
 

@@ -6,9 +6,13 @@ import loginPageStyle from "./loginPageStyle";
 
 describe("LoginPage container" , () => {
   let wrapper;
-  let dispatch = jest.fn();
+  const loginRequest = jest.fn();
+  const googleSignUpRequest = jest.fn();
+  const resetError = jest.fn();
   beforeEach(() => {
-    wrapper = shallow(<LoginPage dispatch={dispatch}
+    wrapper = shallow(<LoginPage loginRequest={loginRequest}
+      googleSignUpRequest={googleSignUpRequest}
+      resetError={resetError}
       classes={loginPageStyle}
       t = {(key) => key}
     />);

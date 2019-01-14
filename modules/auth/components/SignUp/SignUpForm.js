@@ -172,11 +172,7 @@ export class SignUpForm extends Component {
             <form className={classes.form}>
               <CardHeader className={classes.cardHeader}>
                 <Button
-                  className={
-                    this.props.isLogin
-                      ? classes.googleLogin
-                      : classes.googleSignUp
-                  }
+                  className={classes.googleLogin}
                   onClick={this.props.googleSignUp}
                 >
                   <span />

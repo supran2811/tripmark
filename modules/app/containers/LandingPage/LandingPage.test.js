@@ -8,10 +8,14 @@ describe("Landing Page" , () => {
   let wrapper;
 
   beforeEach(() => {
-    const dispatch = jest.fn();
+    const signUpRequest = jest.fn();
+    const googleSignUpRequest = jest.fn();
+    const resetError = jest.fn();
     wrapper = shallow(<LandingPage isAuthenticated={false}
       path="/"
-      dispatch={dispatch}
+      signUpRequest={signUpRequest}
+      googleSignUpRequest={googleSignUpRequest}
+      resetError={resetError}
       t={(key) => key}
       classes={container}
       error = {false}
@@ -21,5 +25,6 @@ describe("Landing Page" , () => {
   it("It should render ok" , () => {
     expect(wrapper.length).toEqual(1);
   });
+
   
 });

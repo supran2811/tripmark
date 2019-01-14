@@ -1,35 +1,19 @@
 import React from "react";
-
+import renderer from "react-test-renderer";
 import { mount } from "enzyme";
+
 import  SignUpForm  from "./";
-import { wrap } from "module";
 
 describe("Signup form" , () => {
   
   let wrapper , requestLogin , requestSignUp , googleSignUp;
-  const translations = {
-    "googleSignUpText":"Sign Up with Google",
-    "googleLoginText" : "Login with Google",
-    "loginLabel":"Login",
-    "enterNameInputPlaceholder" :"Full Name...",
-    "emailnputPlaceholder":"Email...",
-    "passwordInputPlaceholder":"Password",
-    "signUpActionText" :"Get started",
-    "nameIsRequiredErrorText" : "Name is required",
-    "nameLenghtErrorText" : "Name must be more than 4 letters",
-    "emailIsRequiredErrorText" : "Email is required",
-    "emailLengthErrorText" : "Email format is not correct",
-    "passwordIsRequiredErrorText" : "Password is required",
-    "passwordLengthErrorText" : "Password must be more than 6 letters",
-    "rememberPasswordLabel" :"Remember Password",
-    "forgotPasswordLabel" :" Forgot Password"
-  };
+  
   beforeEach(() => {
     requestLogin = jest.fn();
     requestSignUp = jest.fn();
     googleSignUp = jest.fn();
     wrapper = mount(
-      <SignUpForm t={(key) => translations[key]}
+      <SignUpForm t={(key) => key}
         requestLogin = {requestLogin}
         requestSignUp = {requestSignUp}
         googleSignUp = {googleSignUp}
@@ -68,12 +52,12 @@ describe("Signup form" , () => {
 
     const submitButton = wrapper.find("#submitButtonID").find("button");
     submitButton.simulate("click");
-    expect(wrapper.state().name.errorLabel).toEqual(translations["nameIsRequiredErrorText"]);
+    expect(wrapper.state().name.errorLabel).toEqual("nameIsRequiredErrorText");
     expect(requestSignUp.mock.calls.length).toBe(0);
     
     nameField.simulate("change", {target:{value:"bbb"}});
     submitButton.simulate("click");
-    expect(wrapper.state().name.errorLabel).toEqual(translations["nameLenghtErrorText"]);
+    expect(wrapper.state().name.errorLabel).toEqual("nameLenghtErrorText");
     expect(requestSignUp.mock.calls.length).toBe(0);
 
     nameField.simulate("change", {target:{value:"bbbsfsdf"}});
@@ -91,12 +75,12 @@ describe("Signup form" , () => {
 
     const submitButton = wrapper.find("#submitButtonID").find("button");
     submitButton.simulate("click");
-    expect(wrapper.state().email.errorLabel).toEqual(translations["emailIsRequiredErrorText"]);
+    expect(wrapper.state().email.errorLabel).toEqual("emailIsRequiredErrorText");
     expect(requestSignUp.mock.calls.length).toBe(0);
     
     emailField.simulate("change", {target:{value:"test"}});
     submitButton.simulate("click");
-    expect(wrapper.state().email.errorLabel).toEqual(translations["emailLengthErrorText"]);
+    expect(wrapper.state().email.errorLabel).toEqual("emailLengthErrorText");
     expect(requestSignUp.mock.calls.length).toBe(0);
 
     emailField.simulate("change", {target:{value:"test@email.com"}});
@@ -114,12 +98,12 @@ describe("Signup form" , () => {
 
     const submitButton = wrapper.find("#submitButtonID").find("button");
     submitButton.simulate("click");
-    expect(wrapper.state().password.errorLabel).toEqual(translations["passwordIsRequiredErrorText"]);
+    expect(wrapper.state().password.errorLabel).toEqual("passwordIsRequiredErrorText");
     expect(requestSignUp.mock.calls.length).toBe(0);
     
     passwordField.simulate("change", {target:{value:"123"}});
     submitButton.simulate("click");
-    expect(wrapper.state().password.errorLabel).toEqual(translations["passwordLengthErrorText"]);
+    expect(wrapper.state().password.errorLabel).toEqual("passwordLengthErrorText");
     expect(requestSignUp.mock.calls.length).toBe(0);
 
     passwordField.simulate("change", {target:{value:"12334344455"}});
@@ -131,29 +115,13 @@ describe("Signup form" , () => {
 
 describe("Login form" , () => {
   let wrapper , requestLogin , requestSignUp , googleSignUp;
-  const translations = {
-    "googleSignUpText":"Sign Up with Google",
-    "googleLoginText" : "Login with Google",
-    "loginLabel":"Login",
-    "enterNameInputPlaceholder" :"Full Name...",
-    "emailnputPlaceholder":"Email...",
-    "passwordInputPlaceholder":"Password",
-    "signUpActionText" :"Get started",
-    "nameIsRequiredErrorText" : "Name is required",
-    "nameLenghtErrorText" : "Name must be more than 4 letters",
-    "emailIsRequiredErrorText" : "Email is required",
-    "emailLengthErrorText" : "Email format is not correct",
-    "passwordIsRequiredErrorText" : "Password is required",
-    "passwordLengthErrorText" : "Password must be more than 6 letters",
-    "rememberPasswordLabel" :"Remember Password",
-    "forgotPasswordLabel" :" Forgot Password"
-  };
+ 
   beforeEach(() => {
     requestLogin = jest.fn();
     requestSignUp = jest.fn();
     googleSignUp = jest.fn();
     wrapper = mount(
-      <SignUpForm t={(key) => translations[key]}
+      <SignUpForm t={(key) => key}
         requestLogin = {requestLogin}
         requestSignUp = {requestSignUp}
         googleSignUp = {googleSignUp}
@@ -169,7 +137,7 @@ describe("Login form" , () => {
     const nameField = wrapper.find("#fullNameID").find("input");
     expect(nameField.length).toBe(0);
     const submitButton = wrapper.find("#submitButtonID").find("button");
-    expect(submitButton.text()).not.toEqual(translations["signUpActionText"]);
+    expect(submitButton.text()).not.toEqual("signUpActionText");
   });
 
   it("Login action should be called" , () => {
@@ -184,3 +152,18 @@ describe("Login form" , () => {
     expect(requestLogin.mock.calls.length).toBe(1);
   });
 });
+
+// describe("SignupForm match snapshot" , () => {
+//   let requestLogin = jest.fn();
+//   let requestSignUp = jest.fn();
+//   let googleSignUp = jest.fn();
+
+//   it("It should match the snapshot for login" , () => {
+//     const tree = renderer.create(<SignUpForm t={(key) => key}
+//       requestLogin = {requestLogin}
+//       requestSignUp = {requestSignUp}
+//       googleSignUp = {googleSignUp}
+//       isLogin/>).toJSON();
+//     expect(tree).toMatchSnapshot();
+//   });
+// });

@@ -1,7 +1,6 @@
 import React from "react";
 import { mount } from "enzyme";
-
-import AppHeader from "./";
+import StyledAppHeader from "./";
 
 import Button from "../../../../components/CustomButtons";
 import CustomDropdown from "../../../../components/CustomDropdown";
@@ -18,7 +17,7 @@ describe("AppHeader without authentication" , () => {
   let wrapper;
   beforeEach(() => {
     wrapper = mount(
-      <AppHeader color="primary"
+      <StyledAppHeader color="primary"
         t={key => translations[key]}
       />
     );  
@@ -45,7 +44,7 @@ describe("AppHeader when user is authenticated" , () => {
       "common:appName" : "TripMark"
     };
     wrapper = mount(
-      <AppHeader color="primary"
+      <StyledAppHeader color="primary"
         t={key => translations[key]}
         isAuthenticated={true}
         user= {{username:"Test User"}}
@@ -83,7 +82,7 @@ describe("Appheader with google auto complete" , () => {
       "common:appName" : "TripMark"
     };
     wrapper = mount(
-      <AppHeader color="primary"
+      <StyledAppHeader color="primary"
         t={key => translations[key]}
         isAuthenticated={true}
         user= {{username:"Test User"}}
@@ -98,3 +97,32 @@ describe("Appheader with google auto complete" , () => {
     expect(googleAutoComplete.length).toBe(1);
   });
 });
+
+// describe("Test snapshot" , () => {
+//   const translations = {
+//     "common:yourProfileText" : "Profile",
+//     "common:logoutText":"Log Out",
+//     "common:loginText":"Log In",
+//     "common:appName" : "TripMark"
+//   };
+//   let wrapper;
+//   fit("it should match the snapshot" , () => {
+//     // wrapper = mount(
+//     //   <AppHeader color="primary"
+//     //     t={key => translations[key]}
+//     //     isAuthenticated={true}
+//     //     user= {{username:"Test User"}}
+//     //   />
+//     // );  
+//     // const Composition = withStyles(appHeaderStyle)(AppHeader);
+//     const tree = renderer
+//       .create(<StyledAppHeader color="primary"
+//         t={key => translations[key]}
+//         isAuthenticated={true}
+//         user= {{username:"Test User"}}
+//       />).toJSON();
+//     // const tree = wrapper.toJSON();
+//     console.log(tree);  
+//     expect(tree).toMatchSnapshot();
+//   });
+// });

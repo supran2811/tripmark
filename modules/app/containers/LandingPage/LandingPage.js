@@ -10,18 +10,18 @@ import GridItem from "../../../../components/GridItem";
 import landingPageStyle from "./landingPageStyle";
 import SignUpForm from "../../../auth/components/SignUp";
 import { signUpRequest, googleSignUpRequest } from "../../../auth/store/action";
+import { resetError } from "../../../app/store/action";
 import {
   isAuthenticated,
   getPathToRedirect
 } from "../../../auth/store/selector";
 import { isLoading, getErrorData, hasError } from "../../store/selector";
-import { RESET_ERROR } from "../../store/actionTypes";
 import AppHeader from "../../components/AppHeader";
 
 export class LandingPage extends Component {
   
   componentDidMount() {
-    this.props.dispatch({ type: RESET_ERROR.ACTION });
+    this.props.resetError();
   }
 
   render() {
@@ -38,7 +38,7 @@ export class LandingPage extends Component {
           <div className={classes.container}>
             <GridContainer>
               <GridItem xs={12} sm={12} md={6}>
-                <h1 className={classes.title}>Your Story Starts With Us.</h1>
+                <h1 className={classes.title}>{ t("headingText") }</h1>
                 <h4>
                   {t("welcomepagetext")}
                 </h4>
@@ -46,12 +46,8 @@ export class LandingPage extends Component {
               </GridItem>
               <GridItem xs={12} sm={12} md={6}>
                 <SignUpForm
-                  requestSignUp={(name, email, password) =>
-                    this.props.dispatch(signUpRequest(name, email, password))
-                  }
-                  googleSignUp={() =>
-                    this.props.dispatch(googleSignUpRequest())
-                  }
+                  requestSignUp={this.props.signUpRequest}
+                  googleSignUp={this.props.googleSignUpRequest}
                   isLoading={this.props.loading}
                   hasError={this.props.error}
                   errorData={this.props.errorData}
@@ -77,14 +73,16 @@ const mapStateToProps = state => ({
 LandingPage.propTypes = {
   isAuthenticated:PropTypes.bool.isRequired,
   path:PropTypes.string.isRequired,
-  dispatch:PropTypes.func.isRequired,
   classes:PropTypes.object.isRequired,
   t:PropTypes.func.isRequired,
-  loading:PropTypes.bool,
   error:PropTypes.bool.isRequired,
+  signUpRequest:PropTypes.func.isRequired,
+  googleSignUpRequest:PropTypes.func.isRequired,
+  resetError:PropTypes.func.isRequired,
+  loading:PropTypes.bool,
   errorData:PropTypes.object
 };
 
-export default connect(mapStateToProps)(
+export default connect(mapStateToProps , {signUpRequest , googleSignUpRequest , resetError} )(
   withLibs(LandingPage, ["authdata" , "common"], landingPageStyle)
 );

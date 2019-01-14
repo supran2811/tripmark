@@ -1,21 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loginRequest, googleSignUpRequest } from "../../../auth/store/action";
 import PropTypes from "prop-types";
 
+import { loginRequest, googleSignUpRequest } from "../../../auth/store/action";
+import { resetError } from "../../../app/store/action";
 import SignUp from "../../../auth/components/SignUp";
 import loginPageStyle from "./loginPageStyle";
 import { isAuthenticated } from "../../../auth/store/selector";
 import { isLoading, getErrorData, hasError } from "../../../app/store/selector";
-import { RESET_ERROR } from "../../../app/store/actionTypes";
 import AppHeader from "../../../app/components/AppHeader";
 import withLibs from "../../../../lib/withLibs";
-import { withStyles } from "@material-ui/core";
 
 export class LoginPage extends Component {
 
   componentDidMount() {
-    this.props.dispatch({ type: RESET_ERROR.ACTION });
+    this.props.resetError();
   }
 
   render() {
@@ -31,10 +30,8 @@ export class LoginPage extends Component {
         <div className={classes.container}>
           <SignUp
             isLogin
-            requestLogin={(email, password) =>
-              this.props.dispatch(loginRequest(email, password))
-            }
-            googleSignUp={() => this.props.dispatch(googleSignUpRequest())}
+            requestLogin={this.props.loginRequest}
+            googleSignUp={this.props.googleSignUpRequest}
             isLoading={this.props.loading}
             hasError={this.props.error}
             errorData={this.props.errorData}
@@ -44,6 +41,7 @@ export class LoginPage extends Component {
       </div>
     );
   }
+
 }
 const mapStateToProps = state => ({
   isAuthenticated: isAuthenticated(state),
@@ -56,9 +54,15 @@ LoginPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   t:PropTypes.func.isRequired,
+  loginRequest: PropTypes.func,
+  googleSignUpRequest: PropTypes.func,
+  resetError:PropTypes.func,
   error: PropTypes.bool,
   loading: PropTypes.bool,
   errorData: PropTypes.object,
 };
 
-export default connect(mapStateToProps)(withLibs(LoginPage, ["authdata","common"], loginPageStyle));
+export default connect(mapStateToProps , 
+  { googleSignUpRequest , 
+    loginRequest,
+    resetError})(withLibs(LoginPage, ["authdata","common"], loginPageStyle));
