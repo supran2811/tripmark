@@ -1,5 +1,5 @@
-import action from "./action";
-import actionTypes from "./actionTypes";
+import * as action from "./action";
+import * as actionTypes from "./actionTypes";
 import reducer from "./reducer";
 import saga from "./saga";
 import * as constants from "./constants";

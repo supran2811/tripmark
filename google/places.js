@@ -23,7 +23,7 @@ export function openInGoogleMap(placeId , address) {
   );
 }
 
-export const getOptimalBGImageUrl = (photos = [], maxWidth) => {
+export function getOptimalBGImageUrl (photos = [], maxWidth) {
   let url = "";
   if (List.isList(photos)) {
     for (let photo of photos) {
@@ -49,7 +49,7 @@ export const getOptimalBGImageUrl = (photos = [], maxWidth) => {
     }
   }
   return url;
-};
+}
 
 export function getPhotoUrl(photoReference, maxHeight) {
   return `https://maps.googleapis.com/maps/api/place/photo?maxheight=${maxHeight}&photoreference=${photoReference}&key=${
@@ -66,7 +66,6 @@ function filter(query) {
   if (term.length == 0 || type === "category") {
     return categories.slice(0, 5);
   } else {
-    console.log("Inside filter", categories);
     let count = 0;
     return categories.filter(category => {
       const keep =

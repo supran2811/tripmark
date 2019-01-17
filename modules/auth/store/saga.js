@@ -1,4 +1,4 @@
-import { fork, takeEvery, put , call } from "redux-saga/effects";
+import { fork, takeEvery, put , call ,all } from "redux-saga/effects";
 
 import { auth } from "../../../firebase";
 import {
@@ -89,11 +89,11 @@ export function* doLogOut() {
 }
 
 export default function* saga() {
-  yield [
+  yield all([
     fork(takeEvery, ACTION_LOGIN.ACTION, doLogin),
     fork(takeEvery, ACTION_SIGNUP.ACTION, doSignUp),
     fork(takeEvery, ACTION_SET_TOKEN.ACTION, doSetToken),
     fork(takeEvery, ACTION_GOOGLE_SIGNUP.ACTION, doSignUpWithGoogle),
     fork(takeEvery, ACTION_LOGOUT.ACTION, doLogOut)
-  ];
+  ]);
 }

@@ -38,11 +38,7 @@ export class LandingPage extends Component {
           <div className={classes.container}>
             <GridContainer>
               <GridItem xs={12} sm={12} md={6}>
-                <h1 className={classes.title}>{ t("headingText") }</h1>
-                <h4>
-                  {t("welcomepagetext")}
-                </h4>
-                <br />
+                {this.renderWelcomeText()}
               </GridItem>
               <GridItem xs={12} sm={12} md={6}>
                 <SignUpForm
@@ -59,6 +55,17 @@ export class LandingPage extends Component {
         </Parallax>
       </div>
     );
+  }
+  renderWelcomeText = () => {
+    const { classes, t } = this.props;
+    return  <div className = {classes.welcomeSection}>
+      <h1 className={classes.title}>
+        { t("headingText") }
+      </h1>
+      <h4>
+        {t("welcomepagetext")}
+      </h4>
+    </div>;
   }
 }
 

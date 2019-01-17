@@ -76,7 +76,6 @@ export function addBookmark(city, place , uid) {
 }
 
 export function deleteBookmark(cityid, placeid , uid) {
-  console.log("Inside deleteBookmark ",cityid,placeid);
   const userid = uid || getUserId();
   if (userid === "") {
     return null;
@@ -92,8 +91,6 @@ export function deleteBookmark(cityid, placeid , uid) {
 }
 
 export function getAllBookmarks(uid) {
- 
-  console.log("Inside getAllBookmarks():::::::::::::",uid,getUserId() , (typeof window === "undefined"));
   const userid = uid || getUserId();
   if (userid === "") {
     return null;
@@ -133,11 +130,6 @@ export function getCityDetails(cityid,uid) {
       key: process.env._GOOGLE_API_KEY
     }
   };
-
-  // return fetch(withQuery(api.API_GET_CITY_DETAILS , params) , {
-  //   mode:"same-origin"
-  // }).then( response => response.json());
-  
   return axios.get(getUrl(api.API_GET_CITY_DETAILS), config);
 }
 

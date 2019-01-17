@@ -133,7 +133,7 @@ export function* cancelTask(task) {
 }
 
 export default function* saga() {
-  yield [
+  yield all([
     fork(takeEvery, FETCH_CITY_DETAILS.ACTION, dofetchCityDetails),
     fork(takeEvery, FETCH_PLACE_DETAILS.ACTION, dofetchPlaceDetails),
     fork(takeEvery, TEXT_SEARCH.ACTION, doTextSearch),
@@ -142,5 +142,5 @@ export default function* saga() {
     fork(takeEvery, GET_BOOKMARK_PLACES.ACTION, doGetAllBookmarksInCity),
     fork(takeEvery, DELETE_BOOKMARK.ACTION, doDeleteBookmarks),
     fork(takeEvery , GET_BOOKMARKS.ACTION , doGetAllBookmarks)
-  ];
+  ]);
 }
