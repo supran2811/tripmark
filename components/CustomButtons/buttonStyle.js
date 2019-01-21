@@ -15,7 +15,7 @@ const buttonStyle = {
     position:'absolute',
     top:"50%",
     left:"50%",
-    marginLeft:-35,
+    marginLeft:-14,
     marginTop:-10
   },
   buttonRoot:{

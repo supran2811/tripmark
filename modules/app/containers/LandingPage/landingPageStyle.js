@@ -14,10 +14,18 @@ const landingPageStyle = theme => ({
     ...title,
     display: "inline-block",
     position: "relative",
-    marginTop: "30px",
-    minHeight: "32px",
+    marginTop: "2rem",
+    minHeight: "2rem",
     color: "#FFFFFF",
-    textDecoration: "none"
+    textDecoration: "none",
+    [theme.breakpoints.down("sm")]: {
+      fontSize:"1.8rem",
+      marginTop:"8rem"
+    },
+    [theme.breakpoints.down("xs")]: {
+      fontSize:"1.5rem",
+      marginTop:"12rem"
+    }
   },
   subtitle: {
     fontSize: "1.313rem",

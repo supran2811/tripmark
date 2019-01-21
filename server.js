@@ -106,7 +106,7 @@ const renderAndCache = function renderAndCache(
 ) {
   const key = getCacheKey(req);
 
-  if (ssrCache.has(key) && !isDev) {
+  if (ssrCache.has(key)) {
     res.send(ssrCache.get(key));
     return;
   }
@@ -166,7 +166,7 @@ i18n
         }));
 
         // Set up the proxy.
-        if (dev && devProxy) {
+        if (devProxy) {
           const proxyMiddleware = require("http-proxy-middleware");
           Object.keys(devProxy).forEach(function(context) {
             server.use(proxyMiddleware(context, devProxy[context]));

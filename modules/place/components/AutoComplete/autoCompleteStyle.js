@@ -62,21 +62,29 @@ const autoCompleteStyle = theme => ({
     display: "flex",
     alignItems: "center",
     alignContent: "center",
-    height: "100%",
-    width: "100%",
-    textDecoration: "none"
+    textDecoration: "none",
+    width:"100%"
   },
   menuItemBody: {
     display: "block",
-    paddingLeft: "20px"
+    paddingLeft: "20px",
+    width:"100%"
   },
   mainContent: {
     fontSize: 16,
-    color: "#000"
+    color: "#000",
+    width:"70%",
+    maxWidth:"70%",
+    overflow:"hidden",
+    textOverflow:"ellipsis"
   },
   secondaryContent: {
     fontSize: 12,
-    color: "#777"
+    color: "#777",
+    width:"70%",
+    maxWidth:"70%",
+    overflow:"hidden",
+    textOverflow:"ellipsis"
   },
   buttonStyle: {
     borderTopRightRadius: "10px",
