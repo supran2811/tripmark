@@ -15,7 +15,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 
-const router = require("./routes");
+const router = require("./src/app/routes");
 
 const devProxy = {
   "/searchPlace": {
@@ -74,12 +74,12 @@ const prettyHost = customHost || "localhost";
 const port = parseInt(process.env.PORT, 10) || 3000;
 
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
+const app = dev ? next({ dev , dir: "./src/app"}) : next();
 const handle = app.getRequestHandler();
 
 const i18nextMiddleware = require("i18next-express-middleware");
 const Backend = require("i18next-node-fs-backend");
-const i18n = require("./i18n");
+const i18n = require("./src/app/i18n");
 
 const ssrCache = new LRUCache({
   max: 100,
@@ -104,9 +104,11 @@ const renderAndCache = function renderAndCache(
   pagePath,
   queryParams
 ) {
+  
   const key = getCacheKey(req);
 
   if (ssrCache.has(key)) {
+    console.log("CACHE HIT!!!!",key);
     res.send(ssrCache.get(key));
     return;
   }
@@ -115,7 +117,8 @@ const renderAndCache = function renderAndCache(
     .renderToHTML(req, res, pagePath, queryParams)
     .then(html => {
       // Let's cache this page
-      if (!dev) {
+      if (!dev) 
+      {
         ssrCache.set(key, html);
       }
 
@@ -144,8 +147,8 @@ i18n
       preload: ["en"], // preload all langages
       ns: ["common", "authdata", "homedata", "placedata"], // need to preload all the namespaces
       backend: {
-        loadPath: path.join(__dirname, "/locales/{{lng}}/{{ns}}.json"),
-        addPath: path.join(__dirname, "/locales/{{lng}}/{{ns}}.missing.json")
+        loadPath: path.join(__dirname, "/src/app/locales/{{lng}}/{{ns}}.json"),
+        addPath: path.join(__dirname, "/src/app/locales/{{lng}}/{{ns}}.missing.json")
       }
     },
     () => {
@@ -166,7 +169,7 @@ i18n
         }));
 
         // Set up the proxy.
-        if (devProxy) {
+        if (devProxy && dev) {
           const proxyMiddleware = require("http-proxy-middleware");
           Object.keys(devProxy).forEach(function(context) {
             server.use(proxyMiddleware(context, devProxy[context]));
@@ -179,7 +182,7 @@ i18n
         // serve locales for client
         server.use(
           "/locales",
-          express.static(path.join(__dirname, "/locales"))
+          express.static(path.join(__dirname, "/src/app/locales"))
         );
 
         // missing keys
