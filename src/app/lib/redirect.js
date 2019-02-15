@@ -1,4 +1,4 @@
-import { Router } from "../routes";
+import { Router } from "../../routes";
 
 export default (res, target) => {
   if (res) {

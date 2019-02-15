@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const admin = require("firebase-admin");
 const functions = require("firebase-functions");
 const axios_1 = require("axios");
+const app_1 = require("./app");
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
 const settings = { timestampsInSnapshots: true };
@@ -81,7 +82,6 @@ exports.removeBookmarkPlace = functions.https.onRequest((req, res) => __awaiter(
     }
 }));
 exports.getBookmarks = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
-    console.log("Inisde get bookmarks!!!!");
     try {
         const userid = req.query.userid;
         const citiesRef = yield db.collection("users").doc(userid).collection("cities").get();
@@ -196,6 +196,7 @@ exports.getCityDetails = functions.https.onRequest((req, res) => {
         }
     }));
 });
+exports.app = { nextApp: app_1.default };
 const _getBookmarkedPlacesInCity = function (userid, cityid) {
     return __awaiter(this, void 0, void 0, function* () {
         if (userid && cityid) {

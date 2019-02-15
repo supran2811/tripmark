@@ -1,4 +1,4 @@
-const env = require("./src/env-config");
+const env = require("../env-config")
 
 module.exports = {
   "env": {

@@ -6,7 +6,7 @@ import { Typography, Zoom } from "@material-ui/core";
 import { Hidden } from "@material-ui/core";
 import RegularButton from "@material-ui/core/Button";
 
-import { Router } from "../../../../routes";
+import { Router } from "../../../../../routes";
 import GridItem from "../../../../components/GridItem";
 import PlaceResultGrid from "../../components/PlaceResultGrid";
 import {

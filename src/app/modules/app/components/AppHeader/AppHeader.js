@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Avatar from "@material-ui/core/Avatar";
 import { withStyles } from "@material-ui/core";
 
-import { Router } from "../../../../routes";
+import { Router } from "../../../../../routes";
 import { auth } from "../../../../lib/firebase";
 import { getNameInitials } from "../../../../lib/utils";
 import Header from "../../../../components/Header";

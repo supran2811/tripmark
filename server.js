@@ -7,15 +7,11 @@ const path = require("path");
 const next = require("next");
 const compression = require("compression");
 const LRUCache = require("lru-cache");
-const fs = require("fs");
-const cors = require("cors");
-const helmet = require("helmet");
-const dotenv = require("dotenv");
+const i18nextMiddleware = require("i18next-express-middleware");
+const Backend = require("i18next-node-fs-backend");
+const i18n = require("./src/i18n");
 
-dotenv.config();
-
-
-const router = require("./src/app/routes");
+const router = require("./src/routes");
 
 const devProxy = {
   "/searchPlace": {
@@ -68,18 +64,11 @@ const devProxy = {
   }
 };
 
-const customHost = process.env.HOST;
-const host = customHost || null;
-const prettyHost = customHost || "localhost";
 const port = parseInt(process.env.PORT, 10) || 3000;
 
 const dev = process.env.NODE_ENV !== "production";
-const app = dev ? next({ dev , dir: "./src/app"}) : next();
+const app = next({ dev , dir: "./src/app"});
 const handle = app.getRequestHandler();
-
-const i18nextMiddleware = require("i18next-express-middleware");
-const Backend = require("i18next-node-fs-backend");
-const i18n = require("./src/app/i18n");
 
 const ssrCache = new LRUCache({
   max: 100,

@@ -7,7 +7,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 
 import Card from "../../../../components/Card";
-import { Router } from "../../../../routes";
+import { Router } from "../../../../../routes";
 import cityThumbnailViewStyle from "./cityThumbnailViewStyle";
 
 export class CityThumbnailView extends Component {

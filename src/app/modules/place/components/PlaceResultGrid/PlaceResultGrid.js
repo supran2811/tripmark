@@ -4,7 +4,7 @@ import UserAgent from "express-useragent";
 
 import GridItem from "../../../../components/GridItem";
 import PlaceThumbnailView from "../PlaceThumbnailView";
-import { Router } from "../../../../routes";
+import { Router } from "../../../../../routes";
 
 
 class PlaceResultGrid extends Component {

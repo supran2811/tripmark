@@ -2,6 +2,8 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import axios from "axios";
 
+import nextApp from "./app";
+
 admin.initializeApp(functions.config().firebase);
 
 const db = admin.firestore();
@@ -209,6 +211,7 @@ export const getCityDetails = functions.https.onRequest((req, res) => {
   })
 });
 
+export const app = { nextApp }
 
 const _getBookmarkedPlacesInCity = async function (userid, cityid) {
   if (userid && cityid) {

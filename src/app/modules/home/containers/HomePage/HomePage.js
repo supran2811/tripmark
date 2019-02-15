@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Typography } from "@material-ui/core";
 
-import { Router } from "../../../../routes";
+import { Router } from "../../../../../routes";
 import GridContainer from "../../../../components/GridContainer";
 import homePageStyle from "./homePageStyle";
 import GridItem from "../../../../components/GridItem";
