@@ -8,7 +8,20 @@ module.exports = {
     },
     "production": {
       "presets": ["next/babel"],
-      "plugins": [['transform-define', env]]
+      "plugins": [[
+        'transform-define', 
+        env
+      ],
+      [
+        "module-resolver",
+        {
+          "root": ["./"],
+          "alias": {
+            "src": "./src",
+          }
+        }
+      ]
+    ]
     },
     "test": {
       "presets": [["next/babel", { "preset-env": { "modules": "commonjs" } }]],

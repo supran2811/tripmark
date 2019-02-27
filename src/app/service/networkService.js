@@ -91,6 +91,7 @@ export function deleteBookmark(cityid, placeid , uid) {
 }
 
 export function getAllBookmarks(uid) {
+  console.log("55555555555555555555555555555555555555555555");
   const userid = uid || getUserId();
   if (userid === "") {
     return null;
@@ -101,7 +102,7 @@ export function getAllBookmarks(uid) {
       userid
     }
   };
-  
+  console.log("6666666666666666666666666666666666666666666666");
   return axios.get(getUrl(api.API_GET_ALL_BOOKMARK), config);
     
 }

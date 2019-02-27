@@ -1,0 +1,56 @@
+{
+  "devFiles": [],
+  "pages": {
+    "/_app": [
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.41510e311a23c69c08ba.js",
+      "static/runtime/main-ac8b2ec90ec658c6a20a.js"
+    ],
+    "/city/addfav": [
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.41510e311a23c69c08ba.js",
+      "static/runtime/main-ac8b2ec90ec658c6a20a.js"
+    ],
+    "/city": [
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.41510e311a23c69c08ba.js",
+      "static/runtime/main-ac8b2ec90ec658c6a20a.js"
+    ],
+    "/city/place": [
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.41510e311a23c69c08ba.js",
+      "static/runtime/main-ac8b2ec90ec658c6a20a.js"
+    ],
+    "/home": [
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.41510e311a23c69c08ba.js",
+      "static/runtime/main-ac8b2ec90ec658c6a20a.js"
+    ],
+    "/index": [
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.41510e311a23c69c08ba.js",
+      "static/css/styles.9dc36038.chunk.css",
+      "static/chunks/styles.34d7e49a3d6d7ff5f5c5.js",
+      "static/runtime/main-ac8b2ec90ec658c6a20a.js"
+    ],
+    "/login": [
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.41510e311a23c69c08ba.js",
+      "static/css/styles.9dc36038.chunk.css",
+      "static/chunks/styles.34d7e49a3d6d7ff5f5c5.js",
+      "static/runtime/main-ac8b2ec90ec658c6a20a.js"
+    ],
+    "/_error": [
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.41510e311a23c69c08ba.js",
+      "static/runtime/main-ac8b2ec90ec658c6a20a.js"
+    ],
+    "/": [
+      "static/runtime/webpack-89179faa512dd01fbb62.js",
+      "static/chunks/commons.41510e311a23c69c08ba.js",
+      "static/css/styles.9dc36038.chunk.css",
+      "static/chunks/styles.34d7e49a3d6d7ff5f5c5.js",
+      "static/runtime/main-ac8b2ec90ec658c6a20a.js"
+    ]
+  }
+}

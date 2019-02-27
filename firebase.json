@@ -1,20 +1,15 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "dist/public",
     "rewrites": [
       {
         "source": "**/**",
         "function": "app-nextApp"
       }
     ],
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+    "predeploy":"npm run build-public"
   },
   "functions": {
-    "source": "src/functions",
-    "predeploy": "npm --prefix src/functions run build"
+    "source": "dist/functions"
   }
 }

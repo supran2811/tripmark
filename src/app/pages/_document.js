@@ -6,6 +6,7 @@ import flush from "styled-jsx/server";
 import getPageContext from "../getPageContext";
 
 class MyDocument extends Document {
+  
   render() {
     const { pageContext } = this.props;
     if (!pageContext) {
